@@ -1,0 +1,321 @@
+import { useId } from "react";
+type Props = {
+  variant?: "full" | "head";
+  animated?: boolean;
+  className?: string;
+  title?: string;
+  decorative?: boolean;
+};
+export function LionMark({
+  variant = "full",
+  className = "",
+  title = "Lions Den lion",
+  decorative = false,
+}: Props) {
+  const id = useId();
+  return (
+    <svg
+      viewBox={variant === "head" ? "295 60 540 530" : "70 50 830 830"}
+      fill="none"
+      className={
+        "lion-mark " + (variant === "head" ? "lion-head " : "") + className
+      }
+      role={decorative ? undefined : "img"}
+      aria-hidden={decorative || undefined}
+      aria-labelledby={decorative ? undefined : id}
+    >
+      <title id={id}>{title}</title>
+      <g data-part="tail">
+        <path
+          className="ink"
+          d="M206 676c-52 2-86-22-95-58-9-35 8-72 43-94 14-9 25-22 24-38-1-19-21-29-42-26 3-28 22-52 54-54 44-2 76 31 72 74-3 34-22 57-52 77-25 17-36 36-28 55 9 20 34 24 67 12l10 37c-15 9-33 14-53 15Z"
+        />
+        <path
+          className="gold"
+          d="M168 448c28 12 49 34 56 63-25-21-49-29-80-30 7-15 14-25 24-33Z"
+        />
+        <path
+          className="gold"
+          d="M191 520c22 14 38 34 45 60-20-17-39-24-65-24 5-15 11-27 20-36Z"
+        />
+      </g>
+
+      <g data-part="body">
+        <path
+          className="ink"
+          d="M273 683c-17-89 15-159 84-190 42-19 91-15 130 8 38 22 65 61 74 110 13 73-25 143-92 170-63 25-128 4-169-44-12-14-21-32-27-54Z"
+        />
+        <path
+          className="cream"
+          d="M305 721c19 15 43 26 71 29-32 10-75 6-103-14-9-7-6-22 5-25 10-3 19 3 27 10Z"
+        />
+        <path
+          className="ink"
+          d="M425 733c38 1 76 13 96 36-41 13-91 7-123-16-8-6-4-20 7-20h20Z"
+        />
+      </g>
+
+      <g data-part="mane">
+        <path
+          className="ink"
+          d="M320 424c-31-45-28-100 10-137 30-30 72-38 112-28 12-54 58-96 114-101 69-7 131 39 145 105 58 12 97 62 94 120-3 55-41 98-91 112 10 38-1 80-31 108-42 41-106 42-149 8-43 32-104 30-145-8-36-34-47-84-32-128-10-14-20-31-27-51Z"
+        />
+        <path
+          className="ink"
+          d="M422 210c24-55 77-96 144-101 83-5 154 52 167 132-61-41-129-50-203-28-39 12-72 29-108 54v-57Z"
+        />
+        <path
+          className="ink"
+          d="M611 146c59 7 111 45 138 98 21 42 22 91 3 135-22-61-59-107-112-140-28-18-58-29-93-35l64-58Z"
+        />
+        <path
+          className="ink"
+          d="M300 359c16-57 59-101 116-120-26 43-37 87-33 134-31 4-57 0-83-14Z"
+        />
+        <path
+          className="ink"
+          d="M719 387c59 23 94 77 88 134-43-26-86-39-134-36 12-38 27-68 46-98Z"
+        />
+      </g>
+
+      <g data-part="gold-mane-accents">
+        <path
+          className="gold"
+          d="M345 340c54-69 139-105 232-91-83 11-150 49-201 113-13-4-23-10-31-22Z"
+        />
+        <path
+          className="gold"
+          d="M420 429c37-72 101-119 179-135-58 42-100 99-122 170-21-6-39-18-57-35Z"
+        />
+        <path
+          className="gold"
+          d="M566 223c63 15 112 53 146 110-50-31-100-43-154-36 11-26 13-48 8-74Z"
+        />
+        <path
+          className="gold"
+          d="M607 467c33-44 76-69 128-75-31 32-50 68-59 108-27-2-50-13-69-33Z"
+        />
+        <path
+          className="gold"
+          d="M341 482c42-29 88-41 139-36-42 21-73 53-95 96-24-12-38-32-44-60Z"
+        />
+      </g>
+
+      <g data-part="face">
+        <path
+          className="cream"
+          d="M459 346c46-51 128-60 181-14 50 44 56 123 14 176-38 47-106 63-160 38-40-19-68-57-73-101-4-37 9-72 38-99Z"
+        />
+        <path
+          className="cream"
+          d="M394 389c40-24 80-22 107 4-31 6-55 24-70 54-16-9-29-29-37-58Z"
+        />
+        <path
+          className="cream"
+          d="M558 546c-8 35-27 61-59 77-22-34-24-69-6-105 24 19 45 28 65 28Z"
+        />
+        <path
+          className="ink"
+          d="M574 435c23-11 51-7 71 11 2 2 2 5 0 7-21 15-48 16-70 3-8-5-8-17-1-21Z"
+        />
+        <path
+          className="ink"
+          d="M498 420c-3 31-22 54-43 52-21-2-35-29-32-60 3-31 22-55 43-52s35 29 32 60Z"
+        />
+        <path
+          className="cream"
+          d="M477 413c-1 14-10 25-20 24-10-1-16-13-15-27 2-14 11-25 20-24 10 1 17 13 15 27Z"
+        />
+        <path
+          className="ink"
+          d="M664 417c-5 30-24 53-45 50-21-3-33-30-28-60 5-31 25-53 45-50 21 3 33 30 28 60Z"
+        />
+        <path
+          className="cream"
+          d="M644 411c-2 14-11 24-21 23-9-2-15-14-13-28 2-14 12-24 21-22 10 1 15 13 13 27Z"
+        />
+        <path
+          className="ink"
+          d="M538 463c16-9 37-7 51 4-2 20-15 34-33 34-18 0-29-16-18-38Z"
+        />
+        <path
+          className="none stroke-ink round"
+          strokeWidth="16"
+          d="M508 511c13 26 36 40 64 39 26-1 47-17 60-43"
+        />
+        <path
+          className="none stroke-ink round"
+          strokeWidth="16"
+          d="M553 499c-4 20-3 36 4 51"
+        />
+        <circle className="ink" cx="505" cy="476" r="7" />
+        <circle className="ink" cx="520" cy="493" r="6" />
+        <circle className="ink" cx="623" cy="477" r="7" />
+        <circle className="ink" cx="608" cy="495" r="6" />
+        <path
+          className="none stroke-ink round"
+          strokeWidth="18"
+          d="M441 341c18-24 42-36 72-37"
+        />
+        <path
+          className="none stroke-ink round"
+          strokeWidth="18"
+          d="M622 309c29 3 52 18 67 43"
+        />
+      </g>
+
+      <g data-part="ears">
+        <path
+          className="ink"
+          d="M451 237c-39-50-36-111 0-163 46 21 70 78 57 137l-57 26Z"
+        />
+        <path
+          className="cream"
+          d="M459 116c23 19 37 51 35 86-14-34-30-56-56-72 5-6 12-11 21-14Z"
+        />
+        <path
+          className="ink"
+          d="M680 237c26-58 78-89 141-83 11 50-20 105-75 129l-66-46Z"
+        />
+        <path
+          className="cream"
+          d="M786 179c-29 8-55 30-71 61 8-37 23-62 48-78 9 3 16 9 23 17Z"
+        />
+      </g>
+
+      <g data-part="cup">
+        <path
+          className="cream"
+          d="M273 569c103 29 353 29 456 0 15-4 30 7 28 23l-18 158c-7 63-77 103-234 103-156 0-226-40-234-103l-17-158c-2-16 13-27 19-23Z"
+        />
+        <path
+          className="none stroke-ink round"
+          strokeWidth="28"
+          d="M274 574c107 30 351 30 454 0"
+        />
+        <path
+          className="none stroke-ink round"
+          strokeWidth="24"
+          d="M279 594c79 40 368 40 447 0"
+        />
+        <path
+          className="none stroke-gold round"
+          strokeWidth="20"
+          d="M296 620c93 28 319 28 412 0"
+        />
+        <path
+          className="none stroke-ink round"
+          strokeWidth="28"
+          d="M274 586l17 160c7 67 83 94 214 94s207-27 214-94l18-160"
+        />
+        <path
+          className="none stroke-ink round"
+          strokeWidth="28"
+          d="M744 626c56-14 104 17 108 75 4 57-43 98-103 84"
+        />
+        <path
+          className="none stroke-ink round"
+          strokeWidth="22"
+          d="M759 676c28-4 47 12 48 38 1 26-19 43-49 39"
+        />
+        <path
+          className="ink"
+          d="M357 643c79 18 216 18 295 0 9-2 17 7 13 16-22 44-269 44-321 0-5-9 4-18 13-16Z"
+        />
+        <path
+          className="none stroke-cream round"
+          strokeWidth="14"
+          d="M410 661c58 10 137 10 194 0"
+        />
+      </g>
+
+      <g data-part="paws">
+        <path
+          className="ink"
+          d="M310 541c34-34 89-22 102 26 10 37-14 76-53 82-35 6-68-17-75-52-4-20 5-42 26-56Z"
+        />
+        <path
+          className="none stroke-cream round"
+          strokeWidth="16"
+          d="M335 588c5 19 18 31 39 34"
+        />
+        <path
+          className="none stroke-cream round"
+          strokeWidth="16"
+          d="M365 574c3 20 12 34 29 41"
+        />
+        <path
+          className="ink"
+          d="M634 541c34-34 89-22 102 26 10 37-14 76-53 82-35 6-68-17-75-52-4-20 5-42 26-56Z"
+        />
+        <path
+          className="none stroke-cream round"
+          strokeWidth="16"
+          d="M659 587c5 20 18 32 39 35"
+        />
+        <path
+          className="none stroke-cream round"
+          strokeWidth="16"
+          d="M690 573c2 20 12 34 29 42"
+        />
+      </g>
+
+      <g data-part="steam">
+        <path
+          className="ink"
+          d="M787 367c45 34 50 83 9 129-21 24-25 46-11 68-48-23-57-70-22-111 24-28 31-55 24-86Z"
+        />
+        <path
+          className="ink"
+          d="M845 424c39 31 43 75 8 115-17 20-20 38-9 57-42-20-49-61-18-97 20-23 25-48 19-75Z"
+        />
+      </g>
+
+      <g data-part="beans-and-spill">
+        <path
+          className="ink"
+          d="M650 829c48-14 116-13 164 3 13 4 12 23-1 25-55 10-117 8-166-7-12-4-9-18 3-21Z"
+        />
+        <ellipse
+          className="ink"
+          cx="218"
+          cy="807"
+          rx="34"
+          ry="19"
+          transform="rotate(-12 218 807)"
+        />
+        <path
+          className="none stroke-cream round"
+          strokeWidth="8"
+          d="M195 808c14-6 28-8 45-6"
+        />
+        <ellipse
+          className="ink"
+          cx="293"
+          cy="833"
+          rx="36"
+          ry="20"
+          transform="rotate(15 293 833)"
+        />
+        <path
+          className="none stroke-cream round"
+          strokeWidth="8"
+          d="M270 826c15 1 29 5 43 15"
+        />
+        <ellipse
+          className="ink"
+          cx="373"
+          cy="823"
+          rx="35"
+          ry="19"
+          transform="rotate(-7 373 823)"
+        />
+        <path
+          className="none stroke-cream round"
+          strokeWidth="8"
+          d="M350 824c15-5 30-6 46-1"
+        />
+      </g>
+    </svg>
+  );
+}
