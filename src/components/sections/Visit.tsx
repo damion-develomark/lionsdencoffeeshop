@@ -1,4 +1,5 @@
 import { MapPin, Clock, Phone, ArrowUpRight } from "lucide-react";
+import VisitMap from "@/components/sections/VisitMap";
 export function Visit() {
   return (
     <section
@@ -54,13 +55,7 @@ export function Visit() {
         </p>
       </div>
       <div className="map-wrap">
-        <iframe
-          title="Lions Den Coffee Shop location in Plantsville"
-          src="https://maps.google.com/maps?q=57%20W%20Main%20St%20Plantsville%20CT%2006479&t=&z=15&ie=UTF8&iwloc=&output=embed"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          allowFullScreen
-        />
+        <VisitMap />
         <div className="map-label">
           <span>YOUR NEIGHBORHOOD COFFEE HOUSE</span>
           <MapPin size={18} />

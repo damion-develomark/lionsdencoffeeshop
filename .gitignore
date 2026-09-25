@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# client source files (brief, permit photo) - keep out of the public repo
+/lionden coffee assests/
+
+# MapLibre worker, copied from node_modules on npm install
+/public/maplibre/

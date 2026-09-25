@@ -515,12 +515,153 @@ h2 em {
   color: var(--color-bronze);
   cursor: help;
 }
-.menu-block li > p {
+.menu-item-body > p {
   font-size: 18px;
   line-height: 1.4;
   max-width: 90%;
   margin-top: 6px;
   color: var(--muted-foreground);
+}
+/* --- Menu photos ------------------------------------------------------- */
+.menu-item {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.menu-item-body {
+  min-width: 0;
+}
+.menu-thumb {
+  --thumb-shadow: 4px;
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 1rem;
+  border: 2px solid var(--color-espresso);
+  background: var(--color-cream);
+  box-shadow: var(--thumb-shadow) var(--thumb-shadow) 0 0 var(--color-espresso);
+}
+.menu-thumb-clip,
+.menu-feature-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: calc(1rem - 2px);
+}
+.menu-photo {
+  position: absolute;
+  inset: 0;
+}
+/* One warm, slightly desaturated grade so the stock photos read as a set */
+.menu-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--color-gold) 10%, transparent);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.menu-photo-img {
+  object-fit: cover;
+  filter: saturate(0.9) contrast(1.05) sepia(0.08);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.menu-item:hover .menu-photo-img {
+  transform: scale(1.08);
+}
+.menu-item:hover .item-price {
+  color: var(--color-bronze);
+}
+.sample-tag {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 1;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-warm-white) 90%, transparent);
+  font: 600 8px/1.4 var(--font-sans);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-espresso);
+}
+
+/* Feature photo under each block's gold rule (desktop) */
+.menu-feature {
+  position: relative;
+  margin: 0 0 34px;
+  aspect-ratio: 16 / 10;
+  border: 2px solid var(--color-espresso);
+  border-radius: 1.75rem;
+  background: var(--color-cream);
+  box-shadow: 6px 6px 0 0 var(--color-espresso);
+}
+.menu-feature .menu-feature-frame {
+  border-radius: calc(1.75rem - 2px);
+}
+.menu-feature-parallax {
+  position: absolute;
+  inset: -8% 0;
+}
+.feature-pill {
+  position: absolute;
+  right: 18px;
+  bottom: -14px;
+  z-index: 1;
+  transform: rotate(-6deg);
+  border-radius: 999px;
+  background: var(--color-gold);
+  padding: 7px 16px;
+  font: 700 11px/1.3 var(--font-sans);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-espresso);
+}
+
+/* Cursor-following preview (desktop mouse only; rendered into <body>) */
+.cursor-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+.cursor-preview-card {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  overflow: hidden;
+  border: 2px solid var(--color-espresso);
+  border-radius: 1.25rem;
+  background: var(--color-cream);
+  box-shadow: 6px 6px 0 0 var(--color-espresso);
+}
+.cursor-preview-card img {
+  object-fit: cover;
+  filter: saturate(0.9) contrast(1.05) sepia(0.08);
+}
+
+.photo-credits {
+  margin-top: 14px;
+  font: 400 12px/1.6 var(--font-sans);
+  font-style: normal;
+}
+.photo-credits summary {
+  cursor: pointer;
+  width: fit-content;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-bronze);
+}
+.photo-credits p {
+  margin-top: 8px;
+}
+.photo-credits a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.photo-credits a:hover {
+  color: var(--color-bronze);
 }
 .coffee-grid .menu-block:nth-child(3) {
   grid-column: 2;
@@ -727,11 +868,104 @@ h2 em {
   flex-direction: column;
   background: var(--color-cream);
 }
-.map-wrap iframe {
-  border: 0;
-  width: 100%;
+/* --- Custom map (MapLibre + OpenFreeMap, recolored in VisitMap.tsx) ----- */
+.visit-map {
+  position: relative;
   flex: 1;
-  filter: grayscale(1);
+  min-height: 0;
+  background: var(--color-cream);
+}
+.visit-map .maplibregl-canvas {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.visit-map.is-styled .maplibregl-canvas {
+  opacity: 1;
+}
+.visit-map .maplibregl-ctrl-group {
+  border: 2px solid var(--color-espresso);
+  border-radius: 0.75rem;
+  box-shadow: 3px 3px 0 0 var(--color-espresso);
+  background: var(--color-warm-white);
+  overflow: hidden;
+}
+.visit-map .maplibregl-ctrl-group button + button {
+  border-top: 1px solid var(--border);
+}
+.visit-map .maplibregl-ctrl-attrib {
+  font: 400 10px var(--font-sans);
+  background: color-mix(in srgb, var(--color-warm-white) 85%, transparent);
+}
+.visit-map .maplibregl-cooperative-gesture-screen {
+  font: 500 14px var(--font-sans);
+  background: color-mix(in srgb, var(--color-espresso) 70%, transparent);
+  color: var(--color-warm-white);
+}
+.map-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-espresso);
+}
+.map-pin-card {
+  margin-bottom: 8px;
+  padding: 6px 12px;
+  border: 2px solid var(--color-espresso);
+  border-radius: 999px;
+  background: var(--color-gold);
+  box-shadow: 3px 3px 0 0 var(--color-espresso);
+  font: 500 10px/1.3 var(--font-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+}
+.map-pin-card strong {
+  display: block;
+  font-weight: 700;
+}
+.map-pin-badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 3px solid var(--color-espresso);
+  border-radius: 50%;
+  background: var(--color-warm-white);
+  box-shadow: 3px 3px 0 0 var(--color-espresso);
+  transition: transform 0.25s ease;
+}
+.map-pin:hover .map-pin-badge {
+  transform: translateY(-3px) rotate(-6deg);
+}
+.map-pin-badge .lion-mark {
+  width: 40px;
+  height: 40px;
+}
+.map-pin-pulse {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 3px solid var(--color-gold);
+  animation: map-pulse 2.2s ease-out infinite;
+}
+@keyframes map-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+.map-pin-tip {
+  width: 3px;
+  height: 14px;
+  background: var(--color-espresso);
+  border-radius: 0 0 3px 3px;
 }
 .map-label {
   padding: 20px;
@@ -845,6 +1079,19 @@ h2 em {
 @media (max-width: 767px) {
   .shell {
     width: calc(100% - 40px);
+  }
+  .menu-item {
+    grid-template-columns: 64px 1fr;
+    gap: 16px;
+  }
+  .menu-thumb {
+    border-radius: 0.8rem;
+  }
+  .menu-thumb-clip {
+    border-radius: calc(0.8rem - 2px);
+  }
+  .menu-feature {
+    display: none;
   }
   .header-inner {
     height: 78px;
@@ -990,7 +1237,7 @@ h2 em {
   .item-price {
     font-size: 12px;
   }
-  .menu-block li > p {
+  .menu-item-body > p {
     font-size: 18px;
     max-width: 100%;
   }
@@ -1096,5 +1343,16 @@ h2 em {
   }
   .gallery-window {
     overflow-x: auto;
+  }
+}
+
+/* Coffee tab: keep the vignette near the top and let it ride along the taller column */
+@media (min-width: 768px) {
+  .coffee-grid .menu-vignette {
+    align-self: start;
+    justify-content: flex-start;
+    position: sticky;
+    top: 140px;
+    padding-top: 40px;
   }
 }
