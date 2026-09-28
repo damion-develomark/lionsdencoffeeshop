@@ -1,12 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import {
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useReducedMotion,
-} from "motion/react";
+import { useMotionValueEvent, useScroll } from "motion/react";
 import { Menu, ArrowUpRight } from "lucide-react";
 import {
   Sheet,
@@ -54,21 +49,13 @@ export function Anchor({
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { scrollY } = useScroll();
-  const reduced = useReducedMotion();
   useMotionValueEvent(scrollY, "change", (y) => {
     setScrolled(y > 80);
-    setHidden(y > 300 && y > (scrollY.getPrevious() ?? 0));
   });
   return (
-    <motion.header
-      className={`site-header ${scrolled ? "is-scrolled" : ""}`}
-      animate={{ y: hidden && !open && !reduced ? -110 : 0 }}
-      transition={{ duration: 0.25 }}
-      onFocusCapture={() => setHidden(false)}
-    >
+    <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
       <div className="shell header-inner">
         <Anchor href="#top" className="wordmark">
           <Image
@@ -118,6 +105,6 @@ export function Header() {
           </SheetContent>
         </Sheet>
       </div>
-    </motion.header>
+    </header>
   );
 }
