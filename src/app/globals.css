@@ -1309,7 +1309,7 @@ h2 em {
   /* Latte tint (the hero spill's top colour) over a coffee photo. */
   background:
     linear-gradient(rgb(248 232 196 / 88%), rgb(248 232 196 / 88%)),
-    url("https://images.pexels.com/photos/111159/pexels-photo-111159.jpeg?auto=compress&cs=tinysrgb&w=1920")
+    url("https://images.pexels.com/photos/37034118/pexels-photo-37034118.jpeg?auto=compress&cs=tinysrgb&w=1920")
       center / cover #f8e8c4;
   border-top: 2px solid var(--color-gold-rule);
   padding-block: 64px 32px;
