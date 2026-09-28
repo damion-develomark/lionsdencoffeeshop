@@ -290,6 +290,8 @@ button:focus-visible {
 }
 .hero {
   position: relative;
+  /* Above the next section so the spill's drips can hang over it. */
+  z-index: 1;
   /* The tilted band is wider than the viewport; clip sideways only. */
   overflow-x: clip;
   padding: 128px 0 30px;
@@ -299,12 +301,14 @@ button:focus-visible {
     color-mix(in srgb, var(--color-gold) 10%, var(--color-warm-white))
   );
 }
-/* Spill floods the whole section: a gradient "flood" down to an SVG strip
-   with the wavy edge and drips, which end just above the band. */
+/* Spill floods the whole section, behind the band: a gradient "flood" down
+   to an SVG strip whose wavy edge sits at the section's bottom, so the drips
+   hang over the top of the next section. The strip is 150/1440 of the width
+   tall and its edge never rises above 10/1440, hence the offset. */
 .hero-spill {
   position: absolute;
   z-index: 0;
-  inset: 0 0 100px;
+  inset: 0 0 calc(-140 / 1440 * 100vw);
   display: flex;
   flex-direction: column;
   pointer-events: none;
@@ -337,8 +341,7 @@ button:focus-visible {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr);
   grid-template-areas:
     "title title badge"
-    "copy art stats"
-    "actions art stats";
+    "copy art stats";
   column-gap: 32px;
 }
 .hero-title {
@@ -365,18 +368,24 @@ button:focus-visible {
   font-size: clamp(64px, 12.5vw, 184px);
   white-space: nowrap;
 }
+/* White type on the light spill, outlined in espresso with the site's
+   offset-shadow "sticker" treatment so it stays legible. */
 .hero-word {
   font: 400 1em/0.92 var(--font-headline);
   text-transform: uppercase;
+  color: var(--color-warm-white);
+  -webkit-text-stroke: 0.025em var(--color-espresso);
+  paint-order: stroke fill;
+  text-shadow: 0.03em 0.03em 0 var(--color-espresso);
 }
 .ampersand {
   position: relative;
   z-index: 1;
-  /* The script "&" has wide built-in side bearings; pull the words in. */
-  margin-inline: -0.18em;
-  font: 400 0.9em/0.8 var(--font-script);
+  /* Bold italic serif "&": decorative but still reads as an ampersand. */
+  margin-inline: 0.02em;
+  font: italic 800 0.72em/0.8 var(--font-display);
   color: var(--color-gold);
-  transform: rotate(-8deg) translateY(-0.14em);
+  transform: rotate(-6deg) translateY(-0.08em);
 }
 .hero-badge-wrap {
   grid-area: badge;
@@ -408,17 +417,15 @@ button:focus-visible {
   max-width: 300px;
   color: var(--muted-foreground);
 }
+/* Button with the text link stacked under it, right below the copy. */
 .hero-actions {
-  grid-area: actions;
-  z-index: 2;
-  align-self: end;
   display: flex;
-  align-items: center;
-  gap: 22px;
-  /* Button + link stay on one line, reaching under the drinks if needed. */
-  width: max-content;
-  margin-bottom: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  margin-top: 28px;
 }
+
 .hero-stats {
   grid-area: stats;
   z-index: 2;
@@ -430,6 +437,8 @@ button:focus-visible {
 .hero-stats div {
   display: flex;
   flex-direction: column-reverse;
+  /* Pin numbers to the top so they line up when a label wraps. */
+  justify-content: flex-end;
   gap: 6px;
   padding: 0 20px;
 }
@@ -446,20 +455,6 @@ button:focus-visible {
   max-width: 96px;
   font: 500 10px/1.3 var(--font-sans);
   text-transform: uppercase;
-}
-.hero-checker {
-  position: absolute;
-  right: 0;
-  top: 44%;
-  width: 96px;
-  height: 48px;
-  background: conic-gradient(
-      var(--color-espresso) 25%,
-      transparent 0 50%,
-      var(--color-espresso) 0 75%,
-      transparent 0
-    )
-    0 0 / 24px 24px;
 }
 
 /* Drinks: big and centred, overlapping the bottom of the headline. */
@@ -601,8 +596,7 @@ button:focus-visible {
   position: relative;
   z-index: 3;
   width: 104vw;
-  /* Room for the spill's drips between the buttons and the band. */
-  margin: 110px 0 0 -2vw;
+  margin: 72px 0 0 -2vw;
   padding: 14px 0;
   overflow: hidden;
   background: var(--color-gold);
@@ -660,7 +654,8 @@ h2 em {
   margin-bottom: 12px;
 }
 .menu-section {
-  padding-block: 80px 88px;
+  /* Extra top room for the hero spill's drips (see .hero-spill). */
+  padding-block: calc(40px + 140 / 1440 * 100vw) 88px;
 }
 .menu-tabs {
   width: 100%;
@@ -1262,8 +1257,7 @@ h2 em {
     grid-template-areas:
       "title badge"
       "art art"
-      "copy stats"
-      "actions actions";
+      "copy stats";
     row-gap: 28px;
   }
   .hero-badge-wrap {
@@ -1274,10 +1268,6 @@ h2 em {
     width: min(100%, 600px);
     height: 520px;
     margin-top: -40px;
-  }
-  .hero-actions {
-    gap: 15px;
-    margin-bottom: 0;
   }
   .menu-grid,
   .story-grid,
@@ -1334,9 +1324,10 @@ h2 em {
   .hero {
     padding-top: 100px;
   }
+  /* Single phone column; minmax(0) stops the nowrap headline widening it. */
   .hero-stage {
-    grid-template-columns: 1fr;
-    grid-template-areas: "title" "art" "copy" "actions" "stats";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "title" "art" "copy" "stats";
     row-gap: 24px;
   }
   .hero-title .eyebrow {
@@ -1348,14 +1339,15 @@ h2 em {
     padding-left: 16px;
   }
   .hero-type {
-    font-size: 18.5vw;
+    font-size: 17vw;
   }
-  /* Badge sits over the corner of the drinks; the note is dropped for room. */
+  /* Badge sits in the empty bottom-right corner of the drinks, clear of the
+     glasses; the note is dropped for room. */
   .hero-badge-wrap {
     grid-area: art;
     justify-self: end;
-    width: 36%;
-    margin-top: -12px;
+    align-self: end;
+    width: 32%;
   }
   .art-note {
     display: none;
@@ -1373,17 +1365,17 @@ h2 em {
     font-size: 17px;
     max-width: 320px;
   }
-  .hero-actions {
-    flex-wrap: wrap;
-    gap: 18px;
-    width: auto;
-  }
   .hero-actions .button {
     padding-inline: 20px;
     gap: 10px;
   }
   .hero-stats {
-    justify-self: start;
+    justify-self: stretch;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .hero-stats div {
+    padding: 0 12px;
   }
   .hero-stats div:first-child {
     padding-left: 0;
@@ -1391,14 +1383,8 @@ h2 em {
   .hero-stats dd {
     font-size: 34px;
   }
-  .hero-checker {
-    display: none;
-  }
-  .hero-spill {
-    inset-block-end: 110px;
-  }
   .hero-band {
-    margin-top: 60px;
+    margin-top: 48px;
   }
   .hero-band-group {
     font-size: 30px;
@@ -1424,7 +1410,7 @@ h2 em {
     font-size: 10px;
   }
   .menu-section {
-    padding-block: 50px;
+    padding-block: calc(20px + 140 / 1440 * 100vw) 50px;
   }
   .menu-tabs {
     justify-content: space-between;
@@ -1543,9 +1529,6 @@ h2 em {
 @media (max-width: 360px) {
   .hero-stats div {
     padding: 0 12px;
-  }
-  .hero-actions {
-    gap: 14px;
   }
   .item-line h4 {
     font-size: 10px;

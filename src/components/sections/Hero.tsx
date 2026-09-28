@@ -263,6 +263,14 @@ export function Hero() {
             In the heart of Plantsville, every order is an interaction, not a
             transaction.
           </p>
+          <div className="hero-actions">
+            <Anchor href="#menu" className="button">
+              View the menu <ArrowDown size={16} />
+            </Anchor>
+            <Anchor href="#visit" className="text-link">
+              Find your way here <ArrowUpRight size={17} />
+            </Anchor>
+          </div>
         </div>
 
         <div className="hero-art">
@@ -294,17 +302,6 @@ export function Hero() {
             </div>
           ))}
         </dl>
-
-        <div className="hero-actions hero-intro">
-          <Anchor href="#menu" className="button">
-            View the menu <ArrowDown size={16} />
-          </Anchor>
-          <Anchor href="#visit" className="text-link">
-            Find your way here <ArrowUpRight size={17} />
-          </Anchor>
-        </div>
-
-        <div className="hero-checker" aria-hidden />
       </div>
 
       <div className="hero-band" aria-hidden>
