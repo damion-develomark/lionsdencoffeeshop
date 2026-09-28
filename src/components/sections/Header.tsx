@@ -17,17 +17,20 @@ export function Anchor({
   children,
   className,
   onNavigate,
+  "aria-label": ariaLabel,
 }: {
   href: string;
   children: React.ReactNode;
   className?: string;
   onNavigate?: () => void;
+  "aria-label"?: string;
 }) {
   const lenis = useLenis();
   return (
     <a
       href={href}
       className={className}
+      aria-label={ariaLabel}
       onClick={(event) => {
         if (
           lenis?.current &&

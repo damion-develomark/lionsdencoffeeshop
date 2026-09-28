@@ -1,5 +1,6 @@
 import { Header } from "@/components/sections/Header";
 import { Hero } from "@/components/sections/Hero";
+import { Culture } from "@/components/sections/Culture";
 import { MenuBoard } from "@/components/sections/MenuBoard";
 import { SlowDownBand } from "@/components/sections/SlowDownBand";
 import { Atmosphere } from "@/components/sections/Atmosphere";
@@ -15,6 +16,7 @@ export default function Home() {
       <Header />
       <main id="main">
         <Hero />
+        <Culture />
         <MenuBoard />
         <SlowDownBand />
         <Atmosphere />
