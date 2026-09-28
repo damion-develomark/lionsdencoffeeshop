@@ -261,17 +261,31 @@ button:focus-visible {
 }
 .desktop-nav {
   display: flex;
-  gap: 40px;
+  gap: 6px;
   margin-left: auto;
-  margin-right: 32px;
-  font: 500 11px/1.4 var(--font-sans);
-  text-transform: uppercase;
+  margin-right: 24px;
 }
+.nav-item {
+  position: relative;
+}
+/* Anton caps like the buttons; the label sits above the sliding pill. */
 .desktop-nav a {
-  padding: 14px 0;
+  position: relative;
+  z-index: 1;
+  display: block;
+  padding: 10px 18px 8px;
+  font: 400 17px/1 var(--font-headline);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-espresso);
 }
-.desktop-nav a:hover {
-  color: var(--color-bronze);
+.nav-pill {
+  position: absolute;
+  inset: 0;
+  background: var(--color-gold);
+  border: 2px solid var(--color-espresso);
+  border-radius: 999px;
+  box-shadow: 2px 2px 0 var(--color-espresso);
 }
 .mobile-menu {
   display: none;
@@ -279,30 +293,114 @@ button:focus-visible {
 .icon-button {
   padding: 10px;
 }
+/* Mobile sheet: warm white, with the hero's coffee spill pouring over the
+   top, Anton links with gold number stickers and a sticker button. */
 .mobile-sheet {
-  background: var(--color-espresso);
-  color: var(--color-gold);
-  padding: 52px 28px;
+  overflow: hidden;
+  padding: 0;
+  background: var(--color-warm-white);
+  color: var(--color-espresso);
+  border-left: 2px solid var(--color-espresso);
 }
-.mobile-sheet h2 {
-  color: var(--color-gold);
-  font-size: 30px;
+.sheet-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* Bottom room so the button sits on the coffee, above the drips. */
+  padding: 96px 28px 96px;
 }
-.mobile-sheet p {
-  color: var(--color-warm-white);
+/* The spill floods the whole sheet, wavy edge and drips along the bottom.
+   The strip is wider than the sheet and shifted left so the part with the
+   drips (x 700-1440 of the 1440-wide art) spans the sheet at a size where
+   the drips still read. */
+.sheet-spill {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+.sheet-spill .spill-edge {
+  width: 194.6%;
+  margin-left: -94.6%;
+}
+.sheet-body > :not(.sheet-spill) {
+  position: relative;
+  z-index: 1;
+}
+/* Round gold sticker, like the carousel arrows. */
+.sheet-close {
+  position: absolute !important;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-espresso);
+  border-radius: 50%;
+  background: var(--color-gold);
+  color: var(--color-espresso);
+  box-shadow: 3px 3px 0 var(--color-espresso);
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.sheet-close:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--color-espresso);
+}
+.sheet-head h2 {
+  font: 400 44px/0.95 var(--font-headline);
+  text-transform: uppercase;
+  color: var(--color-espresso);
+}
+.sheet-head p {
+  margin-top: 8px;
+  font: italic 19px/1.3 var(--font-serif);
+  color: var(--color-espresso);
 }
 .mobile-sheet nav {
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  font: 600 32px/1.3 var(--font-display);
-  margin-top: 30px;
+  margin-top: 64px;
 }
-.mobile-sheet nav a:last-child {
-  font: 500 14px var(--font-sans);
+.sheet-link {
   display: flex;
-  gap: 14px;
-  margin-top: 30px;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 2px dotted
+    color-mix(in srgb, var(--color-bronze) 45%, transparent);
+  font: 400 36px/1 var(--font-headline);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.sheet-link:hover {
+  color: var(--color-bronze);
+}
+.sheet-num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding-top: 2px;
+  background: var(--color-gold);
+  border: 2px solid var(--color-espresso);
+  border-radius: 50%;
+  box-shadow: 2px 2px 0 var(--color-espresso);
+  font-size: 14px;
+  letter-spacing: 0;
+  color: var(--color-espresso);
+  rotate: -8deg;
+}
+.sheet-order {
+  align-self: flex-start;
+  margin-top: auto;
 }
 .hero {
   position: relative;
@@ -785,41 +883,120 @@ h2 em {
 .menu-section {
   padding-block: 100px 88px;
 }
-.menu-tabs {
-  width: 100%;
+/* Hero-scale Anton headline; "ritual." gets the gold sticker treatment. */
+.menu-title {
+  font: 400 clamp(56px, 9vw, 128px) / 0.9 var(--font-headline);
+  text-transform: uppercase;
+}
+.menu-title span {
+  display: block;
+}
+.menu-title-pop {
+  width: fit-content;
+  color: var(--color-gold);
+  -webkit-text-stroke: 0.025em var(--color-espresso);
+  paint-order: stroke fill;
+  text-shadow: 0.04em 0.04em 0 var(--color-espresso);
+  transform: rotate(-2deg);
+  transform-origin: left bottom;
+}
+.menu-intro {
+  position: relative;
+}
+/* Hero beans scattered in the space between the headline and the badge. */
+.menu-bean {
+  position: absolute;
+  z-index: -1;
+  height: auto;
+  pointer-events: none;
+}
+.menu-bean--a {
+  left: 56%;
+  top: 22%;
+  width: 34px;
+  rotate: 25deg;
+}
+.menu-bean--b {
+  left: 68%;
+  top: 64%;
+  width: 26px;
+  rotate: -40deg;
+}
+.menu-bean--c {
+  left: 80%;
+  top: 14%;
+  width: 22px;
+  rotate: 75deg;
+}
+.menu-intro-side {
   display: flex;
-  justify-content: start;
-  height: 54px;
-  padding: 0;
-  background: transparent;
-  border-bottom: 1px solid var(--border);
-  border-radius: 0;
-  margin-bottom: 46px;
-  gap: 40px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 22px;
+}
+.menu-badge {
+  width: 140px;
+}
+/* Smaller sticker, so a lighter shadow than the hero badge's. */
+.menu-badge .badge-inner {
+  box-shadow: 4px 4px 0 var(--color-espresso);
+}
+/* Sticker rail: butter-gold track with the espresso border + offset shadow;
+   the gold pill slides under the active tab. */
+.menu-tabs {
+  width: fit-content;
+  height: auto;
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  margin-bottom: 52px;
+  background: color-mix(
+    in srgb,
+    var(--color-gold) 28%,
+    var(--color-warm-white)
+  );
+  border: 2px solid var(--color-espresso);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--color-espresso);
 }
 .menu-tab {
   position: relative;
   flex: none;
-  min-width: 92px;
-  height: 54px;
-  padding: 12px 0;
+  height: auto;
+  padding: 11px 24px 9px;
   border: 0;
-  border-radius: 0;
-  font: 500 12px var(--font-sans);
-  color: var(--muted-foreground);
+  border-radius: 999px;
+  font: 400 17px/1 var(--font-headline);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-bronze);
   box-shadow: none !important;
   background: transparent !important;
+  transition: color 0.15s ease;
 }
-.menu-tab[data-state="active"] {
+.menu-tab:hover {
   color: var(--color-espresso);
 }
-.tab-line {
+/* White label outlined in espresso, like the hero's "SIP & STAY". */
+.menu-tab[data-state="active"] {
+  color: var(--color-warm-white);
+  -webkit-text-stroke: 1px var(--color-espresso);
+  paint-order: stroke fill;
+  text-shadow: 1.5px 1.5px 0 var(--color-espresso);
+}
+/* Label stacks above the sliding pill. */
+.tab-label {
+  position: relative;
+  z-index: 1;
+}
+.tab-pill {
   position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--color-gold-rule);
+  inset: 0;
+  z-index: 0;
+  background: var(--color-gold);
+  border: 2px solid var(--color-espresso);
+  border-radius: 999px;
+  box-shadow: 2px 2px 0 var(--color-espresso);
 }
 .menu-grid {
   display: grid;
@@ -827,46 +1004,100 @@ h2 em {
   gap: 65px 85px;
   min-height: 370px;
 }
+/* Menu-board heading: Anton caps led by a tilted gold number sticker. */
 .menu-block h3 {
-  font: 800 29px/1.2 var(--font-display);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font: 400 38px/1 var(--font-headline);
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
+.block-num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding-top: 2px;
+  background: var(--color-gold);
+  border: 2px solid var(--color-espresso);
+  border-radius: 50%;
+  box-shadow: 3px 3px 0 var(--color-espresso);
+  font-size: 20px;
+  letter-spacing: 0;
+  transform: rotate(-8deg);
+}
 .gold-rule {
-  height: 2px;
+  height: 3px;
   background: var(--color-gold-rule);
   margin: 17px 0 28px;
 }
-.menu-block li + li {
-  margin-top: 26px;
-}
+/* Name ....... [gold price tag] (i) */
 .item-line {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
+  align-items: center;
+  gap: 10px;
 }
 .item-line h4 {
-  font: 600 12px/1.6 var(--font-sans);
+  min-width: 0;
+  font: 400 20px/1.15 var(--font-headline);
+  letter-spacing: 0.03em;
   text-transform: uppercase;
-  transition: transform 0.2s;
+  transition:
+    transform 0.2s,
+    color 0.2s;
+}
+.item-leader {
+  flex: 1;
+  min-width: 18px;
+  align-self: flex-end;
+  margin-bottom: 0.45em;
+  border-bottom: 3px dotted
+    color-mix(in srgb, var(--color-bronze) 45%, transparent);
+}
+.item-price {
+  flex: none;
+  white-space: nowrap;
+  padding: 5px 11px 3px;
+  background: var(--color-gold);
+  border: 2px solid var(--color-espresso);
+  border-radius: 999px;
+  box-shadow: 2px 2px 0 var(--color-espresso);
+  font: 400 16px/1 var(--font-headline);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  transition: transform 0.2s ease;
+}
+.from {
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+/* --- Desktop list: feature photo + rows ------------------------------- */
+/* Desktop shows the list; tablet and phone swap it for the carousel. */
+.menu-carousel {
+  display: none;
+}
+@media (max-width: 1100px) {
+  .menu-list-view {
+    display: none;
+  }
+  .menu-carousel {
+    display: block;
+  }
+}
+.menu-block li + li {
+  margin-top: 26px;
 }
 .menu-block li:hover h4 {
   transform: translateX(4px);
   color: var(--color-bronze);
 }
-.item-price {
-  white-space: nowrap;
-  font: 500 13px/1.6 var(--font-sans);
-  font-variant-numeric: tabular-nums;
-}
-.from {
-  font-size: 10px;
-  color: var(--muted-foreground);
-}
 .price-info {
+  flex: none;
   display: inline-flex;
-  vertical-align: middle;
-  margin-left: 5px;
+  margin-left: -4px;
   padding: 4px;
   color: var(--color-bronze);
   cursor: help;
@@ -878,7 +1109,6 @@ h2 em {
   margin-top: 6px;
   color: var(--muted-foreground);
 }
-/* --- Menu photos ------------------------------------------------------- */
 .menu-item {
   display: grid;
   grid-template-columns: 88px 1fr;
@@ -897,12 +1127,79 @@ h2 em {
   background: var(--color-cream);
   box-shadow: var(--thumb-shadow) var(--thumb-shadow) 0 0 var(--color-espresso);
 }
+.menu-item:hover .menu-photo-img {
+  transform: scale(1.08);
+}
+.menu-item:hover .item-price {
+  transform: rotate(-4deg);
+}
+/* Espresso sticker hung off the bottom of a thumbnail. */
+.pick-tag {
+  position: absolute;
+  left: 50%;
+  bottom: -11px;
+  z-index: 1;
+  translate: -50% 0;
+  rotate: -6deg;
+  padding: 4px 8px 3px;
+  white-space: nowrap;
+  background: var(--color-espresso);
+  color: var(--color-gold);
+  border: 2px solid var(--color-espresso);
+  border-radius: 999px;
+  box-shadow: 2px 2px 0 var(--color-gold);
+  font: 400 11px/1 var(--font-headline);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.menu-feature-parallax {
+  position: absolute;
+  inset: -8% 0;
+}
+
+/* --- Shared photo card ------------------------------------------------ */
+/* Big photo card: espresso sticker frame, leaning a little, straightening
+   on hover. Alternate blocks lean the other way. */
+.menu-feature {
+  position: relative;
+  /* Room for the pill that hangs off the bottom edge. */
+  margin: 0 0 64px;
+  aspect-ratio: 16 / 10;
+  border: 2px solid var(--color-espresso);
+  border-radius: 1.75rem;
+  background: var(--color-cream);
+  box-shadow: 6px 6px 0 0 var(--color-espresso);
+  rotate: -1.5deg;
+  transition: rotate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.menu-block:nth-of-type(even) .menu-feature {
+  rotate: 1.5deg;
+}
+.menu-feature:hover {
+  rotate: 0deg;
+}
 .menu-thumb-clip,
 .menu-feature-frame {
   position: absolute;
   inset: 0;
   overflow: hidden;
   border-radius: calc(1rem - 2px);
+}
+.menu-feature .menu-feature-frame {
+  border-radius: calc(1.75rem - 2px);
+}
+.menu-slides,
+.menu-slide {
+  position: absolute;
+  inset: 0;
+}
+.menu-slide {
+  cursor: grab;
+  /* Let the page still scroll vertically over the swipeable photo. */
+  touch-action: pan-y;
+}
+.menu-slide:active {
+  cursor: grabbing;
 }
 .menu-photo {
   position: absolute;
@@ -920,45 +1217,11 @@ h2 em {
 .menu-photo-img {
   object-fit: cover;
   filter: saturate(0.9) contrast(1.05) sepia(0.08);
+  user-select: none;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.menu-item:hover .menu-photo-img {
-  transform: scale(1.08);
-}
-.menu-item:hover .item-price {
-  color: var(--color-bronze);
-}
-.sample-tag {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  z-index: 1;
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-warm-white) 90%, transparent);
-  font: 600 8px/1.4 var(--font-sans);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-espresso);
-}
-
-/* Feature photo under each block's gold rule (desktop) */
-.menu-feature {
-  position: relative;
-  margin: 0 0 34px;
-  aspect-ratio: 16 / 10;
-  border: 2px solid var(--color-espresso);
-  border-radius: 1.75rem;
-  background: var(--color-cream);
-  box-shadow: 6px 6px 0 0 var(--color-espresso);
-}
-.menu-feature .menu-feature-frame {
-  border-radius: calc(1.75rem - 2px);
-}
-.menu-feature-parallax {
-  position: absolute;
-  inset: -8% 0;
-}
+/* Gold sticker hung off the photo's corner: the item name on desktop,
+   "Signature" / "Staff Pick" in the carousel. */
 .feature-pill {
   position: absolute;
   right: 18px;
@@ -968,6 +1231,167 @@ h2 em {
   padding: 8px 18px;
   font-size: 14px;
   line-height: 1.2;
+}
+.sample-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-warm-white) 90%, transparent);
+  font: 600 8px/1.4 var(--font-sans);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-espresso);
+}
+/* --- Tablet + phone carousel ----------------------------------------- */
+.menu-carousel .menu-feature {
+  margin-bottom: 40px;
+}
+.menu-carousel .item-line h4 {
+  font-size: 26px;
+  line-height: 1.1;
+}
+.menu-carousel .item-price {
+  padding: 6px 13px 4px;
+  box-shadow: 3px 3px 0 var(--color-espresso);
+  font-size: 19px;
+  rotate: -3deg;
+}
+.menu-carousel .from {
+  font-size: 12px;
+}
+.item-desc {
+  margin-top: 10px;
+  font-size: 19px;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+.item-sizes {
+  margin-top: 10px;
+  font: 500 11px/1.6 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-bronze);
+}
+/* All panels stack in one cell; only the active one shows. */
+.carousel-info {
+  display: grid;
+}
+.carousel-panel {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 6px;
+  transition:
+    opacity 0.25s ease,
+    translate 0.25s ease,
+    visibility 0.25s;
+}
+.carousel-panel[data-active="true"] {
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+}
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 26px;
+}
+.carousel-count {
+  font: 400 22px/1 var(--font-headline);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.carousel-count span {
+  color: var(--color-latte);
+}
+.carousel-arrows {
+  display: flex;
+  gap: 12px;
+}
+/* Gold discs that press into their shadow, like the buttons. */
+.carousel-arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-espresso);
+  border-radius: 50%;
+  background: var(--color-gold);
+  color: var(--color-espresso);
+  box-shadow: 3px 3px 0 var(--color-espresso);
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.carousel-arrow:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 var(--color-espresso);
+}
+.carousel-arrow:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--color-espresso);
+}
+/* Bottom row: every item in the category; scrolls sideways when it
+   doesn't fit. Padding leaves room for the thumbs' shadows. */
+.carousel-thumbs {
+  display: flex;
+  gap: 16px;
+  margin: 18px -6px 0;
+  padding: 6px 6px 10px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.carousel-thumbs::-webkit-scrollbar {
+  display: none;
+}
+.carousel-thumb {
+  flex: none;
+  width: 104px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+  scroll-snap-align: start;
+  cursor: pointer;
+}
+.carousel-thumb-img {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  border: 2px solid var(--color-espresso);
+  border-radius: 1rem;
+  background: var(--color-cream);
+  box-shadow: 3px 3px 0 var(--color-espresso);
+  opacity: 0.6;
+  transition:
+    opacity 0.2s ease,
+    translate 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.carousel-thumb:hover .carousel-thumb-img {
+  opacity: 0.9;
+}
+/* Active thumb: full strength, lifted, with a gold sticker shadow. */
+.carousel-thumb[data-active="true"] .carousel-thumb-img {
+  opacity: 1;
+  translate: 0 -3px;
+  box-shadow: 4px 4px 0 var(--color-gold);
+}
+.carousel-thumb-name {
+  font: 500 11px/1.3 var(--font-sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.carousel-thumb[data-active="true"] .carousel-thumb-name {
+  color: var(--color-espresso);
+  font-weight: 600;
 }
 
 .photo-credits {
@@ -1466,31 +1890,28 @@ h2 em {
     height: 520px;
     margin-top: -40px;
   }
-  .menu-grid,
   .story-grid,
   .visit-section {
     column-gap: 45px;
   }
-  .menu-block h3 {
-    font-size: 25px;
+  /* Tablet: one carousel per row, full width. */
+  .menu-grid {
+    grid-template-columns: 1fr;
+    gap: 64px;
+    min-height: 0;
+  }
+  .coffee-grid .menu-block:nth-child(3) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .menu-vignette {
+    grid-column: auto;
+    grid-row: auto;
   }
 }
 @media (max-width: 767px) {
   .shell {
     width: calc(100% - 40px);
-  }
-  .menu-item {
-    grid-template-columns: 64px 1fr;
-    gap: 16px;
-  }
-  .menu-thumb {
-    border-radius: 0.8rem;
-  }
-  .menu-thumb-clip {
-    border-radius: calc(0.8rem - 2px);
-  }
-  .menu-feature {
-    display: none;
   }
   .header-inner {
     height: 64px;
@@ -1603,6 +2024,23 @@ h2 em {
   .section-top .text-link {
     font-size: 10px;
   }
+  .menu-title {
+    font-size: 16vw;
+  }
+  /* Link left, badge right, on one row under the headline. */
+  .menu-intro-side {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+  }
+  .menu-badge {
+    width: 96px;
+  }
+  /* No free space around the phone headline. */
+  .menu-bean {
+    display: none;
+  }
   .menu-section {
     padding-block: 60px 50px;
   }
@@ -1640,44 +2078,53 @@ h2 em {
     font-size: 16px;
   }
   .menu-tabs {
-    justify-content: space-between;
-    gap: 0;
-    margin-bottom: 32px;
+    width: 100%;
+    gap: 2px;
+    padding: 4px;
+    margin-bottom: 36px;
   }
   .menu-tab {
+    flex: 1;
     min-width: 0;
-    padding: 10px 7px;
-    font-size: 11px;
+    padding: 10px 4px 8px;
+    font-size: 14px;
+    letter-spacing: 0.03em;
   }
   .menu-grid {
-    grid-template-columns: 1fr;
-    gap: 38px;
-    min-height: 0;
-  }
-  .coffee-grid .menu-block:nth-child(3) {
-    grid-column: auto;
-    grid-row: auto;
+    gap: 52px;
   }
   .menu-vignette {
-    grid-column: auto;
-    grid-row: auto;
     margin-top: 6px;
   }
   .menu-block h3 {
-    font-size: 27px;
+    font-size: 30px;
   }
-  .item-line h4 {
-    font-size: 11px;
+  .menu-carousel .menu-feature {
+    aspect-ratio: 4 / 3;
+    border-radius: 1.25rem;
+    margin-bottom: 32px;
   }
-  .item-price {
-    font-size: 12px;
+  .menu-feature .menu-feature-frame {
+    border-radius: calc(1.25rem - 2px);
   }
-  .menu-item-body > p {
+  .menu-carousel .item-line h4 {
+    font-size: 21px;
+  }
+  .menu-carousel .item-price {
+    padding: 5px 10px 3px;
+    font-size: 16px;
+  }
+  .item-desc {
     font-size: 18px;
-    max-width: 100%;
   }
-  .item-line {
-    gap: 10px;
+  .carousel-thumb {
+    width: 84px;
+  }
+  .carousel-thumb-img {
+    border-radius: 0.8rem;
+  }
+  .carousel-thumb-img .menu-thumb-clip {
+    border-radius: calc(0.8rem - 2px);
   }
   .menu-footnote {
     font-size: 14px;
@@ -1750,8 +2197,8 @@ h2 em {
   .hero-stats div {
     padding: 0 12px;
   }
-  .item-line h4 {
-    font-size: 10px;
+  .menu-carousel .item-line h4 {
+    font-size: 18px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1768,7 +2215,7 @@ h2 em {
 }
 
 /* Coffee tab: keep the vignette near the top and let it ride along the taller column */
-@media (min-width: 768px) {
+@media (min-width: 1101px) {
   .coffee-grid .menu-vignette {
     align-self: start;
     justify-content: flex-start;

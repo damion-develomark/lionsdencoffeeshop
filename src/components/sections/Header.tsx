@@ -1,16 +1,35 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
-import { useMotionValueEvent, useScroll } from "motion/react";
-import { Menu, ArrowUpRight } from "lucide-react";
+import { useRef, useState } from "react";
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+} from "motion/react";
+import { Menu, ArrowUpRight, X } from "lucide-react";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetTitle,
   SheetTrigger,
   SheetDescription,
 } from "@/components/ui/sheet";
 import { useLenis } from "@/components/providers/smooth-scroll";
+import { CoffeeSpill, SPILL_SHEET_ALT } from "@/components/brand/CoffeeSpill";
+import { gsap, useGSAP } from "@/lib/gsap";
+
+const NAV = [
+  { label: "Menu", href: "#menu" },
+  { label: "Our Story", href: "#about" },
+  { label: "Visit", href: "#visit" },
+];
+const MOBILE_NAV = [
+  ...NAV.slice(0, 2),
+  { label: "Gallery", href: "#gallery" },
+  NAV[2],
+];
 
 export function Anchor({
   href,
@@ -50,9 +69,100 @@ export function Anchor({
   );
 }
 
+// Mobile sheet body. It mounts each time the sheet opens, so the hero's
+// spill pours in again: flood slides down, drips run, droplets splash, then
+// the edge keeps gently shifting. The links follow the pour.
+function MobileSheetBody({ onNavigate }: { onNavigate: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useGSAP(
+    () => {
+      const media = gsap.matchMedia();
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap
+          .timeline({ defaults: { ease: "power3.out" } })
+          .from(
+            ".coffee-spill",
+            { yPercent: -100, duration: 0.9, ease: "power2.inOut" },
+            0.1,
+          )
+          .from(
+            ".spill-drip",
+            {
+              scaleY: 0,
+              transformOrigin: "50% 0%",
+              duration: 0.8,
+              stagger: 0.1,
+              ease: "power1.in",
+            },
+            0.8,
+          )
+          .from(
+            ".spill-drop",
+            {
+              scale: 0,
+              transformOrigin: "50% 50%",
+              duration: 0.4,
+              stagger: 0.05,
+              ease: "back.out(3)",
+            },
+            0.9,
+          )
+          .from(
+            ".sheet-reveal",
+            { y: 24, opacity: 0, duration: 0.6, stagger: 0.07 },
+            0.35,
+          );
+        gsap.to(".spill-sheet", {
+          morphSVG: SPILL_SHEET_ALT,
+          duration: 6,
+          delay: 1.2,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      });
+      return () => media.revert();
+    },
+    { scope: ref },
+  );
+
+  return (
+    <div className="sheet-body" ref={ref}>
+      <CoffeeSpill className="sheet-spill" />
+      <SheetClose className="sheet-close" aria-label="Close navigation">
+        <X size={20} />
+      </SheetClose>
+      <div className="sheet-head sheet-reveal">
+        <SheetTitle>Lions Den</SheetTitle>
+        <SheetDescription>Coffee, food, and good company.</SheetDescription>
+      </div>
+      <nav aria-label="Mobile navigation">
+        {MOBILE_NAV.map(({ label, href }, i) => (
+          <Anchor
+            key={label}
+            href={href}
+            onNavigate={onNavigate}
+            className="sheet-link sheet-reveal"
+          >
+            <span className="sheet-num" aria-hidden>
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            {label}
+          </Anchor>
+        ))}
+      </nav>
+      <a className="button sheet-order sheet-reveal" href="tel:+18604262809">
+        Call to order <ArrowUpRight size={16} />
+      </a>
+    </div>
+  );
+}
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const reduced = useReducedMotion();
   const { scrollY } = useScroll();
   useMotionValueEvent(scrollY, "change", (y) => {
     setScrolled(y > 80);
@@ -72,10 +182,34 @@ export function Header() {
             LIONS DEN<small>Coffee Shop</small>
           </span>
         </Anchor>
-        <nav className="desktop-nav" aria-label="Main navigation">
-          <Anchor href="#menu">Menu</Anchor>
-          <Anchor href="#about">Our Story</Anchor>
-          <Anchor href="#visit">Visit</Anchor>
+        {/* A gold sticker pill slides to whichever link is hovered or focused. */}
+        <nav
+          className="desktop-nav"
+          aria-label="Main navigation"
+          onMouseLeave={() => setHovered(null)}
+          onBlur={() => setHovered(null)}
+        >
+          {NAV.map(({ label, href }) => (
+            <span
+              key={label}
+              className="nav-item"
+              onMouseEnter={() => setHovered(label)}
+              onFocus={() => setHovered(label)}
+            >
+              <Anchor href={href}>{label}</Anchor>
+              {hovered === label && (
+                <motion.span
+                  className="nav-pill"
+                  layoutId="nav-pill"
+                  transition={
+                    reduced
+                      ? { duration: 0 }
+                      : { type: "spring", stiffness: 420, damping: 32 }
+                  }
+                />
+              )}
+            </span>
+          ))}
         </nav>
         {/* TODO: replace phone ordering with the client's verified Toast URL. */}
         <a className="button header-order" href="tel:+18604262809">
@@ -88,23 +222,8 @@ export function Header() {
           >
             <Menu />
           </SheetTrigger>
-          <SheetContent className="mobile-sheet">
-            <SheetTitle>Lions Den</SheetTitle>
-            <SheetDescription>Coffee, food, and good company.</SheetDescription>
-            <nav aria-label="Mobile navigation">
-              {["Menu", "About", "Gallery", "Visit"].map((label) => (
-                <Anchor
-                  key={label}
-                  href={`#${label.toLowerCase()}`}
-                  onNavigate={() => setOpen(false)}
-                >
-                  {label}
-                </Anchor>
-              ))}
-              <a href="tel:+18604262809">
-                Call to order <ArrowUpRight />
-              </a>
-            </nav>
+          <SheetContent className="mobile-sheet" showCloseButton={false}>
+            <MobileSheetBody onNavigate={() => setOpen(false)} />
           </SheetContent>
         </Sheet>
       </div>

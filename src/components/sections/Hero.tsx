@@ -1,10 +1,10 @@
 "use client";
-import { Fragment, useId, useRef } from "react";
+import { Fragment, useRef } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
-import { LionMark } from "@/components/brand/LionMark";
+import { RingBadge } from "@/components/brand/RingBadge";
 import { addLionReveal } from "@/components/brand/lionReveal";
 import {
   CoffeeBean,
@@ -51,7 +51,6 @@ const BAND_WORDS = [
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
-  const ringId = useId().replace(/[^a-zA-Z0-9_-]/g, "") + "-ring";
   const reduced = useReducedMotion();
   useGSAP(
     () => {
@@ -202,22 +201,7 @@ export function Hero() {
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             whileHover={reduced ? {} : { rotate: 4 }}
           >
-            <div className="badge-inner">
-              <svg className="badge-ring" viewBox="0 0 200 200" aria-hidden>
-                <defs>
-                  <path
-                    id={ringId}
-                    d="M100 100m-78 0a78 78 0 1 1 156 0a78 78 0 1 1-156 0"
-                  />
-                </defs>
-                <text>
-                  <textPath href={`#${ringId}`} textLength={486}>
-                    Lions Den · Coffee Shop · Est. 2020 ·
-                  </textPath>
-                </text>
-              </svg>
-              <LionMark animated className="badge-lion" />
-            </div>
+            <RingBadge animated text="Lions Den · Coffee Shop · Est. 2020 ·" />
           </motion.div>
           <p className="art-note hero-intro">Good coffee. Better company.</p>
         </div>

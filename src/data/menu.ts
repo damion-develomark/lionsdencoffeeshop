@@ -19,6 +19,8 @@ type BaseMenuItem = {
   description: string;
   sizes?: Record<string, number>;
   note?: string;
+  /** Sticker hung off the item's thumbnail */
+  pick?: "Signature" | "Staff Pick";
 };
 
 export type MenuItem = BaseMenuItem & { slug: string; image: MenuImage };
@@ -41,6 +43,7 @@ const baseMenu: Record<string, BaseMenuGroup[]> = {
           description:
             "Caramel, chocolate cookie, and espresso: a house favorite.",
           sizes: sizes(6.15, 6.89, 7.99),
+          pick: "Signature",
         },
         {
           name: "Nutella Latte",
@@ -87,6 +90,7 @@ const baseMenu: Record<string, BaseMenuGroup[]> = {
           price: 4.35,
           description: "Our Lions Blend, cold brewed for your daily ritual.",
           sizes: sizes(4.35, 4.99, 5.75),
+          pick: "Staff Pick",
         },
         {
           name: "Hot Black Velvet",
