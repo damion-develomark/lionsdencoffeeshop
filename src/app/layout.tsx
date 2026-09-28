@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import "./globals.css";
 
-// Google Fonts: Playfair Display (display), Crimson Pro (body),
-// Poppins (labels/UI), Pinyon Script (accent). Font tokens live in globals.css.
+// Google Fonts: Anton (bold headlines/buttons), Playfair Display (display),
+// Crimson Pro (body), Poppins (labels/UI), Pinyon Script (accent).
+// Font tokens live in globals.css.
 const GOOGLE_FONTS_URL =
-  "https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300..900;1,300..900&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap";
+  "https://fonts.googleapis.com/css2?family=Anton&family=Crimson+Pro:ital,wght@0,300..900;1,300..900&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.lionsdencoffeeshop.com"),
