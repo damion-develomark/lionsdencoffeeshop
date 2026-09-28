@@ -4,7 +4,11 @@ const nextConfig: NextConfig = {
   images: {
     // Menu photos are served from these CDNs (see src/data/menu.ts)
     remotePatterns: [
-      { protocol: "https", hostname: "images.pexels.com", pathname: "/photos/**" },
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+        pathname: "/photos/**",
+      },
       { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
     ],
   },

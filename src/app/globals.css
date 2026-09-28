@@ -341,8 +341,11 @@ button:focus-visible {
   padding: 22px 0 40px;
 }
 .hero-art .lion-mark {
+  display: block;
   width: 100%;
+  max-width: 420px;
   height: auto;
+  margin: 18px auto 0;
 }
 .art-note {
   text-align: right;
@@ -375,38 +378,12 @@ button:focus-visible {
   gap: 12px;
   font: italic 16px var(--font-serif);
 }
-.lion-mark .ink {
-  fill: var(--color-espresso);
-}
-.lion-mark .cream {
-  fill: var(--color-warm-white);
-}
 .lion-mark .gold {
   fill: var(--color-gold);
 }
-.lion-mark .none {
-  fill: none;
-}
-.lion-mark .stroke-ink {
-  stroke: var(--color-espresso);
-}
-.lion-mark .stroke-cream {
-  stroke: var(--color-warm-white);
-}
-.lion-mark .stroke-gold {
-  stroke: var(--color-gold);
-}
-.lion-mark .round {
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.lion-head [data-part="tail"],
-.lion-head [data-part="body"],
-.lion-head [data-part="cup"],
-.lion-head [data-part="paws"],
-.lion-head [data-part="steam"],
-.lion-head [data-part="beans-and-spill"] {
-  display: none;
+/* Entrance layers; the hero timeline swaps these in, everyone else sees .lion-static. */
+.lion-mark .lion-reveal {
+  visibility: hidden;
 }
 .section-top {
   display: flex;
@@ -616,29 +593,6 @@ h2 em {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--color-espresso);
-}
-
-/* Cursor-following preview (desktop mouse only; rendered into <body>) */
-.cursor-preview {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 60;
-  pointer-events: none;
-}
-.cursor-preview-card {
-  position: relative;
-  width: 220px;
-  height: 220px;
-  overflow: hidden;
-  border: 2px solid var(--color-espresso);
-  border-radius: 1.25rem;
-  background: var(--color-cream);
-  box-shadow: 6px 6px 0 0 var(--color-espresso);
-}
-.cursor-preview-card img {
-  object-fit: cover;
-  filter: saturate(0.9) contrast(1.05) sepia(0.08);
 }
 
 .photo-credits {

@@ -3,7 +3,11 @@ import { useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
-import { LionMark } from "@/components/brand/LionMark";
+import {
+  LionMark,
+  LION_EYE_ORIGIN,
+  LION_HEAD_ORIGIN,
+} from "@/components/brand/LionMark";
 import { Anchor } from "./Header";
 
 export function Hero() {
@@ -18,11 +22,39 @@ export function Hero() {
           mask: "chars",
         });
         const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-        tl.from("[data-part='cup'] .none", {
-          drawSVG: "0%",
-          duration: 1.2,
-          stagger: 0.06,
-        })
+        // Lion: shield paints on, mane flames fill in one by one, then the eye opens.
+        // The layered pieces are swapped back for the single static mark at the end.
+        tl.set(".hero-art .lion-static", { autoAlpha: 0 }, 0)
+          .set(".hero-art .lion-reveal", { autoAlpha: 1 }, 0)
+          .from(
+            ".hero-art .lion-shield-stroke",
+            { drawSVG: "0%", duration: 1.3, ease: "power2.inOut" },
+            0.1,
+          )
+          .from(
+            ".hero-art .lion-flame",
+            {
+              opacity: 0,
+              scale: 0.86,
+              svgOrigin: LION_HEAD_ORIGIN,
+              duration: 0.6,
+              stagger: 0.1,
+              ease: "back.out(1.6)",
+            },
+            0.8,
+          )
+          .from(
+            ".hero-art .lion-eye",
+            {
+              scaleY: 0,
+              svgOrigin: LION_EYE_ORIGIN,
+              duration: 0.4,
+              ease: "back.out(3)",
+            },
+            ">-0.15",
+          )
+          .set(".hero-art .lion-static", { autoAlpha: 1 })
+          .set(".hero-art .lion-reveal", { autoAlpha: 0 })
           .from(
             split.chars,
             { yPercent: 110, duration: 1, stagger: 0.045 },
@@ -32,11 +64,6 @@ export function Hero() {
             ".ampersand",
             { clipPath: "inset(0 100% 0 0)", rotate: -14, duration: 0.9 },
             0.55,
-          )
-          .from(
-            "[data-part='mane'], [data-part='gold-mane-accents'], [data-part='face'], [data-part='ears']",
-            { y: 35, opacity: 0, duration: 0.9 },
-            0.3,
           )
           .from(
             ".hero-intro",
@@ -52,14 +79,6 @@ export function Hero() {
             end: "bottom top",
             scrub: true,
           },
-        });
-        gsap.to("[data-part='tail']", {
-          rotate: 5,
-          transformOrigin: "90% 90%",
-          duration: 3,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
         });
         return () => split.revert();
       });
@@ -110,7 +129,7 @@ export function Hero() {
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           whileHover={reduced ? {} : { rotate: 2 }}
         >
-          <LionMark />
+          <LionMark animated />
         </motion.div>
         <div className="art-caption">
           <span>ITALIAN ROOTS</span>

@@ -31,7 +31,7 @@ export function SiteFooter() {
           className="footer-brand"
           aria-label="Lions Den, back to top"
         >
-          <LionMark variant="head" decorative />
+          <LionMark decorative />
           <span>LIONS DEN</span>
         </a>
         <nav aria-label="Social media">

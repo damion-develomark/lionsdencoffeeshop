@@ -1,13 +1,10 @@
 "use client";
-import { useRef, useState, useSyncExternalStore } from "react";
-import { createPortal } from "react-dom";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import {
   AnimatePresence,
   motion,
-  useMotionValue,
   useReducedMotion,
-  useSpring,
   type Variants,
 } from "motion/react";
 import { ArrowUpRight, Info } from "lucide-react";
@@ -19,7 +16,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
-import { menu, type MenuGroup, type MenuImage } from "@/data/menu";
+import { menu, type MenuGroup } from "@/data/menu";
 import { EspressoSaucer } from "@/components/brand/EspressoSaucer";
 
 const SHOW_PLACEHOLDER_TAGS = process.env.NODE_ENV !== "production";
@@ -39,22 +36,7 @@ const thumbVariants: Variants = {
 };
 const hoverSpring = { type: "spring", stiffness: 300, damping: 22 } as const;
 
-const FINE_POINTER = "(hover: hover) and (pointer: fine)";
-function subscribeFinePointer(onChange: () => void) {
-  const query = window.matchMedia(FINE_POINTER);
-  query.addEventListener("change", onChange);
-  return () => query.removeEventListener("change", onChange);
-}
-
-type PreviewHandler = (image: MenuImage | null) => void;
-
-function MenuBlock({
-  group,
-  onPreview,
-}: {
-  group: MenuGroup;
-  onPreview: PreviewHandler;
-}) {
+function MenuBlock({ group }: { group: MenuGroup }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const feature = group.items[0];
@@ -144,10 +126,6 @@ function MenuBlock({
             variants={reduced ? undefined : itemVariants}
             initial={reduced ? false : undefined}
             whileHover="hover"
-            onPointerEnter={(e) => {
-              if (e.pointerType === "mouse") onPreview(item.image);
-            }}
-            onPointerLeave={() => onPreview(null)}
           >
             <motion.div
               className="menu-thumb"
@@ -210,57 +188,14 @@ function MenuBlock({
   );
 }
 
-/** Larger photo that follows the cursor over menu items (desktop mouse only). */
-function CursorPreview({
-  image,
-  x,
-  y,
-}: {
-  image: MenuImage | null;
-  x: ReturnType<typeof useSpring>;
-  y: ReturnType<typeof useSpring>;
-}) {
-  // Only rendered on the client (after the pointer check), so document exists.
-  return createPortal(
-    <motion.div className="cursor-preview" style={{ x, y }} aria-hidden>
-      <AnimatePresence>
-        {image && (
-          <motion.div
-            key={image.src}
-            className="cursor-preview-card"
-            initial={{ opacity: 0, scale: 0.85, rotate: -8 }}
-            animate={{ opacity: 1, scale: 1, rotate: -4 }}
-            exit={{ opacity: 0, scale: 0.9, rotate: -6 }}
-            transition={{ type: "spring", stiffness: 320, damping: 26 }}
-          >
-            <Image src={image.src} alt="" fill sizes="220px" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>,
-    document.body,
-  );
-}
-
 export function MenuBoard() {
   const [tab, setTab] = useState("Coffee");
-  const [preview, setPreview] = useState<MenuImage | null>(null);
-  const canPreview = useSyncExternalStore(
-    subscribeFinePointer,
-    () => window.matchMedia(FINE_POINTER).matches,
-    () => false,
-  );
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const previewX = useSpring(mouseX, { stiffness: 350, damping: 30 });
-  const previewY = useSpring(mouseY, { stiffness: 350, damping: 30 });
-
-  const showPreview = canPreview && !reduced;
-  const handlePreview: PreviewHandler = (image) =>
-    setPreview(showPreview ? image : null);
+  const allItems = Object.values(menu).flatMap((groups) =>
+    groups.flatMap((g) => g.items),
+  );
 
   useGSAP(
     () => {
@@ -278,21 +213,12 @@ export function MenuBoard() {
     { scope: ref },
   );
 
-  const allItems = Object.values(menu).flatMap((groups) =>
-    groups.flatMap((g) => g.items),
-  );
-
   return (
     <section
       id="menu"
       ref={ref}
       className="menu-section shell"
       aria-labelledby="menu-title"
-      onPointerMove={(e) => {
-        if (!showPreview) return;
-        mouseX.set(e.clientX + 24);
-        mouseY.set(e.clientY + 24);
-      }}
     >
       <div className="section-top menu-intro">
         <div>
@@ -309,13 +235,7 @@ export function MenuBoard() {
         </a>
       </div>
       <TooltipProvider>
-        <Tabs
-          value={tab}
-          onValueChange={(value) => {
-            setPreview(null);
-            setTab(value);
-          }}
-        >
+        <Tabs value={tab} onValueChange={setTab}>
           <TabsList className="menu-tabs" aria-label="Menu categories">
             {Object.keys(menu).map((name) => (
               <TabsTrigger key={name} value={name} className="menu-tab">
@@ -345,11 +265,7 @@ export function MenuBoard() {
                 onAnimationComplete={() => ScrollTrigger.refresh()}
               >
                 {menu[tab].map((group) => (
-                  <MenuBlock
-                    key={group.title}
-                    group={group}
-                    onPreview={handlePreview}
-                  />
+                  <MenuBlock key={group.title} group={group} />
                 ))}
                 {tab === "Coffee" && (
                   <div className="menu-vignette">
@@ -399,9 +315,6 @@ export function MenuBoard() {
           </p>
         </details>
       </div>
-      {showPreview && (
-        <CursorPreview image={preview} x={previewX} y={previewY} />
-      )}
     </section>
   );
 }

@@ -262,33 +262,155 @@ const unsplash = (photoId: string, pageId: string) => ({
 });
 
 const photos: Record<string, MenuImage> = {
-  "caramel-biscotti-latte": { alt: "Latte with foam art beside a biscotti on a wicker table", credit: "Pexels", ...pexels(34848145, "latte-art-and-biscotti-on-a-wicker-table-outdoors") },
-  "nutella-latte": { alt: "Creamy coffee topped with foam and scattered hazelnuts", credit: "Pexels", ...pexels(143645, "flat-lay-photography-of-dessert-inside-of-glass-cup") },
-  "honey-bee-cortado": { alt: "Cortado with latte art in a small green ceramic cup", credit: "Pexels", ...pexels(14704662, "a-cortado-drink-with-latte-art-on-green-ceramic-cup") },
-  espresso: { alt: "Close-up of a fresh shot of espresso with golden crema", credit: "Pexels", ...pexels(9050518, "close-up-of-a-shot-of-espresso") },
-  "italian-cappuccino": { alt: "Cappuccino with latte art in a cup and saucer at a cafe", credit: "Pexels", ...pexels(30707443, "elegant-cappuccino-with-latte-art-in-a-cozy-cafe") },
-  ameridomo: { alt: "Hot coffee in a red ceramic mug on a wooden table", credit: "Pexels", ...pexels(36179783, "red-ceramic-mug-with-hot-coffee-on-wooden-table") },
-  "lions-blend-cold-brew": { alt: "Cold brew coffee over ice in a mason jar", credit: "Unsplash", photographer: "Nadia Valko", ...unsplash("1759259639356-6eee63241869", "WCmMU38zg1c") },
-  "hot-black-velvet": { alt: "Cup of black coffee in soft light", credit: "Pexels", ...pexels(1233528, "selective-focus-photography-of-a-cup-of-black-coffee") },
-  "brown-sugar-shaken-espresso": { alt: "Frothy iced espresso drink in a glass with coffee beans", credit: "Pexels", ...pexels(4869336, "creamy-coffee-drink-in-a-drinking-glass") },
-  "matcha-latte": { alt: "Matcha latte with creamy foam art", credit: "Unsplash", photographer: "Lee Milo", ...unsplash("1768203630324-4a456ef7148f", "3MiakfkKOLc") },
-  "chai-latte": { alt: "Warm spiced latte in a cup", credit: "Unsplash", photographer: "Toa Heftiba", ...unsplash("1481455473976-c280ae7c10f9", "1CAFw4Yz_4w"), placeholder: true },
-  "london-fog": { alt: "Creamy tea latte in a white mug", credit: "Pexels", ...pexels(2262832, "white-coffee-mug"), placeholder: true },
-  refreshers: { alt: "Iced strawberry drink in a glass with fresh strawberries", credit: "Pexels", ...pexels(17648333, "a-strawberry-drink-in-a-glass") },
-  frappes: { alt: "Blended coffee drink topped with whipped cream and chocolate", credit: "Unsplash", photographer: "Circle Digital Marketing Agency", ...unsplash("1718267050202-9b1b6bfb8545", "OeG0_YsoFgk") },
-  smoothies: { alt: "Strawberry smoothie in a glass jar", credit: "Pexels", ...pexels(775032, "strawberry-smoothie-on-glass-jar") },
-  "the-carnivore": { alt: "Bacon, egg, and cheese breakfast sandwich on an English muffin", credit: "Pexels", ...pexels(6529815, "hamburger-sandwich-with-bacon-and-egg") },
-  "the-inferno": { alt: "Breakfast sandwich with egg, cheese, and bacon beside a dip", credit: "Pexels", ...pexels(12261092, "a-sandwich-and-dip-on-a-ceramic-plate"), placeholder: true },
-  "southern-sunrise": { alt: "Crispy chicken sandwich topped with a fried egg", credit: "Pexels", ...pexels(31176105, "delicious-chicken-sandwich-with-fried-egg") },
-  "lox-bagel": { alt: "Smoked salmon bagels served with coffee and orange juice", credit: "Unsplash", photographer: "Leonardo Ziaja", ...unsplash("1774988552970-dea71ae90f5a", "D5Zlml6vxyc") },
-  "the-california": { alt: "Toast topped with egg and fresh vegetables", credit: "Unsplash", photographer: "David B Townsend", ...unsplash("1613769049987-b31b641f25b1", "IQSDSFO9UuI") },
-  "deluxe-yogurt-parfait": { alt: "Yogurt parfaits layered with strawberries and granola in jars", credit: "Unsplash", photographer: "Monika Grabkowska", ...unsplash("1654584240523-6b8d3f6c33b4", "6O_sZNv_7lA") },
-  "chicken-and-pesto": { alt: "Grilled sandwich with pesto, mozzarella, tomato, and greens", credit: "Pexels", ...pexels(33755326, "gourmet-sandwich-with-fresh-greens-and-pesto"), placeholder: true },
-  "vodka-parmigiana": { alt: "Crispy breaded chicken parmesan with tomato sauce", credit: "Pexels", ...pexels(38902135, "close-up-of-chicken-parmesan-on-blue-plate"), placeholder: true },
-  "chipotle-club": { alt: "Stacked club sandwich served with fries", credit: "Pexels", ...pexels(12469931, "club-sandwich-with-bowl-of-fries") },
-  "caprese-panini": { alt: "Caprese sandwich with mozzarella, tomato, and basil on a board", credit: "Pexels", ...pexels(30301906, "fresh-caprese-sandwich-on-cutting-board") },
-  "smoked-salmon-avocado-toast": { alt: "Smoked salmon toast served with coffee", credit: "Unsplash", photographer: "Konstantinos Papadopoulos", ...unsplash("1771698253819-9569b1739aea", "lvAv2uT65cg") },
-  "classic-avocado-toast": { alt: "Toast spread with smashed avocado", credit: "Unsplash", photographer: "Caroline Green", ...unsplash("1631311915775-e8f4250a7d4e", "C4nT6Ulm0ao") },
+  "caramel-biscotti-latte": {
+    alt: "Latte with foam art beside a biscotti on a wicker table",
+    credit: "Pexels",
+    ...pexels(34848145, "latte-art-and-biscotti-on-a-wicker-table-outdoors"),
+  },
+  "nutella-latte": {
+    alt: "Creamy coffee topped with foam and scattered hazelnuts",
+    credit: "Pexels",
+    ...pexels(143645, "flat-lay-photography-of-dessert-inside-of-glass-cup"),
+  },
+  "honey-bee-cortado": {
+    alt: "Cortado with latte art in a small green ceramic cup",
+    credit: "Pexels",
+    ...pexels(14704662, "a-cortado-drink-with-latte-art-on-green-ceramic-cup"),
+  },
+  espresso: {
+    alt: "Close-up of a fresh shot of espresso with golden crema",
+    credit: "Pexels",
+    ...pexels(9050518, "close-up-of-a-shot-of-espresso"),
+  },
+  "italian-cappuccino": {
+    alt: "Cappuccino with latte art in a cup and saucer at a cafe",
+    credit: "Pexels",
+    ...pexels(30707443, "elegant-cappuccino-with-latte-art-in-a-cozy-cafe"),
+  },
+  ameridomo: {
+    alt: "Hot coffee in a red ceramic mug on a wooden table",
+    credit: "Pexels",
+    ...pexels(36179783, "red-ceramic-mug-with-hot-coffee-on-wooden-table"),
+  },
+  "lions-blend-cold-brew": {
+    alt: "Cold brew coffee over ice in a mason jar",
+    credit: "Unsplash",
+    photographer: "Nadia Valko",
+    ...unsplash("1759259639356-6eee63241869", "WCmMU38zg1c"),
+  },
+  "hot-black-velvet": {
+    alt: "Cup of black coffee in soft light",
+    credit: "Pexels",
+    ...pexels(1233528, "selective-focus-photography-of-a-cup-of-black-coffee"),
+  },
+  "brown-sugar-shaken-espresso": {
+    alt: "Frothy iced espresso drink in a glass with coffee beans",
+    credit: "Pexels",
+    ...pexels(4869336, "creamy-coffee-drink-in-a-drinking-glass"),
+  },
+  "matcha-latte": {
+    alt: "Matcha latte with creamy foam art",
+    credit: "Unsplash",
+    photographer: "Lee Milo",
+    ...unsplash("1768203630324-4a456ef7148f", "3MiakfkKOLc"),
+  },
+  "chai-latte": {
+    alt: "Warm spiced latte in a cup",
+    credit: "Unsplash",
+    photographer: "Toa Heftiba",
+    ...unsplash("1481455473976-c280ae7c10f9", "1CAFw4Yz_4w"),
+    placeholder: true,
+  },
+  "london-fog": {
+    alt: "Creamy tea latte in a white mug",
+    credit: "Pexels",
+    ...pexels(2262832, "white-coffee-mug"),
+    placeholder: true,
+  },
+  refreshers: {
+    alt: "Iced strawberry drink in a glass with fresh strawberries",
+    credit: "Pexels",
+    ...pexels(17648333, "a-strawberry-drink-in-a-glass"),
+  },
+  frappes: {
+    alt: "Blended coffee drink topped with whipped cream and chocolate",
+    credit: "Unsplash",
+    photographer: "Circle Digital Marketing Agency",
+    ...unsplash("1718267050202-9b1b6bfb8545", "OeG0_YsoFgk"),
+  },
+  smoothies: {
+    alt: "Strawberry smoothie in a glass jar",
+    credit: "Pexels",
+    ...pexels(775032, "strawberry-smoothie-on-glass-jar"),
+  },
+  "the-carnivore": {
+    alt: "Bacon, egg, and cheese breakfast sandwich on an English muffin",
+    credit: "Pexels",
+    ...pexels(6529815, "hamburger-sandwich-with-bacon-and-egg"),
+  },
+  "the-inferno": {
+    alt: "Breakfast sandwich with egg, cheese, and bacon beside a dip",
+    credit: "Pexels",
+    ...pexels(12261092, "a-sandwich-and-dip-on-a-ceramic-plate"),
+    placeholder: true,
+  },
+  "southern-sunrise": {
+    alt: "Crispy chicken sandwich topped with a fried egg",
+    credit: "Pexels",
+    ...pexels(31176105, "delicious-chicken-sandwich-with-fried-egg"),
+  },
+  "lox-bagel": {
+    alt: "Smoked salmon bagels served with coffee and orange juice",
+    credit: "Unsplash",
+    photographer: "Leonardo Ziaja",
+    ...unsplash("1774988552970-dea71ae90f5a", "D5Zlml6vxyc"),
+  },
+  "the-california": {
+    alt: "Toast topped with egg and fresh vegetables",
+    credit: "Unsplash",
+    photographer: "David B Townsend",
+    ...unsplash("1613769049987-b31b641f25b1", "IQSDSFO9UuI"),
+  },
+  "deluxe-yogurt-parfait": {
+    alt: "Yogurt parfaits layered with strawberries and granola in jars",
+    credit: "Unsplash",
+    photographer: "Monika Grabkowska",
+    ...unsplash("1654584240523-6b8d3f6c33b4", "6O_sZNv_7lA"),
+  },
+  "chicken-and-pesto": {
+    alt: "Grilled sandwich with pesto, mozzarella, tomato, and greens",
+    credit: "Pexels",
+    ...pexels(33755326, "gourmet-sandwich-with-fresh-greens-and-pesto"),
+    placeholder: true,
+  },
+  "vodka-parmigiana": {
+    alt: "Crispy breaded chicken parmesan with tomato sauce",
+    credit: "Pexels",
+    ...pexels(38902135, "close-up-of-chicken-parmesan-on-blue-plate"),
+    placeholder: true,
+  },
+  "chipotle-club": {
+    alt: "Stacked club sandwich served with fries",
+    credit: "Pexels",
+    ...pexels(12469931, "club-sandwich-with-bowl-of-fries"),
+  },
+  "caprese-panini": {
+    alt: "Caprese sandwich with mozzarella, tomato, and basil on a board",
+    credit: "Pexels",
+    ...pexels(30301906, "fresh-caprese-sandwich-on-cutting-board"),
+  },
+  "smoked-salmon-avocado-toast": {
+    alt: "Smoked salmon toast served with coffee",
+    credit: "Unsplash",
+    photographer: "Konstantinos Papadopoulos",
+    ...unsplash("1771698253819-9569b1739aea", "lvAv2uT65cg"),
+  },
+  "classic-avocado-toast": {
+    alt: "Toast spread with smashed avocado",
+    credit: "Unsplash",
+    photographer: "Caroline Green",
+    ...unsplash("1631311915775-e8f4250a7d4e", "C4nT6Ulm0ao"),
+  },
 };
 
 export const toSlug = (name: string) =>
@@ -306,7 +428,8 @@ export const menu: Record<string, MenuGroup[]> = Object.fromEntries(
       items: group.items.map((item) => {
         const slug = toSlug(item.name);
         const photo = photos[slug];
-        if (!photo) throw new Error(`Missing menu photo for "${item.name}" (${slug})`);
+        if (!photo)
+          throw new Error(`Missing menu photo for "${item.name}" (${slug})`);
         return { ...item, slug, image: photo };
       }),
     })),

@@ -1,0 +1,4 @@
+# Generated / vendored (Prettier also skips everything in .gitignore)
+package-lock.json
+public/maplibre/
+public/**/*.svg

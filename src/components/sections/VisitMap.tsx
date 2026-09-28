@@ -64,15 +64,31 @@ function applyBrandStyle(map: MapLibreMap) {
   paint("building", "fill-color", c.latte);
   paint("building", "fill-opacity", 0.35);
 
-  for (const l of ["highway_path", "highway_minor", "highway_major_inner", "highway_major_subtle"])
+  for (const l of [
+    "highway_path",
+    "highway_minor",
+    "highway_major_inner",
+    "highway_major_subtle",
+  ])
     paint(l, "line-color", c.white);
   for (const l of ["highway_major_casing", "tunnel_motorway_casing"])
     paint(l, "line-color", c.latte);
-  for (const l of ["highway_motorway_inner", "highway_motorway_subtle", "highway_motorway_bridge_inner", "tunnel_motorway_inner"])
+  for (const l of [
+    "highway_motorway_inner",
+    "highway_motorway_subtle",
+    "highway_motorway_bridge_inner",
+    "tunnel_motorway_inner",
+  ])
     paint(l, "line-color", c.gold);
   for (const l of ["highway_motorway_casing", "highway_motorway_bridge_casing"])
     paint(l, "line-color", c.bronze);
-  for (const l of ["railway", "railway_service", "railway_transit", "boundary_2", "boundary_3"])
+  for (const l of [
+    "railway",
+    "railway_service",
+    "railway_transit",
+    "boundary_2",
+    "boundary_3",
+  ])
     paint(l, "line-color", c.latte);
 
   for (const layer of map.getStyle().layers ?? []) {
@@ -162,7 +178,7 @@ export default function VisitMap() {
             </motion.span>
             <span className="map-pin-badge">
               <span className="map-pin-pulse" aria-hidden />
-              <LionMark variant="head" decorative />
+              <LionMark decorative />
             </span>
             <span className="map-pin-tip" aria-hidden />
           </a>
