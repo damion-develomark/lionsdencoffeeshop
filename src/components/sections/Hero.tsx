@@ -4,11 +4,8 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
-import {
-  LionMark,
-  LION_EYE_ORIGIN,
-  LION_HEAD_ORIGIN,
-} from "@/components/brand/LionMark";
+import { LionMark } from "@/components/brand/LionMark";
+import { addLionReveal } from "@/components/brand/lionReveal";
 import {
   CoffeeBean,
   CoffeeSpill,
@@ -124,38 +121,9 @@ export function Hero() {
             ".badge-inner",
             { scale: 0.6, opacity: 0, duration: 0.6, ease: "back.out(1.8)" },
             1.0,
-          )
-          .set(".hero-badge .lion-static", { autoAlpha: 0 }, 0)
-          .set(".hero-badge .lion-reveal", { autoAlpha: 1 }, 0)
-          .from(
-            ".hero-badge .lion-shield-stroke",
-            { drawSVG: "0%", duration: 1.2, ease: "power2.inOut" },
-            1.1,
-          )
-          .from(
-            ".hero-badge .lion-flame",
-            {
-              opacity: 0,
-              scale: 0.86,
-              svgOrigin: LION_HEAD_ORIGIN,
-              duration: 0.6,
-              stagger: 0.1,
-              ease: "back.out(1.6)",
-            },
-            1.7,
-          )
-          .from(
-            ".hero-badge .lion-eye",
-            {
-              scaleY: 0,
-              svgOrigin: LION_EYE_ORIGIN,
-              duration: 0.4,
-              ease: "back.out(3)",
-            },
-            ">-0.15",
-          )
-          .set(".hero-badge .lion-static", { autoAlpha: 1 })
-          .set(".hero-badge .lion-reveal", { autoAlpha: 0 })
+          );
+        addLionReveal(tl, ".hero-badge", 1.1);
+        tl
           // Copy runs alongside.
           .from(
             split.chars,

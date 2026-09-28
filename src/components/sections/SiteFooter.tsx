@@ -3,7 +3,8 @@ import { useRef } from "react";
 import { ArrowUpRight, Phone } from "lucide-react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { LionMark } from "@/components/brand/LionMark";
-import { DripEdge } from "@/components/brand/CoffeeSpill";
+import { addLionReveal } from "@/components/brand/lionReveal";
+import { Anchor } from "./Header";
 import {
   SocialIcon,
   type SocialIconName,
@@ -25,21 +26,32 @@ const SOCIALS: [SocialIconName, string, string][] = [
   ],
 ];
 
-// "Bottom of the cup": the page drips into a coffee-brown panel.
+const NAV = [
+  ["Menu", "#menu"],
+  ["Our Story", "#about"],
+  ["Gallery", "#gallery"],
+  ["Visit", "#visit"],
+];
+
+// "Latte": a flat, soft latte panel with everything in one centred column,
+// and a curl of steam rising off the lion. The lion replays the hero's
+// entrance each time the footer scrolls into view.
 export function SiteFooter() {
   const ref = useRef<HTMLElement>(null);
   useGSAP(
     () => {
       const media = gsap.matchMedia();
       media.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.from(".footer-drips .drip-edge-drip", {
-          scaleY: 0.4,
-          transformOrigin: "50% 0%",
-          duration: 1.4,
-          stagger: 0.12,
-          ease: "power2.out",
-          scrollTrigger: { trigger: ref.current, start: "top 85%" },
+        const tl = gsap.timeline({
+          defaults: { ease: "power3.out" },
+          scrollTrigger: {
+            trigger: ".footer-brand",
+            start: "top 90%",
+            toggleActions: "restart none none reset",
+          },
         });
+        addLionReveal(tl, ".footer-brand", 0);
+        tl.from(".footer-steam path", { opacity: 0, y: 8, stagger: 0.15 }, 1.6);
       });
       return () => media.revert();
     },
@@ -48,65 +60,52 @@ export function SiteFooter() {
 
   return (
     <footer ref={ref} className="site-footer">
-      <DripEdge color="var(--color-warm-white)" className="footer-drips" />
-
-      <div className="shell footer-main">
-        <div className="footer-sendoff">
-          <p className="footer-kicker">Come in. Slow down.</p>
-          <p className="footer-line">
-            Italian coffee, honest food,
-            <br />
-            <em>and good company.</em>
-          </p>
-          <div className="footer-actions">
-            <a className="button" href="tel:+18604262809">
-              Call to order <Phone size={16} />
-            </a>
-            <a
-              className="button"
-              href="https://www.google.com/maps/dir/?api=1&destination=57+W+Main+St+Plantsville+CT+06479"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Get directions <ArrowUpRight size={17} />
-            </a>
-          </div>
-        </div>
-
-        <dl className="footer-info">
-          <div>
-            <dt>Find us</dt>
-            <dd>
-              57 W Main St
-              <br />
-              Plantsville, CT 06479
-            </dd>
-          </div>
-          <div>
-            <dt>Open daily</dt>
-            <dd>6:00 AM – 7:00 PM</dd>
-          </div>
-          <div>
-            <dt>Say hello</dt>
-            <dd>
-              <a href="tel:+18604262809">(860) 426-2809</a>
-              <br />
-              <a href="mailto:lionsdencoffeect@gmail.com">
-                lionsdencoffeect@gmail.com
-              </a>
-            </dd>
-          </div>
-        </dl>
-      </div>
-
-      <div className="shell footer-bottom">
+      <div className="footer-inner">
         <a
           href="#top"
           className="footer-brand"
           aria-label="Lions Den, back to top"
         >
-          <LionMark decorative />
+          <svg className="footer-steam" viewBox="0 0 60 44" aria-hidden>
+            <path d="M18 40c-6-7 6-12 0-20s6-12 2-18" />
+            <path d="M30 40c-6-7 6-12 0-20s6-12 2-18" />
+            <path d="M42 40c-6-7 6-12 0-20s6-12 2-18" />
+          </svg>
+          <LionMark animated decorative />
         </a>
+
+        <p className="footer-line">
+          Italian coffee, honest food,
+          <br />
+          <em>and good company.</em>
+        </p>
+        <p className="footer-meta">
+          <span>57 W Main St, Plantsville, CT</span>
+          <span>Open daily 6 AM – 7 PM</span>
+        </p>
+
+        <nav aria-label="Footer navigation" className="footer-nav">
+          {NAV.map(([label, href]) => (
+            <Anchor key={href} href={href}>
+              {label}
+            </Anchor>
+          ))}
+        </nav>
+
+        <div className="footer-actions">
+          <a className="button" href="tel:+18604262809">
+            Call to order <Phone size={16} />
+          </a>
+          <a
+            className="button"
+            href="https://www.google.com/maps/dir/?api=1&destination=57+W+Main+St+Plantsville+CT+06479"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Get directions <ArrowUpRight size={17} />
+          </a>
+        </div>
+
         <nav aria-label="Social media" className="footer-socials">
           {SOCIALS.map(([icon, label, url]) => (
             <a
@@ -117,10 +116,11 @@ export function SiteFooter() {
               aria-label={label}
               title={label}
             >
-              <SocialIcon name={icon} />
+              <SocialIcon name={icon} size={18} />
             </a>
           ))}
         </nav>
+
         <small>© 2026 Lions Den Coffee LLC</small>
       </div>
     </footer>

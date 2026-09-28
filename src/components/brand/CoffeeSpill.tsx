@@ -136,32 +136,3 @@ export function CoffeeBean({ className = "" }: { className?: string }) {
     </svg>
   );
 }
-
-/** Just the wavy edge and drips in one flat colour, for a section to drip
- *  into the one below (e.g. the page background running into the footer). */
-export function DripEdge({
-  color,
-  className = "",
-}: {
-  color: string;
-  className?: string;
-}) {
-  return (
-    <svg
-      className={"drip-edge " + className}
-      viewBox={`0 0 ${W} ${H}`}
-      preserveAspectRatio="none"
-      aria-hidden
-    >
-      <g fill={color}>
-        {DRIPS.map((d, i) => (
-          <path key={i} className="drip-edge-drip" d={d} />
-        ))}
-        {DROPLETS.map(([cx, cy, r], i) => (
-          <circle key={i} className="drip-edge-drop" cx={cx} cy={cy} r={r} />
-        ))}
-        <path d={SHEET} />
-      </g>
-    </svg>
-  );
-}

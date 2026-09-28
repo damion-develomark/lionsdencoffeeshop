@@ -1303,131 +1303,128 @@ h2 em {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-/* Footer: "bottom of the cup". The page drips into a coffee-brown gradient. */
+/* Footer: "latte". Flat soft latte panel, one centred column, steam rising
+   off the lion. */
 .site-footer {
-  position: relative;
-  overflow: hidden;
-  padding-top: calc(150 / 1440 * 100vw + 40px);
-  color: var(--color-warm-white);
+  /* Latte tint (the hero spill's top colour) over a coffee photo. */
   background:
-    radial-gradient(
-      ellipse 60% 45% at 80% 30%,
-      rgb(250 186 45 / 10%),
-      transparent 70%
-    ),
-    linear-gradient(180deg, #5b3a1d, #3a2415 45%, var(--color-espresso));
+    linear-gradient(rgb(248 232 196 / 88%), rgb(248 232 196 / 88%)),
+    url("https://images.pexels.com/photos/111159/pexels-photo-111159.jpeg?auto=compress&cs=tinysrgb&w=1920")
+      center / cover #f8e8c4;
+  border-top: 2px solid var(--color-gold-rule);
+  padding-block: 64px 32px;
 }
-.footer-drips {
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 100%;
+.footer-inner {
+  width: min(100% - 40px, 560px);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.footer-brand .lion-mark {
+  width: 120px;
   height: auto;
-  aspect-ratio: 1440 / 150;
-  overflow: visible;
 }
-.footer-main {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  gap: 48px;
-  align-items: end;
-  padding-bottom: 48px;
+.footer-steam {
+  width: 80px;
+  height: 58px;
+  margin-bottom: 4px;
+  fill: none;
+  stroke: var(--color-latte);
+  stroke-width: 2.5;
+  stroke-linecap: round;
 }
-.footer-kicker {
-  font: 400 34px/1 var(--font-script);
-  color: var(--color-gold);
-  margin-bottom: 12px;
-  rotate: -3deg;
-  width: fit-content;
+.footer-steam path {
+  animation: steam-rise 3.6s ease-in-out infinite;
+}
+.footer-steam path:nth-child(2) {
+  animation-delay: 0.6s;
+}
+.footer-steam path:nth-child(3) {
+  animation-delay: 1.2s;
+}
+@keyframes steam-rise {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(2px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
 }
 .footer-line {
-  font: 500 42px/1.1 var(--font-display);
+  margin-top: 22px;
+  font: 500 28px/1.25 var(--font-display);
 }
 .footer-line em {
-  color: color-mix(in srgb, var(--color-warm-white) 75%, transparent);
+  color: var(--color-bronze);
+}
+.footer-meta {
+  margin-top: 10px;
+  font: 500 11px/1.6 var(--font-sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-bronze);
+}
+.footer-meta span + span::before {
+  content: " · ";
+}
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 28px;
+  margin-top: 26px;
+}
+.footer-nav a {
+  font: 400 16px/1.4 var(--font-headline);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.15s ease;
+}
+.footer-nav a:hover {
+  border-color: var(--color-espresso);
 }
 .footer-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
-  margin-top: 30px;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 26px;
 }
-/* On the dark panel the espresso shadow would vanish; use cream instead. */
-.site-footer .button {
-  box-shadow: 4px 4px 0 var(--color-warm-white);
-}
-.site-footer .button:hover {
-  box-shadow: 2px 2px 0 var(--color-warm-white);
-}
-.site-footer .button:active {
-  box-shadow: 0 0 0 var(--color-warm-white);
-}
-.footer-info {
-  display: grid;
-  gap: 22px;
-  margin: 0;
-}
-.footer-info div {
-  padding-left: 18px;
-  border-left: 2px solid var(--color-gold);
-}
-.footer-info dt {
-  font: 500 10px/1.4 var(--font-sans);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-gold);
-  margin-bottom: 4px;
-}
-.footer-info dd {
-  margin: 0;
-  font: 400 18px/1.45 var(--font-serif);
-}
-.footer-info a:hover {
-  color: var(--color-gold);
-}
-.footer-bottom {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  gap: 24px;
-  align-items: center;
-  justify-content: space-between;
-  padding-block: 24px;
-  border-top: 1px solid rgb(255 253 249 / 14%);
-}
-.footer-brand svg {
-  width: 40px;
-  height: 44px;
-}
-/* Social icons: gold discs with espresso glyphs, same press-in feel as the
-   buttons. */
 .footer-socials {
   display: flex;
+  justify-content: center;
   gap: 12px;
-  flex-wrap: wrap;
+  margin-top: 30px;
 }
+/* Espresso outline discs that fill gold on hover. */
 .footer-socials a {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border: 2px solid var(--color-espresso);
   border-radius: 50%;
-  background: var(--color-gold);
   color: var(--color-espresso);
-  box-shadow: 3px 3px 0 var(--color-warm-white);
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: background 0.15s ease;
 }
 .footer-socials a:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 var(--color-warm-white);
+  background: var(--color-gold);
 }
-.footer-bottom small {
+.footer-inner small {
+  margin-top: 30px;
   font: 400 11px var(--font-sans);
-  color: color-mix(in srgb, var(--color-warm-white) 60%, transparent);
+  color: var(--muted-foreground);
 }
 .skip-link {
   position: fixed;
@@ -1476,9 +1473,6 @@ h2 em {
   }
   .menu-block h3 {
     font-size: 25px;
-  }
-  .footer-bottom {
-    flex-wrap: wrap;
   }
 }
 @media (max-width: 767px) {
@@ -1741,20 +1735,15 @@ h2 em {
   .map-wrap {
     height: 350px;
   }
-  .footer-main {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 36px;
-  }
-  .footer-kicker {
-    font-size: 28px;
-  }
   .footer-line {
-    font-size: 26px;
+    font-size: 23px;
   }
-  .footer-bottom {
-    align-items: start;
-    flex-direction: column;
-    gap: 20px;
+  /* Address and hours on their own lines. */
+  .footer-meta span {
+    display: block;
+  }
+  .footer-meta span + span::before {
+    content: none;
   }
 }
 @media (max-width: 360px) {
