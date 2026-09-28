@@ -69,17 +69,40 @@ export function Anchor({
   );
 }
 
-// Mobile sheet body. It mounts each time the sheet opens, so the hero's
-// spill pours in again: flood slides down, drips run, droplets splash, then
-// the edge keeps gently shifting. The links follow the pour.
-function MobileSheetBody({ onNavigate }: { onNavigate: () => void }) {
+// Mobile sheet body. The first time the sheet opens on a page load, the
+// hero's spill pours in: flood slides down, drips run, droplets splash, and
+// the links follow. `poured` lives in Header, so reopening the sheet skips
+// the pour; a new page load resets it. The edge always keeps gently shifting.
+function MobileSheetBody({
+  onNavigate,
+  poured,
+}: {
+  onNavigate: () => void;
+  poured: React.RefObject<boolean>;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   useGSAP(
     () => {
       const media = gsap.matchMedia();
       media.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.to(".spill-sheet", {
+          morphSVG: SPILL_SHEET_ALT,
+          duration: 6,
+          delay: 1.2,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+        if (poured.current) return;
         gsap
-          .timeline({ defaults: { ease: "power3.out" } })
+          .timeline({
+            defaults: { ease: "power3.out" },
+            // Marked on start, not creation: in dev, Strict Mode mounts twice
+            // and the first timeline is reverted before it ever runs.
+            onStart: () => {
+              poured.current = true;
+            },
+          })
           .from(
             ".coffee-spill",
             { yPercent: -100, duration: 0.9, ease: "power2.inOut" },
@@ -112,14 +135,6 @@ function MobileSheetBody({ onNavigate }: { onNavigate: () => void }) {
             { y: 24, opacity: 0, duration: 0.6, stagger: 0.07 },
             0.35,
           );
-        gsap.to(".spill-sheet", {
-          morphSVG: SPILL_SHEET_ALT,
-          duration: 6,
-          delay: 1.2,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
       });
       return () => media.revert();
     },
@@ -160,6 +175,7 @@ function MobileSheetBody({ onNavigate }: { onNavigate: () => void }) {
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const poured = useRef(false);
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const reduced = useReducedMotion();
@@ -223,7 +239,10 @@ export function Header() {
             <Menu />
           </SheetTrigger>
           <SheetContent className="mobile-sheet" showCloseButton={false}>
-            <MobileSheetBody onNavigate={() => setOpen(false)} />
+            <MobileSheetBody
+              onNavigate={() => setOpen(false)}
+              poured={poured}
+            />
           </SheetContent>
         </Sheet>
       </div>

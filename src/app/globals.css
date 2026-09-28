@@ -974,15 +974,9 @@ h2 em {
   background: transparent !important;
   transition: color 0.15s ease;
 }
-.menu-tab:hover {
-  color: var(--color-espresso);
-}
-/* White label outlined in espresso, like the hero's "SIP & STAY". */
+.menu-tab:hover,
 .menu-tab[data-state="active"] {
-  color: var(--color-warm-white);
-  -webkit-text-stroke: 1px var(--color-espresso);
-  paint-order: stroke fill;
-  text-shadow: 1.5px 1.5px 0 var(--color-espresso);
+  color: var(--color-espresso);
 }
 /* Label stacks above the sliding pill. */
 .tab-label {
