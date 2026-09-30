@@ -13,25 +13,31 @@ import {
 } from "@/components/brand/CoffeeSpill";
 import { Anchor } from "./Header";
 
-// Background-removed drink photos (placeholders until the shop's own drinks
-// are shot). For a framed, non-transparent photo instead, set `cutout: false`.
+// The shop's own background-removed product photos (supplied cutouts; do not
+// re-process). For a framed, non-transparent photo instead, set `cutout: false`.
 const HERO_DRINKS = [
   {
-    id: "main",
-    src: "/images/hero/iced-coffee-layered-cutout.webp",
-    alt: "Layered iced coffee, espresso poured over cold milk",
+    id: "iced",
+    src: "/images/hero/iced-coffee-cold-foam-cutout.webp",
+    alt: "Iced coffee topped with cold foam in a Lions Den Coffee Shop cup",
     cutout: true,
   },
   {
-    id: "side",
-    src: "/images/hero/iced-latte-cutout.webp",
-    alt: "Iced latte on a wooden saucer",
+    id: "smoothie",
+    src: "/images/hero/strawberry-smoothie-cutout.webp",
+    alt: "Pink blended smoothie with a strawberry on the rim in a Lions Den Coffee Shop cup",
     cutout: true,
   },
   {
-    id: "front",
-    src: "/images/hero/cappuccino-cutout.webp",
-    alt: "Cappuccino with chocolate latte art on a saucer",
+    id: "sandwich",
+    src: "/images/hero/breakfast-sandwich-cutout.webp",
+    alt: "Breakfast sandwich cut in half to show egg, tomato and melted cheese",
+    cutout: true,
+  },
+  {
+    id: "latte",
+    src: "/images/hero/latte-red-cup-cutout.webp",
+    alt: "Hot latte with rosetta latte art in a red cup and saucer",
     cutout: true,
   },
 ];
@@ -165,8 +171,12 @@ export function Hero() {
           end: "bottom top",
           scrub: true,
         };
-        gsap.to(".hero-drink--main", { yPercent: -12, scrollTrigger: scrub });
-        gsap.to(".hero-drink--side", { yPercent: -24, scrollTrigger: scrub });
+        gsap.to(".hero-drink--iced", { yPercent: -14, scrollTrigger: scrub });
+        gsap.to(".hero-drink--smoothie", {
+          yPercent: -22,
+          scrollTrigger: scrub,
+        });
+        gsap.to(".hero-drink--latte", { yPercent: -8, scrollTrigger: scrub });
         gsap.to(".hero-bean", { y: -90, stagger: 0.05, scrollTrigger: scrub });
         return () => split.revert();
       });
@@ -235,9 +245,9 @@ export function Hero() {
                 src={drink.src}
                 alt={drink.alt}
                 fill
-                sizes="(min-width: 768px) 360px, 55vw"
+                sizes="(min-width: 768px) 320px, 50vw"
                 loading="eager"
-                fetchPriority={drink.id === "main" ? "high" : "auto"}
+                fetchPriority={drink.id === "iced" ? "high" : "auto"}
               />
             </figure>
           ))}

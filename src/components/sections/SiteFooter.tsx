@@ -1,5 +1,6 @@
 "use client";
 import { useRef } from "react";
+import Image from "next/image";
 import { ArrowUpRight, Phone } from "lucide-react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { LionMark } from "@/components/brand/LionMark";
@@ -9,6 +10,7 @@ import {
   SocialIcon,
   type SocialIconName,
 } from "@/components/brand/SocialIcons";
+import develomarkLogo from "../../../public/brand/develomark-logo-black.png";
 
 const SOCIALS: [SocialIconName, string, string][] = [
   ["instagram", "Instagram", "https://www.instagram.com/lionsden_coffee/"],
@@ -135,6 +137,15 @@ export function SiteFooter() {
         </nav>
 
         <small>Lions Den Coffee Shop® · © 2026 Lions Den Coffee LLC</small>
+        <p className="footer-credit">
+          <span>Website by</span>
+          <Image
+            src={develomarkLogo}
+            alt="Develomark"
+            sizes="120px"
+            className="footer-credit-logo"
+          />
+        </p>
       </div>
     </footer>
   );

@@ -1,6 +1,6 @@
 # Lions Den Coffee Shop® — Website
 
-The marketing website for **Lions Den Coffee Shop®**, an Italian-style neighborhood coffee house at 57 W Main St in Plantsville, Connecticut. It's a single, scroll-driven page that introduces the shop, shows the full menu, tells the family story, and gets people through the door (online ordering, call, directions, reviews, contact form, socials).
+The marketing website for **Lions Den Coffee Shop®**, an Italian-style neighborhood coffee house at 57 W Main St in Plantsville, Connecticut. It's a single, scroll-driven page that introduces the shop, shows a photographed selection of the menu (with the full menu as a PDF), tells the family story, and gets people through the door (online ordering, call, directions, reviews, contact form, socials).
 
 - **Production URL:** https://www.lionsdencoffeeshop.com (set as `metadataBase` in `src/app/layout.tsx`)
 - **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · GSAP · Motion
@@ -41,21 +41,21 @@ The marketing website for **Lions Den Coffee Shop®**, an Italian-style neighbor
 
 **Mission (quoted on the site).** _"To enrich the American culture where people enjoy life, family, and friends."_ Values shown on the site: **Service · Quality · Community**.
 
-**What they sell** (all in `src/data/menu.ts`):
+**What they sell.** The approved, complete menu is the printable PDF at `public/lionsden-menu.pdf` (coffee, tea, frozen drinks, kids' drinks, breakfast sandwiches, bagels, parfaits, paninis and toasts). The menu section's "Download menu" link saves it as `lions-den-coffee-shop-menu.pdf`, and a "see the full menu (PDF)" link above the tabs opens it.
 
-| Tab            | Groups                                                                                                                                                                                                         |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Coffee**     | Signature Lattes (Caramel Biscotti, Nutella, Honey Bee Cortado) · Espresso Bar (Espresso, Italian Cappuccino, Ameridomo) · House Coffee (Lions Blend Cold Brew, Hot Black Velvet, Brown Sugar Shaken Espresso) |
-| **Not Coffee** | Tea & Company (Matcha, Chai, London Fog) · Something Cool (Refreshers, Frappes, Smoothies)                                                                                                                     |
-| **Breakfast**  | Morning Favorites (The Carnivore, The Inferno, Southern Sunrise) · A Brighter Start (Lox Bagel, The California, Yogurt Parfait)                                                                                |
-| **Lunch**      | From the Panini Press (Chicken & Pesto, Vodka Parmigiana, Chipotle Club) · A Little Lighter (Smoked Salmon Avocado Toast, Caprese Panini, Classic Avocado Toast)                                               |
+**The website menu is a photographed selection, not the full menu.** An item is shown on the site only when (1) it is on the PDF, (2) the shop has supplied a photo that clearly shows that item, and (3) its name, description, sizes and price can be copied from the PDF. Items without a matching photo stay off the website (they're still on the PDF and still sold) and are listed under **Needs Photos** in [`PHOTO_SHOT_LIST.md`](PHOTO_SHOT_LIST.md). Currently on the site (`src/data/menu.ts`):
 
-The full printable menu is also available as a PDF at `public/lionsden-menu.pdf` (the menu section's "Download menu" link saves it as `lions-den-coffee-shop-menu.pdf`).
+| Tab            | Group        | Items                       |
+| -------------- | ------------ | --------------------------- |
+| **Coffee**     | Lattes       | Classic Latte               |
+| **Not Coffee** | Tea & Frozen | Matcha Latte, Smoothies     |
+| **Breakfast**  | Sandwiches   | The Inferno, The California |
+| **Lunch**      | Paninis      | Chicken & Pesto             |
 
 **Goals of the site.**
 
 1. Make the shop feel warm and personal before anyone visits.
-2. Make the menu easy to browse on a phone, with prices and sizes.
+2. Make the menu easy to browse on a phone, with real photos, prices and sizes, and the full PDF one tap away.
 3. Drive visits and orders: **Order online** (Toast) and **Call to order** (tap-to-call) sit side by side in the header, mobile menu and footer; **Get directions** (Google Maps) is in the visit section and footer. **Join Lions Den** (Toast marketing sign-up) is in the contact section.
 4. Grow social following (Instagram, Facebook, YouTube, TikTok, Yelp).
 5. Rank locally ("coffee shop Plantsville / Southington") via structured data and good metadata.
@@ -86,7 +86,7 @@ The look is "a café menu board come to life": warm latte creams, espresso-black
 | `--color-bronze`     | `#7d5c18`                     | Deep gold for small labels                        |
 | `--color-latte`      | `#b8a584`                     | Muted accent (steam, dividers)                    |
 | `--color-terracotta` | `#c4623a`                     | Secondary accent                                  |
-| Spill gradient       | `#f8e8c4 → #ecd09e → #dab478` | Hero "coffee spill" and the footer's latte tint   |
+| Spill gradient       | `#f8e8c4 → #ecd09e → #dab478` | Hero "coffee spill"; the footer's latte panel     |
 
 ### Type (Google Fonts, loaded in `src/app/layout.tsx`)
 
@@ -114,15 +114,15 @@ The whole site is one page (`src/app/page.tsx`). Sections, top to bottom:
 | #   | Section                  | Component                   | What it does                                                                                                                                                                                                                                                                                                                                                                              |
 | --- | ------------------------ | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | —   | **Header**               | `sections/Header.tsx`       | Floating pill nav, fixed to the top and visible at all times. Address and hours line above the pill (folds away on scroll). Logo, Menu / Our Story / Visit links, "Call to order" and "Order online" buttons. Below 1100px the links move into a slide-out sheet (which also has both buttons, address and hours); below 768px the buttons move there too. Turns frosted once you scroll. |
-| 1   | **Hero**                 | `sections/Hero.tsx`         | "SIP & STAY." headline (white Anton with espresso outline, gold "&"). A coffee spill pours down the section, drips run, cut-out drinks and beans land, and the lion badge draws itself. Stats (2020 · 6AM · 57), stacked CTAs, and a tilted gold marquee.                                                                                                                                 |
-| 2   | **Culture**              | `sections/Culture.tsx`      | Full-width video card of a busy café bar, espresso-tinted, with "Come for the coffee. Stay for the people." and an "Our story" button.                                                                                                                                                                                                                                                    |
-| 3   | **Menu** (`#menu`)       | `sections/MenuBoard.tsx`    | "Your daily ritual." Tabs for Coffee / Not Coffee / Breakfast / Lunch; each group has a feature photo, and each item has a thumbnail, price, and a size/price tooltip. Includes the "Come in / Slow down" sticker, animated espresso saucer, and a photo-credits disclosure.                                                                                                              |
-| 4   | **Our Story** (`#about`) | `sections/SlowDownBand.tsx` | Dark panel: "More than coffee. A sense of belonging.", the founders, the mission quote and the values pills.                                                                                                                                                                                                                                                                              |
-| 5   | **Gallery** (`#gallery`) | `sections/Atmosphere.tsx`   | "Pull up a chair." A horizontal photo strip that's pinned and scrubbed sideways as you scroll on desktop.                                                                                                                                                                                                                                                                                 |
+| 1   | **Hero**                 | `sections/Hero.tsx`         | "SIP & STAY." headline (white Anton with espresso outline, gold "&"). A coffee spill pours down the section, drips run, four of the shop's own product cut-outs (iced coffee, smoothie, breakfast sandwich, latte) and beans land, and the lion badge draws itself. Stats (2020 · 6AM · 57), stacked CTAs, and a tilted gold marquee.                                                     |
+| 2   | **Culture**              | `sections/Culture.tsx`      | Full-width photo card (the shop's iced coffee in front of the patio), espresso-tinted, with "Come for the coffee. Stay for the people." and an "Our story" button.                                                                                                                                                                                                                        |
+| 3   | **Menu** (`#menu`)       | `sections/MenuBoard.tsx`    | "Your daily ritual." Tabs for Coffee / Not Coffee / Breakfast / Lunch; each group has a feature photo, and each item has a thumbnail, price, and a size/price tooltip. A note above the tabs says this is a photographed selection and links to the full PDF. Includes the "Come in / Slow down" sticker and animated espresso saucer.                                                    |
+| 4   | **Our Story** (`#about`) | `sections/SlowDownBand.tsx` | Dark panel with the storefront/patio photo: "More than coffee. A sense of belonging.", the founders, the mission quote and the values pills.                                                                                                                                                                                                                                              |
+| 5   | **Gallery** (`#gallery`) | `sections/Atmosphere.tsx`   | "Pull up a chair." A horizontal strip of the shop's own photos (iced coffees, bagel sandwiches, cannoli, pastries, tarts, a matcha special, fall and winter drinks) that's pinned and scrubbed sideways as you scroll on desktop.                                                                                                                                                         |
 | 6   | **Reviews** (`#reviews`) | `sections/Reviews.tsx`      | Black stage for the Elfsight "All-in-One Reviews" carousel (styled in the Elfsight dashboard). `platform.js` loads via `next/script`.                                                                                                                                                                                                                                                     |
 | 7   | **Visit** (`#visit`)     | `sections/Visit.tsx`        | Address, hours, phone, email, "Get directions", and the Google Maps embed for the shop.                                                                                                                                                                                                                                                                                                   |
 | 8   | **Contact** (`#contact`) | `sections/Contact.tsx`      | "Contact us": Typeform live embed (`embed.js` via `next/script`), email and phone as alternatives, and the "Join Lions Den" sign-up card.                                                                                                                                                                                                                                                 |
-| 9   | **Footer**               | `sections/SiteFooter.tsx`   | Latte-tinted coffee photo background. Lion logo (replays the hero's draw-on animation when scrolled into view) with rising steam, tagline, address & hours, nav links, the two CTAs, social icons and copyright.                                                                                                                                                                          |
+| 9   | **Footer**               | `sections/SiteFooter.tsx`   | Plain latte-colored panel (no photo). Lion logo (replays the hero's draw-on animation when scrolled into view) with rising steam, tagline, address & hours, nav links, the two CTAs, social icons, copyright, and a small "Website by Develomark" logo credit.                                                                                                                            |
 
 ---
 
@@ -160,16 +160,15 @@ The whole site is one page (`src/app/page.tsx`). Sections, top to bottom:
 
 ### External services (no API keys needed)
 
-| Service                             | Used for                                                               |
-| ----------------------------------- | ---------------------------------------------------------------------- |
-| **Google Fonts**                    | The five web fonts                                                     |
-| **Google Maps embed**               | The map in the Visit section                                           |
-| **Elfsight** (`elfsightcdn.com`)    | Reviews carousel (widget configured in the Elfsight dashboard)         |
-| **Typeform** (`embed.typeform.com`) | Contact form (form configured in Typeform)                             |
-| **Toast** (`toasttab.com`)          | Online ordering and the "Join Lions Den" marketing sign-up             |
-| **Pexels / Unsplash CDNs**          | Menu photos and the footer background, served straight from their CDNs |
-| **Google Maps**                     | "Get directions" links (opens in a new tab)                            |
-| **Vercel**                          | Hosting                                                                |
+| Service                             | Used for                                                       |
+| ----------------------------------- | -------------------------------------------------------------- |
+| **Google Fonts**                    | The five web fonts                                             |
+| **Google Maps embed**               | The map in the Visit section                                   |
+| **Elfsight** (`elfsightcdn.com`)    | Reviews carousel (widget configured in the Elfsight dashboard) |
+| **Typeform** (`embed.typeform.com`) | Contact form (form configured in Typeform)                     |
+| **Toast** (`toasttab.com`)          | Online ordering and the "Join Lions Den" marketing sign-up     |
+| **Google Maps**                     | "Get directions" links (opens in a new tab)                    |
+| **Vercel**                          | Hosting                                                        |
 
 ---
 
@@ -178,13 +177,14 @@ The whole site is one page (`src/app/page.tsx`). Sections, top to bottom:
 ```
 .
 ├── public/
-│   ├── brand/                 # lions-den-logo.jpg (header), lions-den-mark.svg
+│   ├── brand/                 # lions-den-logo.jpg (header), lions-den-mark.svg,
+│   │                          # develomark-logo-black.png (footer credit)
 │   ├── images/
-│   │   ├── hero/              # background-removed drink cut-outs (.webp)
-│   │   ├── latte-art.webp     # gallery
-│   │   ├── pastries.webp      # gallery
-│   │   └── patio.webp         # gallery, story section, Open Graph image
-│   ├── videos/                # cafe-culture.mp4 + poster (Culture section)
+│   │   ├── hero/              # 4 supplied product cut-outs (.webp, transparent)
+│   │   ├── menu/              # one supplied photo per website menu item
+│   │   ├── gallery/           # supplied photos for the gallery strip
+│   │   ├── shop/              # culture-section and story-section photos
+│   │   └── og-lions-den-storefront.jpg  # Open Graph share image (1200×630)
 │   └── lionsden-menu.pdf      # printable menu
 ├── src/
 │   ├── app/
@@ -198,9 +198,10 @@ The whole site is one page (`src/app/page.tsx`). Sections, top to bottom:
 │   │   ├── providers/         # smooth-scroll (Lenis)
 │   │   ├── sections/          # one file per page section (see §3)
 │   │   └── ui/                # shadcn/ui primitives
-│   ├── data/menu.ts           # the menu: items, prices, sizes, photos, credits
+│   ├── data/menu.ts           # photographed website menu: items, prices, sizes, photos
 │   └── lib/                   # gsap.ts (plugin registration), utils.ts (cn)
-├── next.config.ts             # allowed remote image hosts
+├── next.config.ts             # Next config (no remote image hosts; all images are local)
+├── PHOTO_SHOT_LIST.md         # live menu photos + menu items that still need photos
 ├── vercel.json
 ├── components.json            # shadcn/ui config
 └── AGENTS.md / CLAUDE.md      # notes for AI coding agents
@@ -245,7 +246,9 @@ One GSAP timeline, roughly in this order:
 2. **Drinks** land with a small bounce; **beans** spin in.
 3. The **lion badge** pops in and the logo draws itself (see below).
 4. The headline letters rise (SplitText), the "&" wipes in, and the intro copy fades up.
-5. Idle: the spill's edge slowly morphs between two shapes (MorphSVG) and the drips stretch, like settling liquid. On scroll, the drinks and beans drift at different speeds (parallax).
+5. Idle: the spill's edge slowly morphs between two shapes (MorphSVG) and the drips stretch, like settling liquid. On scroll, the iced coffee, smoothie, latte and beans drift at different speeds (parallax).
+
+The four products are the shop's own transparent PNGs, trimmed to the product and converted to WebP. Tall drinks stand at the back and the sandwich and latte sit in front; each has its own `.hero-drink--*` rule in `globals.css` with an `aspect-ratio` matching its file. On phones the front row shifts left so the lion badge can sit in the bottom-right corner.
 
 The spill is two layers: a CSS gradient "flood" that fills any height, and an SVG strip for the wavy edge and drips. Its shapes are generated in code (sine waves + Catmull-Rom curves), so they scale to any width. It runs to the bottom of the section behind the marquee, and its drips hang over the top of the Culture section.
 
@@ -255,7 +258,7 @@ The logo is a vector rebuild of the shield lion. With `animated`, it renders ext
 
 ### Menu (`MenuBoard.tsx` + `src/data/menu.ts`)
 
-The data file defines items per tab and group, then a separate `photos` map keyed by item slug. At build time each item is joined to its photo, and a **missing photo throws an error**, so the menu can't ship with a broken image. Photos flagged `placeholder: true` show a "Sample" tag in development only. Size pricing appears in a tooltip.
+`src/data/menu.ts` lists each tab's groups and items. Every item carries its own local `image` (`src`, factual `alt`, and an optional `focus` object-position that keeps the named item in frame when the photo is cropped), so an item can't exist without a photo. Size pricing appears in a tooltip (desktop) or under the item (carousel). A tab with a single group spans the full width on desktop (photo left, items right). The Coffee tab keeps the "Come in / Slow down" vignette beside its group.
 
 ### Third-party embeds (`Visit.tsx`, `Reviews.tsx`, `Contact.tsx`)
 
@@ -264,9 +267,9 @@ The data file defines items per tab and group, then a separate `photos` map keye
 - **Contact form:** the Typeform `data-tf-live` `div` plus `<Script src="https://embed.typeform.com/next/embed.js">`. Typeform mounts a 500px iframe; the frame reserves that height to avoid layout shift.
 - Elfsight and Typeform may restrict which domains their widgets render on. If one shows blank on a new domain, check the allowed domains in that service's dashboard.
 
-### Culture video (`Culture.tsx`)
+### Culture photo (`Culture.tsx`)
 
-A muted, looping, inline `<video>` with a poster image. It **only plays while on screen** (IntersectionObserver) and never plays for visitors who prefer reduced motion.
+A statically imported `next/image` (blur placeholder) filling the card behind an espresso gradient, so the white type stays legible. There is no video.
 
 ### Social icons (`SocialIcons.tsx`)
 
@@ -276,7 +279,7 @@ Brand glyphs inlined as SVG paths from Simple Icons, since lucide-react v1 dropp
 
 ## 8. Assets & sources
 
-> **Licensing summary.** Stock photos and video come from **Pexels** and **Unsplash**. Both licenses allow free commercial use with no attribution required; the site credits them anyway, in the menu's "Photo credits" disclosure. Brand icons are **CC0**. Fonts are under the **SIL Open Font License**. Map tiles and data come from the Google Maps embed, which shows its own attribution.
+> **Image rule.** Every photo on the site is the shop's own, supplied by the client (the "Lions Den Photos" and "Lions Den Transparent Cutout" folders), plus the Develomark logo. No stock, remote or placeholder imagery is used, and there is no photo-credits section. Brand icons are **CC0**. Fonts are under the **SIL Open Font License**. Map tiles and data come from the Google Maps embed, which shows its own attribution.
 
 ### Brand assets (the shop's own)
 
@@ -286,24 +289,33 @@ Brand glyphs inlined as SVG paths from Simple Icons, since lucide-react v1 dropp
 | `public/brand/lions-den-mark.svg`                   | Vector lion mark           |                                                            |
 | `src/components/brand/LionMark.tsx`                 | Vector rebuild of the logo | Transparent, animatable; used in the hero badge and footer |
 | `src/app/icon.svg`, `favicon.ico`, `apple-icon.png` | Site icons                 |                                                            |
-| `public/lionsden-menu.pdf`                          | Printable menu             |                                                            |
+| `public/lionsden-menu.pdf`                          | Printable menu             | The approved full menu and the source of all menu data     |
+| `public/brand/develomark-logo-black.png`            | Develomark logo            | Footer credit; trimmed from the supplied transparent PNG   |
 
-### Photography & video
+### Photography
 
-| Asset                                        | Where it's used                                | Source                                                                                                                                                                                                                                            |
-| -------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `public/images/latte-art.webp`               | Gallery                                        | Shop photo — lattes in the Lions Den red cups (source not recorded in the repo)                                                                                                                                                                   |
-| `public/images/pastries.webp`                | Gallery                                        | Shop photo — cannoli and pastries (source not recorded in the repo)                                                                                                                                                                               |
-| `public/images/patio.webp`                   | Gallery, story section, Open Graph share image | Shop photo — storefront and patio (source not recorded in the repo)                                                                                                                                                                               |
-| `public/images/hero/*-cutout.webp` (3 files) | Hero drinks                                    | Background-removed stand-in drink photos, **placeholders** until the shop's own drinks are shot. Original source not recorded in the repo.                                                                                                        |
-| `public/videos/cafe-culture.mp4`             | Culture section                                | [Pexels video #29719125](https://www.pexels.com/video/29719125/), re-encoded to 720p (39 MB → 7.6 MB) with macOS `avconvert`. **Stock footage of a different café** — replace with footage of Lions Den when available.                           |
-| `public/videos/cafe-culture-poster.jpg`      | Culture section poster                         | Frame taken from the video above                                                                                                                                                                                                                  |
-| Footer background                            | `SiteFooter` (CSS in `globals.css`)            | [Pexels photo #37034118](https://www.pexels.com/photo/37034118/), hot-linked from the Pexels CDN (not downloaded) at 1920px wide, under an 88% latte tint                                                                                         |
-| Menu photos (28)                             | Menu thumbnails and feature photos             | **19 from Pexels, 9 from Unsplash**, hot-linked from their CDNs. Each entry in `src/data/menu.ts` records its source page and, for Unsplash, the photographer. **5 are marked `placeholder`** (stand-ins that don't match the real item closely). |
+All photos are local and were converted from the supplied originals with `sharp` (WebP, max ~1200px; the culture photo 1800px). The originals are kept outside the repo.
 
-Credited Unsplash photographers: Nadia Valko, Lee Milo, Toa Heftiba, Circle Digital Marketing Agency, Leonardo Ziaja, David B Townsend, Monika Grabkowska, Konstantinos Papadopoulos, Caroline Green.
+| Asset                                                   | Where it's used                  | Supplied original                                    |
+| ------------------------------------------------------- | -------------------------------- | ---------------------------------------------------- |
+| `images/hero/iced-coffee-cold-foam-cutout.webp`         | Hero                             | `Lions Den Transparent Cutout/1.png`                 |
+| `images/hero/breakfast-sandwich-cutout.webp`            | Hero                             | `Lions Den Transparent Cutout/3.png`                 |
+| `images/hero/strawberry-smoothie-cutout.webp`           | Hero                             | `Lions Den Transparent Cutout/4.png`                 |
+| `images/hero/latte-red-cup-cutout.webp`                 | Hero                             | `Lions Den Transparent Cutout/6.png`                 |
+| `images/menu/*.webp` (6)                                | Menu thumbnails & feature photos | See `PHOTO_SHOT_LIST.md` → Live With Supplied Photos |
+| `images/shop/iced-coffee-by-the-patio.webp`             | Culture section                  | `coffee front.jpg`                                   |
+| `images/shop/storefront-patio-cannoli-espresso.webp`    | Our Story section                | `outside.jpeg`                                       |
+| `images/og-lions-den-storefront.jpg`                    | Open Graph / JSON-LD image       | `outside.jpeg`, cropped to 1200×630                  |
+| `images/gallery/iced-coffees-on-the-counter.webp`       | Gallery                          | `coffees.png`                                        |
+| `images/gallery/bagel-sandwiches-tray.webp`             | Gallery                          | `bagels.png`                                         |
+| `images/gallery/cannoli-chocolate-pistachio.webp`       | Gallery                          | `cannolis.png`                                       |
+| `images/gallery/sfogliatelle-cream-tray.webp`           | Gallery                          | `pastry.png`                                         |
+| `images/gallery/berry-cream-tarts.webp`                 | Gallery                          | `cream pastrys.png`                                  |
+| `images/gallery/matcha-strawberry-foam-storefront.webp` | Gallery                          | `strawberry matcha.png`                              |
+| `images/gallery/fall-iced-coffee.webp`                  | Gallery (seasonal)               | `fall coffee.jpeg`                                   |
+| `images/gallery/winter-coffee-in-snow.webp`             | Gallery (seasonal)               | `Holiday/coffee in snow.png`                         |
 
-Remote image hosts are allow-listed in `next.config.ts` (`images.pexels.com`, `images.unsplash.com`) so `next/image` can optimize them.
+Supplied cut-outs `2.png` and `5.png` are intentionally not in the hero. Alcohol photos (`alcoholic drinks.jpg`, `Food & wine.png`, `Holiday/Mule.jpg`, `Holiday/xmas.jpg`) are not used while the after-dark permit is unconfirmed.
 
 ### Illustrations (made in code)
 
@@ -325,19 +337,28 @@ Remote image hosts are allow-listed in `next.config.ts` (`images.pexels.com`, `i
 
 ## 9. Content editing guide
 
-| To change…                           | Edit                                                                                                                                                         |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Menu items, prices, sizes, notes     | `src/data/menu.ts` → `baseMenu`                                                                                                                              |
-| A menu photo                         | `src/data/menu.ts` → `photos[slug]` (use the `pexels()` / `unsplash()` helpers; every item needs one, or the build fails)                                    |
-| Hours, address, phone                | `Visit.tsx`, `SiteFooter.tsx`, `Hero.tsx` (stats), and the JSON-LD in `layout.tsx`. These are **not centralized yet**, so update all four.                   |
-| Social links                         | `SiteFooter.tsx` (`SOCIALS`) and `sameAs` in `layout.tsx`                                                                                                    |
-| Page title, description, share image | `metadata` in `src/app/layout.tsx`                                                                                                                           |
-| Hero drinks                          | `HERO_DRINKS` in `Hero.tsx`. For a framed photo instead of a cut-out, set `cutout: false`.                                                                   |
-| Gallery photos                       | `photos` in `Atmosphere.tsx`                                                                                                                                 |
-| Culture video                        | Replace `public/videos/cafe-culture.mp4` and the poster, and update the `VIDEO` / `POSTER` constants in `Culture.tsx`. Keep it short, muted and under ~8 MB. |
-| Footer background                    | The `url(...)` in `.site-footer` in `globals.css`; the tint is the `rgb(248 232 196 / 88%)` layer above it                                                   |
-| Colors / fonts                       | The `@theme` block at the top of `globals.css` (fonts are also loaded by the URL in `layout.tsx`)                                                            |
-| Section order                        | `src/app/page.tsx`                                                                                                                                           |
+| To change…                           | Edit                                                                                                                                       |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Menu items, prices, sizes            | `src/data/menu.ts`. Copy names, descriptions, sizes and prices from the approved PDF; never infer them from a photo.                       |
+| Add a newly photographed menu item   | See **Adding a menu photo** below                                                                                                          |
+| Hours, address, phone                | `Visit.tsx`, `SiteFooter.tsx`, `Hero.tsx` (stats), and the JSON-LD in `layout.tsx`. These are **not centralized yet**, so update all four. |
+| Social links                         | `SiteFooter.tsx` (`SOCIALS`) and `sameAs` in `layout.tsx`                                                                                  |
+| Page title, description, share image | `metadata` in `src/app/layout.tsx`                                                                                                         |
+| Hero drinks                          | `HERO_DRINKS` in `Hero.tsx`. For a framed photo instead of a cut-out, set `cutout: false`.                                                 |
+| Gallery photos                       | `photos` in `Atmosphere.tsx` (captions describe the moment, not a specific menu item)                                                      |
+| Culture photo                        | The static import at the top of `Culture.tsx`                                                                                              |
+| Footer background                    | `.site-footer` in `globals.css` (a plain latte gradient)                                                                                   |
+| Footer credit logo                   | `public/brand/develomark-logo-black.png`, sized by `.footer-credit-logo` in `globals.css`                                                  |
+| Colors / fonts                       | The `@theme` block at the top of `globals.css` (fonts are also loaded by the URL in `layout.tsx`)                                          |
+| Section order                        | `src/app/page.tsx`                                                                                                                         |
+
+### Adding a menu photo
+
+1. Confirm the item is on the approved menu (`public/lionsden-menu.pdf`) and that the photo clearly shows **that** item. If it's ambiguous, don't publish it; add it to the review notes in `PHOTO_SHOT_LIST.md`.
+2. Convert the photo to WebP (about 1200px on the long side) with a descriptive filename, e.g. `public/images/menu/chai-latte-iced.webp`. `sharp` is already installed as a Next dependency.
+3. In `src/data/menu.ts`, add the item to the right tab and group, copying name, description, sizes and price from the PDF. Give it `image.src`, a factual `alt` (what's visible, with no unverified ingredients) and, if the crop hides the item, a `focus` object-position.
+4. Move the item from **Needs Photos** to **Live With Supplied Photos** in `PHOTO_SHOT_LIST.md`.
+5. Run `npm run lint` and `npm run build`, then check the tab on desktop and mobile.
 
 ---
 
@@ -345,22 +366,20 @@ Remote image hosts are allow-listed in `next.config.ts` (`images.pexels.com`, `i
 
 **SEO**
 
-- Title and description tuned for "Italian coffee in Plantsville, CT"; Open Graph with the patio photo.
+- Title and description tuned for "Italian coffee in Plantsville, CT"; Open Graph with a 1200×630 crop of the storefront photo.
 - `CafeOrCoffeeShop` **JSON-LD** (schema.org) in `layout.tsx`: address, phone, email, hours (`Mo-Fr 06:00-19:00`, `Sa-Su 07:00-19:00`) and social profiles, for Google's local results.
 - One `<h1>` ("Sip and stay" plus the shop name, via screen-reader text); sections are labeled landmarks with `aria-labelledby`.
 
 **Accessibility**
 
 - A skip link to the main content, visible focus rings (gold outline), and labeled icon-only buttons (socials, round arrow) and titled iframes (map).
-- **Reduced motion is respected everywhere:** GSAP work runs inside `matchMedia("(prefers-reduced-motion: no-preference)")`, Lenis is disabled, the video doesn't play, and a global CSS rule turns off CSS animations and transitions. Everything renders in its finished state.
+- **Reduced motion is respected everywhere:** GSAP work runs inside `matchMedia("(prefers-reduced-motion: no-preference)")`, Lenis is disabled, and a global CSS rule turns off CSS animations and transitions. Everything renders in its finished state.
 - Decorative art (spill, beans, steam, marquee) is `aria-hidden`.
 
 **Performance**
 
-- `next/image` for photos (responsive `sizes`, lazy by default; hero drinks load eagerly, the main one with high fetch priority).
-- The background video is compressed, `preload="metadata"`, and pauses off-screen.
+- `next/image` for all photos (responsive `sizes`, lazy by default; hero products load eagerly, the iced coffee with high fetch priority). Source files are pre-sized WebP.
 - The map iframe is lazy-loaded; the Elfsight script loads at idle time (`lazyOnload`) and its widget is lazy (`data-elfsight-app-lazy`).
-- Remote stock photos are requested pre-sized from the CDN (`w=1600` / `w=1920`, compressed).
 
 ---
 
@@ -372,11 +391,9 @@ Deployed on **Vercel** as a standard Next.js project (`vercel.json`: `npm instal
 
 ## 12. Open items / TODOs
 
-- **Real photography:** replace the hero drink cut-outs, the 5 placeholder menu photos and the stock café video with shots of the actual shop and drinks; add more client photos to the gallery (`Atmosphere.tsx`).
-- **Record image sources:** the origin of the hero cut-outs and the three gallery photos isn't documented. Confirm and note them here.
+- **More menu photos:** most of the PDF menu isn't on the website yet because no supplied photo matches it. See **Needs Photos** in `PHOTO_SHOT_LIST.md`.
 - **After-dark menu:** a cocktail block is on hold until the client confirms their renewed permit (`src/data/menu.ts`).
 - **Centralize business info:** address, hours and the Toast URL are exported from `Header.tsx` and reused by the footer; the Visit section, hero stats and `layout.tsx` still repeat them. Move them to one data file.
-- **Footer credit:** add the Develomark logo to the footer once the asset is supplied.
 - **Menu PDF:** confirm `public/lionsden-menu.pdf` is the current menu once the client's media package is in hand.
 - **Copyright year** in the footer is hard-coded (2026).
 - **Duplicate helper:** `ui/tabs.tsx` and `ui/tooltip.tsx` import `cn` from the `cn` npm package instead of `@/lib/utils`. Point them at the local helper and drop the package.

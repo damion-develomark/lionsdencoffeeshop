@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { Badge } from "@/components/ui/badge";
-import patio from "../../../public/images/patio.webp";
+import storefront from "../../../public/images/shop/storefront-patio-cannoli-espresso.webp";
 
 export function SlowDownBand() {
   const ref = useRef<HTMLElement>(null);
@@ -47,8 +47,8 @@ export function SlowDownBand() {
       <div className="shell story-grid">
         <div className="story-photo">
           <Image
-            src={patio}
-            alt="Guests enjoying coffee on the Lions Den patio in Plantsville"
+            src={storefront}
+            alt="A cannoli and a small coffee in a red cup on a patio table in front of the Lions Den Coffee Shop storefront"
             sizes="(max-width: 767px) 90vw, 45vw"
             placeholder="blur"
           />

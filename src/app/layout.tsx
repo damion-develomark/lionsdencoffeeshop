@@ -19,10 +19,10 @@ export const metadata: Metadata = {
       "Italian coffee, honest food, and good company in Plantsville, CT.",
     images: [
       {
-        url: "/images/patio.webp",
-        width: 963,
-        height: 575,
-        alt: "The Lions Den patio",
+        url: "/images/og-lions-den-storefront.jpg",
+        width: 1200,
+        height: 630,
+        alt: "A cannoli and a coffee on the patio in front of the Lions Den Coffee Shop storefront",
       },
     ],
     type: "website",
@@ -52,7 +52,8 @@ export default function RootLayout({
               "@type": "CafeOrCoffeeShop",
               name: "Lions Den Coffee Shop",
               url: "https://www.lionsdencoffeeshop.com",
-              image: "https://www.lionsdencoffeeshop.com/images/patio.webp",
+              image:
+                "https://www.lionsdencoffeeshop.com/images/og-lions-den-storefront.jpg",
               telephone: "+1-860-426-2809",
               email: "lionsdencoffeect@gmail.com",
               address: {

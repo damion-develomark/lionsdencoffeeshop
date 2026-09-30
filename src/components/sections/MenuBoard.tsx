@@ -23,8 +23,6 @@ import { CoffeeBean } from "@/components/brand/CoffeeSpill";
 
 const BEANS = ["a", "b", "c"];
 
-const SHOW_PLACEHOLDER_TAGS = process.env.NODE_ENV !== "production";
-
 const listVariants: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.04 } },
@@ -51,7 +49,6 @@ const SWIPE_DISTANCE = 60;
 const SWIPE_VELOCITY = 400;
 
 function sizesLine(item: MenuItem) {
-  if (item.note) return item.note;
   if (!item.sizes) return null;
   return Object.entries(item.sizes)
     .map(([size, price]) => `${size} $${price.toFixed(2)}`)
@@ -137,18 +134,13 @@ function MenuCarousel({ group }: { group: MenuGroup }) {
                     draggable={false}
                     sizes="(min-width: 1101px) 560px, calc(100vw - 40px)"
                     className="menu-photo-img"
+                    style={{ objectPosition: item.image.focus }}
                   />
                 </div>
-                {SHOW_PLACEHOLDER_TAGS && item.image.placeholder && (
-                  <span className="sample-tag">Sample</span>
-                )}
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
-        {item.pick && (
-          <figcaption className="feature-pill">{item.pick}</figcaption>
-        )}
       </figure>
 
       {/* Every item's details share one grid cell, so the panel keeps the
@@ -224,6 +216,7 @@ function MenuCarousel({ group }: { group: MenuGroup }) {
                         fill
                         sizes="104px"
                         className="menu-photo-img"
+                        style={{ objectPosition: it.image.focus }}
                       />
                     </span>
                   </span>
@@ -255,12 +248,10 @@ function MenuList({ group }: { group: MenuGroup }) {
                 fill
                 sizes="(min-width: 1101px) 560px, 1px"
                 className="menu-photo-img"
+                style={{ objectPosition: feature.image.focus }}
               />
             </div>
           </div>
-          {SHOW_PLACEHOLDER_TAGS && feature.image.placeholder && (
-            <span className="sample-tag">Sample</span>
-          )}
         </div>
         <figcaption className="feature-pill">{feature.name}</figcaption>
       </figure>
@@ -293,13 +284,10 @@ function MenuList({ group }: { group: MenuGroup }) {
                       fill
                       sizes="88px"
                       className="menu-photo-img"
+                      style={{ objectPosition: item.image.focus }}
                     />
                   </div>
                 </div>
-                {SHOW_PLACEHOLDER_TAGS && item.image.placeholder && (
-                  <span className="sample-tag">Sample</span>
-                )}
-                {item.pick && <span className="pick-tag">{item.pick}</span>}
               </motion.div>
 
               <div className="menu-item-body">
@@ -404,10 +392,6 @@ export function MenuBoard() {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
 
-  const allItems = Object.values(menu).flatMap((groups) =>
-    groups.flatMap((g) => g.items),
-  );
-
   useGSAP(
     () => {
       const media = gsap.matchMedia();
@@ -475,6 +459,14 @@ export function MenuBoard() {
           </a>
         </div>
       </div>
+      <p className="menu-selection-note">
+        A photographed selection of our menu. There&apos;s plenty more at the
+        counter:{" "}
+        <a href="/lionsden-menu.pdf" target="_blank" rel="noreferrer">
+          see the full menu (PDF)
+        </a>
+        .
+      </p>
       <TooltipProvider>
         <Tabs value={tab} onValueChange={setTab}>
           <TabsList className="menu-tabs" aria-label="Menu categories">
@@ -502,7 +494,13 @@ export function MenuBoard() {
           >
             <TabsContent key={tab} value={tab} forceMount asChild>
               <motion.div
-                className={`menu-grid ${tab === "Coffee" ? "coffee-grid" : ""}`}
+                className={`menu-grid ${
+                  tab === "Coffee"
+                    ? "coffee-grid"
+                    : menu[tab].length === 1
+                      ? "menu-grid--single"
+                      : ""
+                }`}
                 initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : -12 }}
@@ -541,24 +539,6 @@ export function MenuBoard() {
           Please alert staff of any allergies. Prices and items subject to
           change.
         </p>
-        <details className="photo-credits">
-          <summary>Photo credits</summary>
-          <p>
-            Menu photos are illustrative, via{" "}
-            {allItems.map((item, i) => (
-              <span key={item.slug}>
-                <a href={item.image.source} target="_blank" rel="noreferrer">
-                  {item.name} (
-                  {item.image.photographer
-                    ? `${item.image.photographer}, `
-                    : ""}
-                  {item.image.credit})
-                </a>
-                {i < allItems.length - 1 ? ", " : "."}
-              </span>
-            ))}
-          </p>
-        </details>
       </div>
     </section>
   );

@@ -1,17 +1,7 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  images: {
-    // Menu photos are served from these CDNs (see src/data/menu.ts)
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.pexels.com",
-        pathname: "/photos/**",
-      },
-      { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
-    ],
-  },
-};
+// All site imagery is local (public/images, public/brand), so no remote image
+// hosts are allow-listed.
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

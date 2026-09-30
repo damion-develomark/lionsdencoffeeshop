@@ -693,35 +693,39 @@ button:focus-visible {
 .hero-drink.is-cutout img {
   object-fit: contain;
 }
-/* Cutout sizes follow each photo's own proportions (see public/images/hero). */
-.hero-drink--main {
+/* Four supplied cutouts (public/images/hero, trimmed to the product).
+   Aspect ratios match each file so nothing is squashed. Tall drinks stand at
+   the back; the sandwich and latte sit in front, lower down. */
+.hero-drink--iced {
   z-index: 2;
-  width: 46%;
-  left: 6%;
-  top: -4%;
+  width: 33%;
+  left: 5%;
+  top: -3%;
+  aspect-ratio: 473 / 720;
   rotate: -5deg;
 }
-.hero-drink--main.is-cutout {
-  aspect-ratio: 741 / 1000;
-}
-.hero-drink--side {
-  z-index: 3;
-  width: 50%;
-  left: 46%;
-  top: 14%;
+.hero-drink--smoothie {
+  z-index: 2;
+  width: 37%;
+  left: 55%;
+  top: -1%;
+  aspect-ratio: 587 / 720;
   rotate: 5deg;
 }
-.hero-drink--side.is-cutout {
-  aspect-ratio: 854 / 1000;
-}
-.hero-drink--front {
+.hero-drink--sandwich {
   z-index: 4;
-  width: 36%;
-  left: 16%;
-  top: 60%;
+  width: 50%;
+  left: 0;
+  top: 47%;
+  aspect-ratio: 720 / 547;
+  rotate: -4deg;
 }
-.hero-drink--front.is-cutout {
-  aspect-ratio: 1277 / 900;
+.hero-drink--latte {
+  z-index: 3;
+  width: 44%;
+  left: 49%;
+  top: 55%;
+  aspect-ratio: 720 / 537;
 }
 .hero-bean {
   position: absolute;
@@ -873,12 +877,9 @@ h2 em {
   background: var(--color-espresso);
   color: var(--color-warm-white);
 }
-.culture-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+.culture-photo {
   object-fit: cover;
+  object-position: 50% 40%;
 }
 /* Espresso wash, heaviest bottom-left where the headline sits. */
 .culture-card::after {
@@ -917,7 +918,7 @@ h2 em {
 .culture-content h2 em {
   color: var(--color-gold);
 }
-/* Cream shadow so the button still reads as a sticker on the dark video. */
+/* Cream shadow so the button still reads as a sticker on the dark photo. */
 .culture-content .button {
   box-shadow: 4px 4px 0 var(--color-warm-white);
 }
@@ -1217,24 +1218,6 @@ h2 em {
   transform: rotate(-4deg);
 }
 /* Espresso sticker hung off the bottom of a thumbnail. */
-.pick-tag {
-  position: absolute;
-  left: 50%;
-  bottom: -11px;
-  z-index: 1;
-  translate: -50% 0;
-  rotate: -6deg;
-  padding: 4px 8px 3px;
-  white-space: nowrap;
-  background: var(--color-espresso);
-  color: var(--color-gold);
-  border: 2px solid var(--color-espresso);
-  border-radius: 999px;
-  box-shadow: 2px 2px 0 var(--color-gold);
-  font: 400 11px/1 var(--font-headline);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
 .menu-feature-parallax {
   position: absolute;
   inset: -8% 0;
@@ -1314,19 +1297,6 @@ h2 em {
   padding: 8px 18px;
   font-size: 14px;
   line-height: 1.2;
-}
-.sample-tag {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 1;
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-warm-white) 90%, transparent);
-  font: 600 8px/1.4 var(--font-sans);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-espresso);
 }
 /* --- Tablet + phone carousel ----------------------------------------- */
 .menu-carousel .menu-feature {
@@ -1477,35 +1447,7 @@ h2 em {
   font-weight: 600;
 }
 
-.photo-credits {
-  margin-top: 14px;
-  font: 400 12px/1.6 var(--font-sans);
-  font-style: normal;
-}
-.photo-credits summary {
-  cursor: pointer;
-  width: fit-content;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-bronze);
-}
-.photo-credits p {
-  margin-top: 8px;
-}
-.photo-credits a {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.photo-credits a:hover {
-  color: var(--color-bronze);
-}
-.coffee-grid .menu-block:nth-child(3) {
-  grid-column: 2;
-  grid-row: 2;
-}
 .menu-vignette {
-  grid-column: 1;
-  grid-row: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1533,6 +1475,24 @@ h2 em {
 .menu-vignette > p {
   font-size: 18px;
   font-style: italic;
+}
+/* Says the site shows a photographed selection, and points to the full PDF. */
+.menu-selection-note {
+  max-width: 640px;
+  margin: -12px 0 30px;
+  font: italic 400 18px/1.5 var(--font-serif);
+  color: var(--muted-foreground);
+}
+.menu-selection-note a {
+  color: var(--color-espresso);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--color-gold);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+.menu-selection-note a:hover {
+  color: var(--color-bronze);
 }
 .menu-footnote {
   margin-top: 52px;
@@ -1824,11 +1784,8 @@ h2 em {
 /* Footer: "latte". Flat soft latte panel, one centred column, steam rising
    off the lion. */
 .site-footer {
-  /* Latte tint (the hero spill's top colour) over a coffee photo. */
-  background:
-    linear-gradient(rgb(248 232 196 / 88%), rgb(248 232 196 / 88%)),
-    url("https://images.pexels.com/photos/37034118/pexels-photo-37034118.jpeg?auto=compress&cs=tinysrgb&w=1920")
-      center / cover #f8e8c4;
+  /* Latte panel in the hero spill's top colour, warming slightly downward. */
+  background: linear-gradient(180deg, #f8e8c4, #f1dcae);
   border-top: 2px solid var(--color-gold-rule);
   padding-block: 64px 32px;
 }
@@ -1944,6 +1901,20 @@ h2 em {
   font: 400 11px var(--font-sans);
   color: var(--muted-foreground);
 }
+/* Restrained site-builder credit: small caption + the black wordmark. */
+.footer-credit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font: 400 11px var(--font-sans);
+  color: var(--muted-foreground);
+}
+.footer-credit-logo {
+  width: 96px;
+  height: auto;
+  opacity: 0.8;
+}
 .skip-link {
   position: fixed;
   top: -80px;
@@ -2010,14 +1981,6 @@ h2 em {
     gap: 64px;
     min-height: 0;
   }
-  .coffee-grid .menu-block:nth-child(3) {
-    grid-column: auto;
-    grid-row: auto;
-  }
-  .menu-vignette {
-    grid-column: auto;
-    grid-row: auto;
-  }
 }
 @media (max-width: 767px) {
   .shell {
@@ -2082,6 +2045,16 @@ h2 em {
     height: auto;
     aspect-ratio: 1 / 0.95;
     margin-top: 0;
+  }
+  /* Front row shifts left so the badge has the bottom-right corner. */
+  .hero-drink--sandwich {
+    width: 48%;
+    top: 49%;
+  }
+  .hero-drink--latte {
+    width: 38%;
+    left: 35%;
+    top: 62%;
   }
   .hero-description {
     font-size: 24px;
@@ -2165,7 +2138,7 @@ h2 em {
   .culture-content {
     padding: 28px 22px;
   }
-  /* Text fills most of the card on phones: darken the whole video more. */
+  /* Text fills most of the card on phones: darken the whole photo more. */
   .culture-card::after {
     background: linear-gradient(
       0deg,
@@ -2336,6 +2309,19 @@ h2 em {
   }
   .gallery-window {
     overflow-x: auto;
+  }
+}
+
+/* A tab with a single group spans the board: photo left, items right. */
+@media (min-width: 1101px) {
+  .menu-grid--single {
+    grid-template-columns: 1fr;
+  }
+  .menu-grid--single .menu-list-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 85px;
+    align-items: start;
   }
 }
 

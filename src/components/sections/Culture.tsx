@@ -1,50 +1,22 @@
-"use client";
-import { useEffect, useRef } from "react";
-import { useReducedMotion } from "motion/react";
+import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { Anchor } from "./Header";
+import patioCoffee from "../../../public/images/shop/iced-coffee-by-the-patio.webp";
 
-// Stock footage (Pexels #29719125, free to use) until the shop's own is shot.
-// Re-encoded to 720p with macOS avconvert to keep it light.
-const VIDEO = "/videos/cafe-culture.mp4";
-const POSTER = "/videos/cafe-culture-poster.jpg";
-
-// Full-bleed video card: headline + button bottom-left, a rule across, and a
-// short note bottom-right, over the café in motion.
+// Full-bleed photo card: headline + button bottom-left, a rule across, and a
+// short note bottom-right, over an iced coffee in front of the shop's patio.
 export function Culture() {
-  const video = useRef<HTMLVideoElement>(null);
-  const reduced = useReducedMotion();
-
-  // Only play while on screen, and never for reduced-motion visitors.
-  useEffect(() => {
-    const el = video.current;
-    if (!el) return;
-    if (reduced) {
-      el.pause();
-      return;
-    }
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) el.play().catch(() => {});
-      else el.pause();
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [reduced]);
-
   return (
     <section className="culture-section" aria-labelledby="culture-title">
       <div className="shell">
         <div className="culture-card">
-          <video
-            ref={video}
-            className="culture-video"
-            src={VIDEO}
-            poster={POSTER}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden
+          <Image
+            src={patioCoffee}
+            alt=""
+            fill
+            sizes="(max-width: 767px) 100vw, 1200px"
+            placeholder="blur"
+            className="culture-photo"
           />
           <div className="culture-content">
             <p className="eyebrow">The Lions Den way</p>
@@ -70,7 +42,7 @@ export function Culture() {
                 <p>
                   Espresso pulled <strong>the Italian way</strong>, and a
                   counter full of regulars, neighbors and first-timers who leave
-                  as friends. This is what a Lions Den morning sounds like.
+                  as friends. This is what a Lions Den morning looks like.
                 </p>
               </div>
             </div>
