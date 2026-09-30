@@ -185,8 +185,7 @@ button:focus-visible {
    shadow, Anton caps. */
 .feature-pill,
 .slow-badge,
-.story-photo > span,
-.map-pin-card {
+.story-photo > span {
   background: var(--color-gold);
   color: var(--color-espresso);
   font-family: var(--font-headline);
@@ -239,6 +238,51 @@ button:focus-visible {
   box-shadow: 4px 4px 0 var(--color-espresso);
   transition: background 0.2s;
 }
+/* Address + hours line above the pill. A 1fr → 0fr grid row folds it away
+   once the page scrolls, so it never floats over section content. */
+.header-info {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows 0.25s ease,
+    opacity 0.2s ease,
+    visibility 0.25s;
+}
+.header-info > p {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 10px;
+  font: 500 11px/1.6 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-bronze);
+}
+.header-info span {
+  padding-bottom: 8px;
+}
+.header-info span + span::before {
+  content: "·";
+  margin-right: 10px;
+}
+.site-header.is-scrolled .header-info {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+}
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+/* Slightly smaller than the page buttons so two fit beside the nav. */
+.header-order {
+  min-height: 46px;
+  padding: 10px 20px;
+  font-size: 15px;
+  gap: 10px;
+}
 .site-header.is-scrolled .header-inner {
   background: color-mix(in srgb, var(--color-warm-white) 90%, transparent);
   backdrop-filter: blur(14px);
@@ -259,11 +303,13 @@ button:focus-visible {
   font: italic 16px/1.4 var(--font-serif);
   margin-top: 3px;
 }
+/* Fills the space between the wordmark and the buttons and centers the
+   links in it, so the gaps on either side match. */
 .desktop-nav {
+  flex: 1;
   display: flex;
+  justify-content: center;
   gap: 6px;
-  margin-left: auto;
-  margin-right: 24px;
 }
 .nav-item {
   position: relative;
@@ -309,6 +355,7 @@ button:focus-visible {
   height: 100%;
   /* Bottom room so the button sits on the coffee, above the drips. */
   padding: 96px 28px 96px;
+  overflow-y: auto;
 }
 /* The spill floods the whole sheet, wavy edge and drips along the bottom.
    The strip is wider than the sheet and shifted left so the part with the
@@ -398,9 +445,51 @@ button:focus-visible {
   color: var(--color-espresso);
   rotate: -8deg;
 }
-.sheet-order {
-  align-self: flex-start;
+.sheet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
   margin-top: auto;
+  padding-top: 32px;
+}
+.sheet-info {
+  margin-top: 20px;
+  font: 500 11px/1.7 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-espresso);
+}
+.sheet-info span {
+  display: block;
+}
+/* Short phones: tighten the sheet so the links, both buttons and the hours
+   fit without scrolling. */
+@media (max-height: 800px) {
+  .sheet-body {
+    padding-block: 72px 60px;
+  }
+  .sheet-head h2 {
+    font-size: 36px;
+  }
+  .mobile-sheet nav {
+    margin-top: 20px;
+  }
+  .sheet-link {
+    padding-block: 7px;
+    font-size: 25px;
+  }
+  .sheet-num {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+  .sheet-actions {
+    gap: 12px;
+    padding-top: 20px;
+  }
+  .sheet-info {
+    margin-top: 14px;
+  }
 }
 .hero {
   position: relative;
@@ -408,7 +497,7 @@ button:focus-visible {
   z-index: 1;
   /* The tilted band is wider than the viewport; clip sideways only. */
   overflow-x: clip;
-  padding: 128px 0 30px;
+  padding: 156px 0 30px;
   background: linear-gradient(
     180deg,
     var(--color-warm-white),
@@ -1622,99 +1711,14 @@ h2 em {
   flex-direction: column;
   background: var(--color-cream);
 }
-/* --- Custom map (MapLibre + OpenFreeMap, recolored in VisitMap.tsx) ----- */
+/* Google Maps embed fills the frame above the gold label. */
 .visit-map {
-  position: relative;
+  display: block;
   flex: 1;
   min-height: 0;
+  width: 100%;
+  border: 0;
   background: var(--color-cream);
-}
-.visit-map .maplibregl-canvas {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-.visit-map.is-styled .maplibregl-canvas {
-  opacity: 1;
-}
-.visit-map .maplibregl-ctrl-group {
-  border: 2px solid var(--color-espresso);
-  border-radius: 0.75rem;
-  box-shadow: 3px 3px 0 0 var(--color-espresso);
-  background: var(--color-warm-white);
-  overflow: hidden;
-}
-.visit-map .maplibregl-ctrl-group button + button {
-  border-top: 1px solid var(--border);
-}
-.visit-map .maplibregl-ctrl-attrib {
-  font: 400 10px var(--font-sans);
-  background: color-mix(in srgb, var(--color-warm-white) 85%, transparent);
-}
-.visit-map .maplibregl-cooperative-gesture-screen {
-  font: 500 14px var(--font-sans);
-  background: color-mix(in srgb, var(--color-espresso) 70%, transparent);
-  color: var(--color-warm-white);
-}
-.map-pin {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: var(--color-espresso);
-}
-.map-pin-card {
-  margin-bottom: 8px;
-  padding: 6px 14px;
-  font-size: 13px;
-  line-height: 1.25;
-  text-align: center;
-  white-space: nowrap;
-}
-.map-pin-card strong {
-  display: block;
-  font-weight: 400;
-}
-.map-pin-badge {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 58px;
-  height: 58px;
-  border: 3px solid var(--color-espresso);
-  border-radius: 50%;
-  background: var(--color-warm-white);
-  box-shadow: 3px 3px 0 0 var(--color-espresso);
-  transition: transform 0.25s ease;
-}
-.map-pin:hover .map-pin-badge {
-  transform: translateY(-3px) rotate(-6deg);
-}
-.map-pin-badge .lion-mark {
-  width: 40px;
-  height: 40px;
-}
-.map-pin-pulse {
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  border: 3px solid var(--color-gold);
-  animation: map-pulse 2.2s ease-out infinite;
-}
-@keyframes map-pulse {
-  from {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  to {
-    transform: scale(1.8);
-    opacity: 0;
-  }
-}
-.map-pin-tip {
-  width: 3px;
-  height: 14px;
-  background: var(--color-espresso);
-  border-radius: 0 0 3px 3px;
 }
 .map-label {
   padding: 20px;
@@ -1726,6 +1730,96 @@ h2 em {
   font: 400 14px/1.2 var(--font-headline);
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+/* Reviews: a dark stage for the Elfsight carousel, whose own background is
+   black. A gold rule marks the hand-off from the cream gallery. */
+.reviews-section {
+  background: #000;
+  color: var(--color-warm-white);
+  border-top: 4px solid var(--color-gold);
+  padding-block: 88px 72px;
+}
+.reviews-section .eyebrow {
+  color: var(--color-gold);
+}
+.reviews-section h2 {
+  color: var(--color-warm-white);
+  font-size: 42px;
+}
+.reviews-section h2 em {
+  color: var(--color-gold);
+}
+.reviews-widget {
+  width: min(100% - 48px, 1280px);
+  min-height: 320px;
+  margin: 40px auto 0;
+}
+/* Contact: copy + alternate contacts + Join card beside the Typeform. */
+.contact-section {
+  background: var(--color-cream);
+  padding-block: 96px;
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 64px;
+  align-items: start;
+}
+.contact-copy h2 {
+  font-size: 42px;
+}
+.contact-copy > p:not(.eyebrow) {
+  margin-top: 20px;
+  font-size: 19px;
+  line-height: 1.55;
+}
+.contact-alt {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+.contact-alt li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 18px;
+}
+.contact-alt svg {
+  width: 19px;
+  flex-shrink: 0;
+  color: var(--color-bronze);
+}
+.contact-alt a {
+  border-bottom: 1px solid var(--color-latte);
+  overflow-wrap: anywhere;
+}
+.join-card {
+  margin-top: 36px;
+  padding: 26px 26px 30px;
+  background: var(--color-warm-white);
+  border: 2px solid var(--color-espresso);
+  border-radius: 1.25rem;
+  box-shadow: 6px 6px 0 var(--color-espresso);
+}
+.join-card h3 {
+  font: 400 28px/1 var(--font-headline);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.join-card p {
+  margin: 10px 0 20px;
+  font-size: 17px;
+  line-height: 1.5;
+}
+/* Typeform mounts a 500px-tall iframe here; the min-height holds that space
+   so the page doesn't jump while the form loads. */
+.contact-form {
+  min-height: 504px;
+  overflow: hidden;
+  background: var(--color-warm-white);
+  border: 2px solid var(--color-espresso);
+  border-radius: 1.25rem;
+  box-shadow: 6px 6px 0 var(--color-espresso);
 }
 /* Footer: "latte". Flat soft latte panel, one centred column, steam rising
    off the lion. */
@@ -1863,7 +1957,7 @@ h2 em {
 }
 @media (min-width: 1500px) {
   .hero {
-    padding-top: 140px;
+    padding-top: 168px;
   }
   .hero-art {
     height: 600px;
@@ -1872,6 +1966,18 @@ h2 em {
 @media (max-width: 1100px) {
   .shell {
     width: calc(100% - 64px);
+  }
+  .header-inner {
+    gap: 12px;
+  }
+  .desktop-nav {
+    display: none;
+  }
+  .header-actions {
+    margin-left: auto;
+  }
+  .mobile-menu {
+    display: block;
   }
   .hero-stage {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -1893,6 +1999,10 @@ h2 em {
   .story-grid,
   .visit-section {
     column-gap: 45px;
+  }
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
   /* Tablet: one carousel per row, full width. */
   .menu-grid {
@@ -1929,8 +2039,8 @@ h2 em {
   .wordmark small {
     font-size: 13px;
   }
-  .desktop-nav,
-  .header-order {
+  .header-info,
+  .header-actions {
     display: none;
   }
   .mobile-menu {
@@ -2182,6 +2292,21 @@ h2 em {
   .map-wrap {
     height: 350px;
   }
+  .reviews-section {
+    padding-block: 56px 48px;
+  }
+  .reviews-section h2,
+  .contact-copy h2 {
+    font-size: 34px;
+  }
+  .reviews-widget {
+    width: calc(100% - 24px);
+    margin-top: 28px;
+  }
+  .contact-section {
+    padding-block: 56px;
+  }
+
   .footer-line {
     font-size: 23px;
   }

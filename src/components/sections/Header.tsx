@@ -7,7 +7,7 @@ import {
   useReducedMotion,
   useScroll,
 } from "motion/react";
-import { Menu, ArrowUpRight, X } from "lucide-react";
+import { Menu, ArrowUpRight, Phone, X } from "lucide-react";
 import {
   Sheet,
   SheetClose,
@@ -29,6 +29,13 @@ const MOBILE_NAV = [
   ...NAV.slice(0, 2),
   { label: "Gallery", href: "#gallery" },
   NAV[2],
+  { label: "Contact", href: "#contact" },
+];
+export const ORDER_ONLINE_URL = "https://toasttab.com/lions-den-coffee-shop";
+export const ADDRESS = "57 West Main Street, Plantsville, CT 06479";
+export const HOURS = [
+  { days: "Mon–Fri", time: "6am–7pm" },
+  { days: "Sat & Sun", time: "7am–7pm" },
 ];
 
 export function Anchor({
@@ -164,9 +171,27 @@ function MobileSheetBody({
           </Anchor>
         ))}
       </nav>
-      <a className="button sheet-order sheet-reveal" href="tel:+18604262809">
-        Call to order <ArrowUpRight size={16} />
-      </a>
+      <div className="sheet-actions sheet-reveal">
+        <a
+          className="button"
+          href={ORDER_ONLINE_URL}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Order online <ArrowUpRight size={16} />
+        </a>
+        <a className="button" href="tel:+18604262809">
+          Call to order <Phone size={16} />
+        </a>
+      </div>
+      <p className="sheet-info sheet-reveal">
+        {ADDRESS}
+        {HOURS.map(({ days, time }) => (
+          <span key={days}>
+            {days}: {time}
+          </span>
+        ))}
+      </p>
     </div>
   );
 }
@@ -183,6 +208,17 @@ export function Header() {
   });
   return (
     <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
+      {/* Address and hours ride above the pill, then fold away on scroll. */}
+      <div className="header-info">
+        <p className="shell">
+          <span>{ADDRESS}</span>
+          {HOURS.map(({ days, time }) => (
+            <span key={days}>
+              {days}: {time}
+            </span>
+          ))}
+        </p>
+      </div>
       <div className="shell header-inner">
         <Anchor href="#top" className="wordmark">
           <Image
@@ -225,10 +261,19 @@ export function Header() {
             </span>
           ))}
         </nav>
-        {/* TODO: replace phone ordering with the client's verified Toast URL. */}
-        <a className="button header-order" href="tel:+18604262809">
-          Call to order <ArrowUpRight size={16} />
-        </a>
+        <div className="header-actions">
+          <a className="button header-order" href="tel:+18604262809">
+            Call to order <Phone size={16} />
+          </a>
+          <a
+            className="button header-order"
+            href={ORDER_ONLINE_URL}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Order online <ArrowUpRight size={16} />
+          </a>
+        </div>
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
             className="mobile-menu icon-button"

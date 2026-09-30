@@ -1,9 +1,9 @@
-# Lions Den Coffee Shop — Website
+# Lions Den Coffee Shop® — Website
 
-The marketing website for **Lions Den Coffee Shop**, an Italian-style neighborhood coffee house at 57 W Main St in Plantsville, Connecticut. It's a single, scroll-driven page that introduces the shop, shows the full menu, tells the family story, and gets people through the door (call, directions, socials).
+The marketing website for **Lions Den Coffee Shop®**, an Italian-style neighborhood coffee house at 57 W Main St in Plantsville, Connecticut. It's a single, scroll-driven page that introduces the shop, shows the full menu, tells the family story, and gets people through the door (online ordering, call, directions, reviews, contact form, socials).
 
 - **Production URL:** https://www.lionsdencoffeeshop.com (set as `metadataBase` in `src/app/layout.tsx`)
-- **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · GSAP · Motion · MapLibre
+- **Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · GSAP · Motion
 - **Hosting:** Vercel (`vercel.json`)
 
 ---
@@ -32,7 +32,7 @@ The marketing website for **Lions Den Coffee Shop**, an Italian-style neighborho
 | **Name**         | Lions Den Coffee Shop (Lions Den Coffee LLC)                                    |
 | **Founded**      | 2020, by Vincenzo and Anisa Infante                                             |
 | **Address**      | 57 W Main St, Plantsville, CT 06479                                             |
-| **Hours**        | Open daily, 6:00 AM – 7:00 PM                                                   |
+| **Hours**        | Mon–Fri 6:00 AM – 7:00 PM; Sat & Sun 7:00 AM – 7:00 PM                          |
 | **Phone**        | (860) 426-2809                                                                  |
 | **Email**        | lionsdencoffeect@gmail.com                                                      |
 | **Service area** | Plantsville / Southington, plus a short trip from Cheshire, Bristol and Wolcott |
@@ -50,13 +50,13 @@ The marketing website for **Lions Den Coffee Shop**, an Italian-style neighborho
 | **Breakfast**  | Morning Favorites (The Carnivore, The Inferno, Southern Sunrise) · A Brighter Start (Lox Bagel, The California, Yogurt Parfait)                                                                                |
 | **Lunch**      | From the Panini Press (Chicken & Pesto, Vodka Parmigiana, Chipotle Club) · A Little Lighter (Smoked Salmon Avocado Toast, Caprese Panini, Classic Avocado Toast)                                               |
 
-The full printable menu is also available as a PDF at `public/lionsden-menu.pdf` (linked from the menu section as "Full menu").
+The full printable menu is also available as a PDF at `public/lionsden-menu.pdf` (the menu section's "Download menu" link saves it as `lions-den-coffee-shop-menu.pdf`).
 
 **Goals of the site.**
 
 1. Make the shop feel warm and personal before anyone visits.
 2. Make the menu easy to browse on a phone, with prices and sizes.
-3. Drive visits and orders: **Call to order** (tap-to-call) and **Get directions** (Google Maps) appear in the header, hero, visit section and footer.
+3. Drive visits and orders: **Order online** (Toast) and **Call to order** (tap-to-call) sit side by side in the header, mobile menu and footer; **Get directions** (Google Maps) is in the visit section and footer. **Join Lions Den** (Toast marketing sign-up) is in the contact section.
 4. Grow social following (Instagram, Facebook, YouTube, TikTok, Yelp).
 5. Rank locally ("coffee shop Plantsville / Southington") via structured data and good metadata.
 
@@ -111,16 +111,18 @@ The look is "a café menu board come to life": warm latte creams, espresso-black
 
 The whole site is one page (`src/app/page.tsx`). Sections, top to bottom:
 
-| #   | Section                  | Component                             | What it does                                                                                                                                                                                                                                                                 |
-| --- | ------------------------ | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| —   | **Header**               | `sections/Header.tsx`                 | Floating pill nav, fixed to the top and visible at all times. Logo, Menu / Our Story / Visit links, "Call to order" button; a slide-out sheet on mobile. Turns frosted once you scroll.                                                                                      |
-| 1   | **Hero**                 | `sections/Hero.tsx`                   | "SIP & STAY." headline (white Anton with espresso outline, gold "&"). A coffee spill pours down the section, drips run, cut-out drinks and beans land, and the lion badge draws itself. Stats (2020 · 6AM · 57), stacked CTAs, and a tilted gold marquee.                    |
-| 2   | **Culture**              | `sections/Culture.tsx`                | Full-width video card of a busy café bar, espresso-tinted, with "Come for the coffee. Stay for the people." and an "Our story" button.                                                                                                                                       |
-| 3   | **Menu** (`#menu`)       | `sections/MenuBoard.tsx`              | "Your daily ritual." Tabs for Coffee / Not Coffee / Breakfast / Lunch; each group has a feature photo, and each item has a thumbnail, price, and a size/price tooltip. Includes the "Come in / Slow down" sticker, animated espresso saucer, and a photo-credits disclosure. |
-| 4   | **Our Story** (`#about`) | `sections/SlowDownBand.tsx`           | Dark panel: "More than coffee. A sense of belonging.", the founders, the mission quote and the values pills.                                                                                                                                                                 |
-| 5   | **Gallery** (`#gallery`) | `sections/Atmosphere.tsx`             | "Pull up a chair." A horizontal photo strip that's pinned and scrubbed sideways as you scroll on desktop.                                                                                                                                                                    |
-| 6   | **Visit** (`#visit`)     | `sections/Visit.tsx` + `VisitMap.tsx` | Address, hours, phone, email, "Get directions", and an interactive map with a custom lion pin, recolored to the brand palette.                                                                                                                                               |
-| 7   | **Footer**               | `sections/SiteFooter.tsx`             | Latte-tinted coffee photo background. Lion logo (replays the hero's draw-on animation when scrolled into view) with rising steam, tagline, address & hours, nav links, the two CTAs, social icons and copyright.                                                             |
+| #   | Section                  | Component                   | What it does                                                                                                                                                                                                                                                                                                                                                                              |
+| --- | ------------------------ | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| —   | **Header**               | `sections/Header.tsx`       | Floating pill nav, fixed to the top and visible at all times. Address and hours line above the pill (folds away on scroll). Logo, Menu / Our Story / Visit links, "Call to order" and "Order online" buttons. Below 1100px the links move into a slide-out sheet (which also has both buttons, address and hours); below 768px the buttons move there too. Turns frosted once you scroll. |
+| 1   | **Hero**                 | `sections/Hero.tsx`         | "SIP & STAY." headline (white Anton with espresso outline, gold "&"). A coffee spill pours down the section, drips run, cut-out drinks and beans land, and the lion badge draws itself. Stats (2020 · 6AM · 57), stacked CTAs, and a tilted gold marquee.                                                                                                                                 |
+| 2   | **Culture**              | `sections/Culture.tsx`      | Full-width video card of a busy café bar, espresso-tinted, with "Come for the coffee. Stay for the people." and an "Our story" button.                                                                                                                                                                                                                                                    |
+| 3   | **Menu** (`#menu`)       | `sections/MenuBoard.tsx`    | "Your daily ritual." Tabs for Coffee / Not Coffee / Breakfast / Lunch; each group has a feature photo, and each item has a thumbnail, price, and a size/price tooltip. Includes the "Come in / Slow down" sticker, animated espresso saucer, and a photo-credits disclosure.                                                                                                              |
+| 4   | **Our Story** (`#about`) | `sections/SlowDownBand.tsx` | Dark panel: "More than coffee. A sense of belonging.", the founders, the mission quote and the values pills.                                                                                                                                                                                                                                                                              |
+| 5   | **Gallery** (`#gallery`) | `sections/Atmosphere.tsx`   | "Pull up a chair." A horizontal photo strip that's pinned and scrubbed sideways as you scroll on desktop.                                                                                                                                                                                                                                                                                 |
+| 6   | **Reviews** (`#reviews`) | `sections/Reviews.tsx`      | Black stage for the Elfsight "All-in-One Reviews" carousel (styled in the Elfsight dashboard). `platform.js` loads via `next/script`.                                                                                                                                                                                                                                                     |
+| 7   | **Visit** (`#visit`)     | `sections/Visit.tsx`        | Address, hours, phone, email, "Get directions", and the Google Maps embed for the shop.                                                                                                                                                                                                                                                                                                   |
+| 8   | **Contact** (`#contact`) | `sections/Contact.tsx`      | "Contact us": Typeform live embed (`embed.js` via `next/script`), email and phone as alternatives, and the "Join Lions Den" sign-up card.                                                                                                                                                                                                                                                 |
+| 9   | **Footer**               | `sections/SiteFooter.tsx`   | Latte-tinted coffee photo background. Lion logo (replays the hero's draw-on animation when scrolled into view) with rising steam, tagline, address & hours, nav links, the two CTAs, social icons and copyright.                                                                                                                                                                          |
 
 ---
 
@@ -136,8 +138,6 @@ The whole site is one page (`src/app/page.tsx`). Sections, top to bottom:
 | `@gsap/react`              | ^2.1        | `useGSAP()` hook — scoped, auto-cleaned GSAP in React                                                                                                                                                                                                       |
 | `lenis`                    | ^1.3        | Smooth scrolling, driven by GSAP's ticker so ScrollTrigger stays in sync (`src/components/providers/smooth-scroll.tsx`)                                                                                                                                     |
 | `motion`                   | ^13.4       | (Framer Motion) Component-level animation: menu list staggers, hover springs, badge float, tab transitions                                                                                                                                                  |
-| `maplibre-gl`              | ^6.11       | Open-source WebGL map renderer for the Visit map                                                                                                                                                                                                            |
-| `react-map-gl`             | ^8.1        | React bindings for MapLibre (`react-map-gl/maplibre`)                                                                                                                                                                                                       |
 | `radix-ui`                 | ^1.6        | Accessible primitives behind the shadcn/ui components (tabs, sheet, tooltip)                                                                                                                                                                                |
 | `lucide-react`             | ^1.48       | UI icons (arrows, phone, map pin, clock, menu…). Note: v1 no longer ships brand/social icons.                                                                                                                                                               |
 | `class-variance-authority` | ^0.7        | Variant styling for shadcn/ui components                                                                                                                                                                                                                    |
@@ -160,14 +160,16 @@ The whole site is one page (`src/app/page.tsx`). Sections, top to bottom:
 
 ### External services (no API keys needed)
 
-| Service                                                   | Used for                                                               |
-| --------------------------------------------------------- | ---------------------------------------------------------------------- |
-| **Google Fonts**                                          | The five web fonts                                                     |
-| **OpenFreeMap** (`tiles.openfreemap.org`, Positron style) | Free vector map tiles for the Visit map                                |
-| **OpenStreetMap**                                         | Map data behind the tiles (attribution shown on the map, required)     |
-| **Pexels / Unsplash CDNs**                                | Menu photos and the footer background, served straight from their CDNs |
-| **Google Maps**                                           | "Get directions" links (opens in a new tab)                            |
-| **Vercel**                                                | Hosting                                                                |
+| Service                             | Used for                                                               |
+| ----------------------------------- | ---------------------------------------------------------------------- |
+| **Google Fonts**                    | The five web fonts                                                     |
+| **Google Maps embed**               | The map in the Visit section                                           |
+| **Elfsight** (`elfsightcdn.com`)    | Reviews carousel (widget configured in the Elfsight dashboard)         |
+| **Typeform** (`embed.typeform.com`) | Contact form (form configured in Typeform)                             |
+| **Toast** (`toasttab.com`)          | Online ordering and the "Join Lions Den" marketing sign-up             |
+| **Pexels / Unsplash CDNs**          | Menu photos and the footer background, served straight from their CDNs |
+| **Google Maps**                     | "Get directions" links (opens in a new tab)                            |
+| **Vercel**                          | Hosting                                                                |
 
 ---
 
@@ -183,10 +185,7 @@ The whole site is one page (`src/app/page.tsx`). Sections, top to bottom:
 │   │   ├── pastries.webp      # gallery
 │   │   └── patio.webp         # gallery, story section, Open Graph image
 │   ├── videos/                # cafe-culture.mp4 + poster (Culture section)
-│   ├── maplibre/              # MapLibre worker, copied here on install (generated)
 │   └── lionsden-menu.pdf      # printable menu
-├── scripts/
-│   └── copy-maplibre-worker.mjs
 ├── src/
 │   ├── app/
 │   │   ├── layout.tsx         # fonts, metadata, Open Graph, JSON-LD, smooth scroll
@@ -214,18 +213,17 @@ The whole site is one page (`src/app/page.tsx`). Sections, top to bottom:
 **Requirements:** Node.js 20.9 or newer (Next 16's minimum), npm.
 
 ```bash
-npm install          # also runs the postinstall step that copies the MapLibre worker
+npm install
 npm run dev          # http://localhost:3000
 ```
 
-| Script                            | What it does                                |
-| --------------------------------- | ------------------------------------------- |
-| `npm run dev`                     | Dev server with hot reload                  |
-| `npm run build`                   | Production build                            |
-| `npm start`                       | Serve the production build                  |
-| `npm run lint`                    | ESLint                                      |
-| `npm run format` / `format:check` | Prettier write / check                      |
-| `postinstall` (automatic)         | `scripts/copy-maplibre-worker.mjs` — see §7 |
+| Script                            | What it does               |
+| --------------------------------- | -------------------------- |
+| `npm run dev`                     | Dev server with hot reload |
+| `npm run build`                   | Production build           |
+| `npm start`                       | Serve the production build |
+| `npm run lint`                    | ESLint                     |
+| `npm run format` / `format:check` | Prettier write / check     |
 
 No environment variables are required.
 
@@ -259,9 +257,12 @@ The logo is a vector rebuild of the shield lion. With `animated`, it renders ext
 
 The data file defines items per tab and group, then a separate `photos` map keyed by item slug. At build time each item is joined to its photo, and a **missing photo throws an error**, so the menu can't ship with a broken image. Photos flagged `placeholder: true` show a "Sample" tag in development only. Size pricing appears in a tooltip.
 
-### Map (`VisitMap.tsx`)
+### Third-party embeds (`Visit.tsx`, `Reviews.tsx`, `Contact.tsx`)
 
-MapLibre + react-map-gl with the free OpenFreeMap "Positron" style, recolored at runtime from the CSS brand tokens, so the map never hard-codes colors. The shop is pinned with a custom lion marker and a gold label. MapLibre 6 loads its web worker as a separate file that Next's bundler doesn't emit, so the **postinstall script copies the worker into `public/maplibre/`** and the map points `setWorkerUrl()` at it. The map needs WebGL2; without it (e.g. some headless browsers) it shows an empty panel.
+- **Map:** the client's Google Maps embed, as a lazy-loaded `<iframe>` that fills the map frame (485px desktop, 350px mobile). Google's embed asks for two fingers to pan on touch screens, so it doesn't trap page scrolling.
+- **Reviews:** the Elfsight widget `div` plus `<Script src="https://elfsightcdn.com/platform.js" strategy="lazyOnload">`. `next/script` guarantees the script is added once. The widget's look is set in the Elfsight dashboard, not in this repo.
+- **Contact form:** the Typeform `data-tf-live` `div` plus `<Script src="https://embed.typeform.com/next/embed.js">`. Typeform mounts a 500px iframe; the frame reserves that height to avoid layout shift.
+- Elfsight and Typeform may restrict which domains their widgets render on. If one shows blank on a new domain, check the allowed domains in that service's dashboard.
 
 ### Culture video (`Culture.tsx`)
 
@@ -275,17 +276,17 @@ Brand glyphs inlined as SVG paths from Simple Icons, since lucide-react v1 dropp
 
 ## 8. Assets & sources
 
-> **Licensing summary.** Stock photos and video come from **Pexels** and **Unsplash**. Both licenses allow free commercial use with no attribution required; the site credits them anyway, in the menu's "Photo credits" disclosure. Brand icons are **CC0**. Fonts are under the **SIL Open Font License**. Map data is **© OpenStreetMap contributors (ODbL)**, which _requires_ the on-map attribution — don't hide it.
+> **Licensing summary.** Stock photos and video come from **Pexels** and **Unsplash**. Both licenses allow free commercial use with no attribution required; the site credits them anyway, in the menu's "Photo credits" disclosure. Brand icons are **CC0**. Fonts are under the **SIL Open Font License**. Map tiles and data come from the Google Maps embed, which shows its own attribution.
 
 ### Brand assets (the shop's own)
 
-| File                                                | What                       | Notes                                                               |
-| --------------------------------------------------- | -------------------------- | ------------------------------------------------------------------- |
-| `public/brand/lions-den-logo.jpg`                   | Official shield-lion logo  | Used in the header                                                  |
-| `public/brand/lions-den-mark.svg`                   | Vector lion mark           |                                                                     |
-| `src/components/brand/LionMark.tsx`                 | Vector rebuild of the logo | Transparent, animatable; used in the hero badge, footer and map pin |
-| `src/app/icon.svg`, `favicon.ico`, `apple-icon.png` | Site icons                 |                                                                     |
-| `public/lionsden-menu.pdf`                          | Printable menu             |                                                                     |
+| File                                                | What                       | Notes                                                      |
+| --------------------------------------------------- | -------------------------- | ---------------------------------------------------------- |
+| `public/brand/lions-den-logo.jpg`                   | Official shield-lion logo  | Used in the header                                         |
+| `public/brand/lions-den-mark.svg`                   | Vector lion mark           |                                                            |
+| `src/components/brand/LionMark.tsx`                 | Vector rebuild of the logo | Transparent, animatable; used in the hero badge and footer |
+| `src/app/icon.svg`, `favicon.ico`, `apple-icon.png` | Site icons                 |                                                            |
+| `public/lionsden-menu.pdf`                          | Printable menu             |                                                            |
 
 ### Photography & video
 
@@ -345,12 +346,12 @@ Remote image hosts are allow-listed in `next.config.ts` (`images.pexels.com`, `i
 **SEO**
 
 - Title and description tuned for "Italian coffee in Plantsville, CT"; Open Graph with the patio photo.
-- `CafeOrCoffeeShop` **JSON-LD** (schema.org) in `layout.tsx`: address, phone, email, hours (`Mo-Su 06:00-19:00`) and social profiles, for Google's local results.
+- `CafeOrCoffeeShop` **JSON-LD** (schema.org) in `layout.tsx`: address, phone, email, hours (`Mo-Fr 06:00-19:00`, `Sa-Su 07:00-19:00`) and social profiles, for Google's local results.
 - One `<h1>` ("Sip and stay" plus the shop name, via screen-reader text); sections are labeled landmarks with `aria-labelledby`.
 
 **Accessibility**
 
-- A skip link to the main content, visible focus rings (gold outline), and labeled icon-only buttons (socials, map, round arrow).
+- A skip link to the main content, visible focus rings (gold outline), and labeled icon-only buttons (socials, round arrow) and titled iframes (map).
 - **Reduced motion is respected everywhere:** GSAP work runs inside `matchMedia("(prefers-reduced-motion: no-preference)")`, Lenis is disabled, the video doesn't play, and a global CSS rule turns off CSS animations and transitions. Everything renders in its finished state.
 - Decorative art (spill, beans, steam, marquee) is `aria-hidden`.
 
@@ -358,24 +359,25 @@ Remote image hosts are allow-listed in `next.config.ts` (`images.pexels.com`, `i
 
 - `next/image` for photos (responsive `sizes`, lazy by default; hero drinks load eagerly, the main one with high fetch priority).
 - The background video is compressed, `preload="metadata"`, and pauses off-screen.
-- The MapLibre library is lazy-loaded.
+- The map iframe is lazy-loaded; the Elfsight script loads at idle time (`lazyOnload`) and its widget is lazy (`data-elfsight-app-lazy`).
 - Remote stock photos are requested pre-sized from the CDN (`w=1600` / `w=1920`, compressed).
 
 ---
 
 ## 11. Deployment
 
-Deployed on **Vercel** as a standard Next.js project (`vercel.json`: `npm install` → `next build`). Push to the connected branch to deploy. The `postinstall` step runs on Vercel too, so the MapLibre worker is always present in the build.
+Deployed on **Vercel** as a standard Next.js project (`vercel.json`: `npm install` → `next build`). Push to the connected branch to deploy.
 
 ---
 
 ## 12. Open items / TODOs
 
-- **Online ordering:** "Call to order" is a `tel:` link. Replace it with the client's verified Toast ordering URL (`Header.tsx`).
 - **Real photography:** replace the hero drink cut-outs, the 5 placeholder menu photos and the stock café video with shots of the actual shop and drinks; add more client photos to the gallery (`Atmosphere.tsx`).
 - **Record image sources:** the origin of the hero cut-outs and the three gallery photos isn't documented. Confirm and note them here.
 - **After-dark menu:** a cocktail block is on hold until the client confirms their renewed permit (`src/data/menu.ts`).
-- **Centralize business info:** hours, address and phone are repeated in several components. Move them to one data file.
+- **Centralize business info:** address, hours and the Toast URL are exported from `Header.tsx` and reused by the footer; the Visit section, hero stats and `layout.tsx` still repeat them. Move them to one data file.
+- **Footer credit:** add the Develomark logo to the footer once the asset is supplied.
+- **Menu PDF:** confirm `public/lionsden-menu.pdf` is the current menu once the client's media package is in hand.
 - **Copyright year** in the footer is hard-coded (2026).
 - **Duplicate helper:** `ui/tabs.tsx` and `ui/tooltip.tsx` import `cn` from the `cn` npm package instead of `@/lib/utils`. Point them at the local helper and drop the package.
 - **Default Next.js files** in `public/` (`file.svg`, `globe.svg`, `next.svg`, `vercel.svg`, `window.svg`) are unused starter assets and can be deleted.

@@ -38,7 +38,7 @@ const HERO_DRINKS = [
 const BEANS = ["a", "b", "c", "d", "e"];
 const STATS = [
   { value: "2020", label: "Established" },
-  { value: "6AM", label: "Doors open daily" },
+  { value: "6AM", label: "Doors open weekdays" },
   { value: "57", label: "W Main St, Plantsville" },
 ];
 const BAND_WORDS = [
@@ -180,11 +180,11 @@ export function Hero() {
       <div className="shell hero-stage">
         <div className="hero-title">
           <p className="eyebrow hero-intro">
-            Lions Den Coffee Shop <span>Plantsville, CT</span>
+            Lions Den Coffee Shop® <span>Plantsville, CT</span>
           </p>
           <h1 id="hero-title">
             <span className="sr-only">
-              Lions Den Coffee Shop. Sip and stay.
+              Lions Den Coffee Shop®. Sip and stay.
             </span>
             <span aria-hidden="true" className="hero-type">
               <span className="hero-word">SIP</span>

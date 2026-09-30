@@ -7,7 +7,7 @@ import {
   useReducedMotion,
   type Variants,
 } from "motion/react";
-import { ArrowUpRight, ChevronLeft, ChevronRight, Info } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download, Info } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Tooltip,
@@ -468,10 +468,10 @@ export function MenuBoard() {
           <a
             href="/lionsden-menu.pdf"
             className="text-link"
-            target="_blank"
-            rel="noreferrer"
+            download="lions-den-coffee-shop-menu.pdf"
+            type="application/pdf"
           >
-            Full menu <ArrowUpRight size={18} />
+            Download menu <Download size={18} />
           </a>
         </div>
       </div>

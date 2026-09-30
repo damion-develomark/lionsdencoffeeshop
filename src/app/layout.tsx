@@ -10,11 +10,11 @@ const GOOGLE_FONTS_URL =
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.lionsdencoffeeshop.com"),
-  title: "Lions Den Coffee Shop | Italian Coffee in Plantsville, CT",
+  title: "Lions Den Coffee Shop® | Italian Coffee in Plantsville, CT",
   description:
-    "Come in and slow down. Italian-style coffee, breakfast, paninis, and good company at 57 W Main St in Plantsville, CT. Open daily, 6 AM to 7 PM.",
+    "Come in and slow down. Italian-style coffee, breakfast, paninis, and good company at 57 W Main St in Plantsville, CT. Open Monday to Friday 6 AM to 7 PM, Saturday and Sunday 7 AM to 7 PM.",
   openGraph: {
-    title: "Lions Den Coffee Shop | Sip & Stay",
+    title: "Lions Den Coffee Shop® | Sip & Stay",
     description:
       "Italian coffee, honest food, and good company in Plantsville, CT.",
     images: [
@@ -63,10 +63,11 @@ export default function RootLayout({
                 postalCode: "06479",
                 addressCountry: "US",
               },
-              openingHours: "Mo-Su 06:00-19:00",
+              openingHours: ["Mo-Fr 06:00-19:00", "Sa-Su 07:00-19:00"],
               sameAs: [
                 "https://www.instagram.com/lionsden_coffee/",
                 "https://www.facebook.com/lionsdencoffeeshopCT",
+                "https://www.youtube.com/channel/UC2ybOXg47gGzBELnd_4OwXw",
               ],
             }),
           }}

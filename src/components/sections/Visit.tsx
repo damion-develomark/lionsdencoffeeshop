@@ -1,5 +1,8 @@
 import { MapPin, Clock, Phone, ArrowUpRight } from "lucide-react";
-import VisitMap from "@/components/sections/VisitMap";
+
+const MAP_EMBED_URL =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2984.137993374167!2d-72.89399312393019!3d41.58789737127507!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e7b7a05ba38407%3A0xc5307551e86f97b7!2sLions%20Den%20Coffee%20Shop!5e0!3m2!1sen!2sus!4v1790760758228!5m2!1sen!2sus";
+
 export function Visit() {
   return (
     <section
@@ -25,8 +28,10 @@ export function Visit() {
           <div>
             <Clock />
             <p>
-              <strong>Make it your daily stop</strong>Open daily, 6:00 AM – 7:00
-              PM
+              <strong>Make it your daily stop</strong>
+              Mon–Fri, 6:00 AM – 7:00 PM
+              <br />
+              Sat &amp; Sun, 7:00 AM – 7:00 PM
             </p>
           </div>
           <div>
@@ -55,7 +60,14 @@ export function Visit() {
         </p>
       </div>
       <div className="map-wrap">
-        <VisitMap />
+        <iframe
+          className="visit-map"
+          src={MAP_EMBED_URL}
+          title="Google Map showing Lions Den Coffee Shop at 57 West Main Street, Plantsville, CT"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allowFullScreen
+        />
         <div className="map-label">
           <span>YOUR NEIGHBORHOOD COFFEE HOUSE</span>
           <MapPin size={18} />

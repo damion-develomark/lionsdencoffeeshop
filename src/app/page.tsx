@@ -4,7 +4,9 @@ import { Culture } from "@/components/sections/Culture";
 import { MenuBoard } from "@/components/sections/MenuBoard";
 import { SlowDownBand } from "@/components/sections/SlowDownBand";
 import { Atmosphere } from "@/components/sections/Atmosphere";
+import { Reviews } from "@/components/sections/Reviews";
 import { Visit } from "@/components/sections/Visit";
+import { Contact } from "@/components/sections/Contact";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 
 export default function Home() {
@@ -20,7 +22,9 @@ export default function Home() {
         <MenuBoard />
         <SlowDownBand />
         <Atmosphere />
+        <Reviews />
         <Visit />
+        <Contact />
       </main>
       <SiteFooter />
     </>

@@ -4,7 +4,7 @@ import { ArrowUpRight, Phone } from "lucide-react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { LionMark } from "@/components/brand/LionMark";
 import { addLionReveal } from "@/components/brand/lionReveal";
-import { Anchor } from "./Header";
+import { Anchor, HOURS, ORDER_ONLINE_URL } from "./Header";
 import {
   SocialIcon,
   type SocialIconName,
@@ -31,6 +31,7 @@ const NAV = [
   ["Our Story", "#about"],
   ["Gallery", "#gallery"],
   ["Visit", "#visit"],
+  ["Contact", "#contact"],
 ];
 
 // "Latte": a flat, soft latte panel with everything in one centred column,
@@ -64,7 +65,7 @@ export function SiteFooter() {
         <a
           href="#top"
           className="footer-brand"
-          aria-label="Lions Den, back to top"
+          aria-label="Lions Den Coffee Shop®, back to top"
         >
           <svg className="footer-steam" viewBox="0 0 60 44" aria-hidden>
             <path d="M18 40c-6-7 6-12 0-20s6-12 2-18" />
@@ -81,7 +82,11 @@ export function SiteFooter() {
         </p>
         <p className="footer-meta">
           <span>57 W Main St, Plantsville, CT</span>
-          <span>Open daily 6 AM – 7 PM</span>
+          {HOURS.map(({ days, time }) => (
+            <span key={days}>
+              {days} {time}
+            </span>
+          ))}
         </p>
 
         <nav aria-label="Footer navigation" className="footer-nav">
@@ -95,6 +100,14 @@ export function SiteFooter() {
         <div className="footer-actions">
           <a className="button" href="tel:+18604262809">
             Call to order <Phone size={16} />
+          </a>
+          <a
+            className="button"
+            href={ORDER_ONLINE_URL}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Order online <ArrowUpRight size={17} />
           </a>
           <a
             className="button"
@@ -121,7 +134,7 @@ export function SiteFooter() {
           ))}
         </nav>
 
-        <small>© 2026 Lions Den Coffee LLC</small>
+        <small>Lions Den Coffee Shop® · © 2026 Lions Den Coffee LLC</small>
       </div>
     </footer>
   );
