@@ -45,12 +45,14 @@ The marketing website for **Lions Den Coffee Shop®**, an Italian-style neighbor
 
 **The website menu is a photographed selection, not the full menu.** An item is shown on the site only when (1) it is on the PDF, (2) the shop has supplied a photo that clearly shows that item, and (3) its name, description, sizes and price can be copied from the PDF. Items without a matching photo stay off the website (they're still on the PDF and still sold) and are listed under **Needs Photos** in [`PHOTO_SHOT_LIST.md`](PHOTO_SHOT_LIST.md). Currently on the site (`src/data/menu.ts`):
 
-| Tab            | Group        | Items                       |
-| -------------- | ------------ | --------------------------- |
-| **Coffee**     | Lattes       | Classic Latte               |
-| **Not Coffee** | Tea & Frozen | Matcha Latte, Smoothies     |
-| **Breakfast**  | Sandwiches   | The Inferno, The California |
-| **Lunch**      | Paninis      | Chicken & Pesto             |
+| Tab            | Group         | Items                                                                                     |
+| -------------- | ------------- | ----------------------------------------------------------------------------------------- |
+| **Coffee**     | Lattes        | Classic Latte                                                                             |
+| **Not Coffee** | Tea & Frozen  | Matcha Latte, Smoothies                                                                   |
+| **Breakfast**  | Sandwiches    | Sausage or Bacon, Egg, & Cheese; Lox Bagel; The Inferno; The California; Southern Sunrise |
+|                | Parfaits (GF) | Deluxe Yogurt Parfait                                                                     |
+| **Lunch**      | Paninis       | Chicken & Pesto, Steak & Cheese                                                           |
+|                | Toasts        | Classic                                                                                   |
 
 **Goals of the site.**
 
@@ -302,7 +304,7 @@ All photos are local and were converted from the supplied originals with `sharp`
 | `images/hero/breakfast-sandwich-cutout.webp`            | Hero                             | `Lions Den Transparent Cutout/3.png`                 |
 | `images/hero/strawberry-smoothie-cutout.webp`           | Hero                             | `Lions Den Transparent Cutout/4.png`                 |
 | `images/hero/latte-red-cup-cutout.webp`                 | Hero                             | `Lions Den Transparent Cutout/6.png`                 |
-| `images/menu/*.webp` (6)                                | Menu thumbnails & feature photos | See `PHOTO_SHOT_LIST.md` → Live With Supplied Photos |
+| `images/menu/*.webp` (12)                               | Menu thumbnails & feature photos | See `PHOTO_SHOT_LIST.md` → Live With Supplied Photos |
 | `images/shop/iced-coffee-by-the-patio.webp`             | Unused (Culture is a video)      | `coffee front.jpg`                                   |
 | `images/shop/storefront-patio-cannoli-espresso.webp`    | Our Story section                | `outside.jpeg`                                       |
 | `images/og-lions-den-storefront.jpg`                    | Open Graph / JSON-LD image       | `outside.jpeg`, cropped to 1200×630                  |
@@ -315,7 +317,7 @@ All photos are local and were converted from the supplied originals with `sharp`
 | `images/gallery/fall-iced-coffee.webp`                  | Gallery (seasonal)               | `fall coffee.jpeg`                                   |
 | `images/gallery/winter-coffee-in-snow.webp`             | Gallery (seasonal)               | `Holiday/coffee in snow.png`                         |
 
-Supplied cut-outs `2.png` and `5.png` are intentionally not in the hero. Alcohol photos (`alcoholic drinks.jpg`, `Food & wine.png`, `Holiday/Mule.jpg`, `Holiday/xmas.jpg`) are not used while the after-dark permit is unconfirmed.
+Supplied cut-outs `2.png` and `5.png` are intentionally not in the hero. Photos from the later `Lion Den menu items` folder that aren't on the website (held for confirmation, not on the PDF, or duplicates) are listed in `PHOTO_SHOT_LIST.md`. Alcohol photos (`alcoholic drinks.jpg`, `Food & wine.png`, `Holiday/Mule.jpg`, `Holiday/xmas.jpg`) are not used while the after-dark permit is unconfirmed.
 
 ### Illustrations (made in code)
 
@@ -356,7 +358,7 @@ Supplied cut-outs `2.png` and `5.png` are intentionally not in the hero. Alcohol
 
 1. Confirm the item is on the approved menu (`public/lionsden-menu.pdf`) and that the photo clearly shows **that** item. If it's ambiguous, don't publish it; add it to the review notes in `PHOTO_SHOT_LIST.md`.
 2. Convert the photo to WebP (about 1200px on the long side) with a descriptive filename, e.g. `public/images/menu/chai-latte-iced.webp`. `sharp` is already installed as a Next dependency.
-3. In `src/data/menu.ts`, add the item to the right tab and group, copying name, description, sizes and price from the PDF. Give it `image.src`, a factual `alt` (what's visible, with no unverified ingredients) and, if the crop hides the item, a `focus` object-position.
+3. In `src/data/menu.ts`, add the item to the right tab and group (in PDF order; the group's first item is its desktop feature photo), copying name, description, sizes and price from the PDF. If the PDF prints more than one price without saying what each is for, copy it verbatim into `priceText`. Give it `image.src`, a factual `alt` (what's visible, with no unverified ingredients) and, if the crop hides the item, a `focus` object-position.
 4. Move the item from **Needs Photos** to **Live With Supplied Photos** in `PHOTO_SHOT_LIST.md`.
 5. Run `npm run lint` and `npm run build`, then check the tab on desktop and mobile.
 

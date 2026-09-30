@@ -17,6 +17,9 @@ export type MenuItem = {
   slug: string;
   name: string;
   price: number;
+  /** Shown instead of `price` when the PDF prints more than one price
+   *  without saying what each is for (copy it exactly as printed). */
+  priceText?: string;
   description: string;
   sizes?: Record<string, number>;
   image: MenuImage;
@@ -83,6 +86,31 @@ export const menu: Record<string, MenuGroup[]> = {
       title: "Sandwiches",
       items: [
         {
+          slug: "sausage-or-bacon-egg-and-cheese",
+          name: "Sausage or Bacon, Egg, & Cheese",
+          price: 6.49,
+          description:
+            "Your choice of bread: hard roll, English muffin (+$0.50), croissant (+$0.75), or plain, everything, asiago, or sesame bagel. Cheese: American, cheddar, pepperjack, or Swiss.",
+          image: {
+            src: "/images/menu/bacon-egg-cheese-everything-bagel.webp",
+            focus: "40% 70%",
+            alt: "Bacon, egg and cheese on an everything bagel, cut in half on a white plate, with a Lions Den Coffee Shop cup behind it",
+          },
+        },
+        {
+          slug: "lox-bagel",
+          name: "Lox Bagel",
+          price: 9,
+          priceText: "$9.00 / $17.00",
+          description:
+            "Homemade dill cream cheese, topped with smoked salmon, capers, and red onions.",
+          image: {
+            src: "/images/menu/lox-bagel.webp",
+            focus: "45% 60%",
+            alt: "Two open bagel halves spread with herbed cream cheese and topped with smoked salmon, capers and diced red onion, on a plate with arugula",
+          },
+        },
+        {
           slug: "the-inferno",
           name: "The Inferno",
           price: 7,
@@ -105,6 +133,35 @@ export const menu: Record<string, MenuGroup[]> = {
             alt: "Breakfast sandwich cut in half, showing avocado spread, tomato, egg and melted cheese, with an iced coffee behind it",
           },
         },
+        {
+          slug: "southern-sunrise",
+          name: "Southern Sunrise",
+          price: 10.5,
+          description:
+            "Breaded chicken cutlet, egg, pepper jelly, topped with goat cheese.",
+          image: {
+            src: "/images/menu/southern-sunrise-bagel.webp",
+            focus: "50% 55%",
+            alt: "Bagel sandwich with a breaded chicken cutlet, red pepper jelly and crumbled white cheese on a white plate",
+          },
+        },
+      ],
+    },
+    {
+      title: "Parfaits (GF)",
+      items: [
+        {
+          slug: "deluxe-yogurt-parfait",
+          name: "Deluxe Yogurt Parfait",
+          price: 9,
+          description:
+            "Plain Greek yogurt, fresh strawberries, blueberries, seasonal fruit, and gluten-free honey oat granola.",
+          image: {
+            src: "/images/menu/deluxe-yogurt-parfait.webp",
+            focus: "60% 70%",
+            alt: "Two parfait bowls topped with granola, blueberries, sliced banana, strawberries and a drizzle, beside Lions Den Coffee Shop cups on a sunny patio table",
+          },
+        },
       ],
     },
   ],
@@ -122,6 +179,35 @@ export const menu: Record<string, MenuGroup[]> = {
             src: "/images/menu/chicken-pesto-panini.webp",
             focus: "55% 80%",
             alt: "Grilled panini cut in half, showing chicken, pesto, red peppers and mozzarella, beside an iced coffee on the patio",
+          },
+        },
+        {
+          slug: "steak-and-cheese",
+          name: "Steak & Cheese",
+          price: 14,
+          description:
+            "Boar’s Head London Broil roast beef steak, with fire-roasted peppers and onions, topped with American cheese.",
+          image: {
+            src: "/images/menu/steak-and-cheese-panini.webp",
+            focus: "55% 70%",
+            alt: "Grilled panini cut in half, showing sliced roast beef, red peppers and melted cheese, beside a red iced drink in a Lions Den Coffee Shop cup",
+          },
+        },
+      ],
+    },
+    {
+      title: "Toasts",
+      items: [
+        {
+          slug: "classic-avocado-toast",
+          name: "Classic",
+          price: 7,
+          description:
+            "Mashed avocado topped with black sesame seeds, lemon zest, and a spritz of lemon juice.",
+          image: {
+            src: "/images/menu/classic-avocado-toast.webp",
+            focus: "50% 75%",
+            alt: "Two slices of toasted bread topped with mashed avocado, dark seeds and curls of lemon zest on a white plate",
           },
         },
       ],

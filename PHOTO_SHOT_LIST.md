@@ -4,16 +4,28 @@ The website menu (`src/data/menu.ts`) shows only items from the approved menu (`
 
 ## Live With Supplied Photos
 
-| Tab        | Item            | Supplied image           | Basis for the match                                                              |
-| ---------- | --------------- | ------------------------ | -------------------------------------------------------------------------------- |
-| Coffee     | Classic Latte   | `hot lattes.png`         | Hot lattes with latte art (supplied as "hot lattes")                             |
-| Not Coffee | Matcha Latte    | `matcha.jpeg`            | Iced matcha latte in a Lions Den cup                                             |
-| Not Coffee | Smoothies       | `smoothies.jpeg`         | Strawberry-garnished smoothies (Strawberry is one of the listed flavors)         |
-| Breakfast  | The Inferno     | `breakfast spread.png`   | Visible jalapeños, bacon, egg, cheese and orange sauce; only item with jalapeños |
-| Breakfast  | The California  | `Sandwhich & coffee.png` | Visible avocado spread, sliced tomato, egg and cheese                            |
-| Lunch      | Chicken & Pesto | `Panini.jpeg`            | Visible chicken, pesto, roasted red peppers and mozzarella on a panini           |
+| Tab        | Item                            | Supplied image                                                    | Basis for the match                                                              |
+| ---------- | ------------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Coffee     | Classic Latte                   | `hot lattes.png`                                                  | Hot lattes with latte art (supplied as "hot lattes")                             |
+| Not Coffee | Matcha Latte                    | `matcha.jpeg`                                                     | Iced matcha latte in a Lions Den cup                                             |
+| Not Coffee | Smoothies                       | `smoothies.jpeg`                                                  | Strawberry-garnished smoothies (Strawberry is one of the listed flavors)         |
+| Breakfast  | The Inferno                     | `breakfast spread.png`                                            | Visible jalapeños, bacon, egg, cheese and orange sauce; only item with jalapeños |
+| Breakfast  | The California                  | `Sandwhich & coffee.png`                                          | Visible avocado spread, sliced tomato, egg and cheese                            |
+| Lunch      | Chicken & Pesto                 | `Panini.jpeg`                                                     | Visible chicken, pesto, roasted red peppers and mozzarella on a panini           |
+| Breakfast  | Sausage or Bacon, Egg, & Cheese | `Lion Den menu items/Bacon, Egg & Cheese on everything bagel.png` | Supplied by name; bacon, egg and cheese on an everything bagel (a listed bread)  |
+| Breakfast  | Lox Bagel                       | `Lion Den menu items/Lox Bagel.png`                               | Supplied by name; herbed cream cheese, smoked salmon, capers and red onion       |
+| Breakfast  | Southern Sunrise                | `Lion Den menu items/Southern Sunrise.png`                        | Supplied by name; breaded chicken cutlet, pepper jelly and crumbled goat cheese  |
+| Breakfast  | Deluxe Yogurt Parfait           | `Lion Den menu items/Deluxe Yogurt Parfait.jpeg`                  | Supplied by name; granola, strawberries, blueberries and banana (seasonal fruit) |
+| Lunch      | Steak & Cheese                  | `Lion Den menu items/Steak & Cheese Panini.png`                   | Supplied by name; roast beef, peppers and melted cheese on a panini              |
+| Lunch      | Classic (toast)                 | `Lion Den menu items/classic avocado toast.png`                   | Supplied by name; mashed avocado, dark seeds and lemon zest                      |
 
 The Inferno and The California were matched from visible ingredients. Please have the shop confirm both before launch.
+
+Notes on the newer photos:
+
+- **Sausage or Bacon, Egg, & Cheese** is one PDF item with a choice of bread, so it uses one photo. The alternates `Bacon, Egg & Cheese breakfast sandwich on hard roll.png` and `Sausage, Egg & Cheese Croissant.png` show the same item and aren't used.
+- **Deluxe Yogurt Parfait** uses `Deluxe Yogurt Parfait.jpeg`; `Deluxe Yogurt Parfait 2.png` is an alternate (one of its two bowls looks like a Blueberry Parfait). The chosen photo has a drizzle, which is probably a Nutella or peanut butter add-on.
+- **Lox Bagel** shows as "$9.00 / $17.00", exactly as the PDF prints it. The PDF doesn't say what the two prices are for; ask the shop so the site can label them.
 
 ## Needs Photos
 
@@ -53,31 +65,25 @@ These items are on the PDF menu but not on the website, because no supplied phot
 
 ### Breakfast
 
-- Sausage or Bacon, Egg, & Cheese
-- Lox Bagel
 - The Carnivore
 - The Hash & Roar
 - Egg Lovers
-- Southern Sunrise
 - Bagel w/ Cream Cheese
 - Bagel w/ Butter
 - Bagel w/ Peanut Butter
 - Bagel w/ Nutella
-- Deluxe Yogurt Parfait
 - Strawberry Yogurt Parfait
 - Blueberry Yogurt Parfait
 
 ### Lunch
 
 - Caprese Panini
-- Steak & Cheese Panini
 - Vodka Parmigiana Panini
 - Chipotle Club Panini
 - Breakfast Avocado Toast
 - Smoked Salmon Avocado Toast
 - Bacon & Goat Cheese Toast
 - Veggie Toast
-- Classic Avocado Toast
 
 ### Flagged for human review (not published)
 
@@ -88,3 +94,22 @@ These items are on the PDF menu but not on the website, because no supplied phot
 - **`Holiday/xmas peppermint.jpg`**: a hot drink with whipped cream and peppermint. It could be Hot Chocolate or a seasonal special; confirm before using.
 - **`strawberry matcha.png`**: matcha with pink/strawberry foam. This isn't a PDF item as pictured (possibly a Matcha Latte with a seasonal cold foam). Used in the gallery only.
 - **PDF note:** The Hash & Roar has the same description as The Carnivore ("Double egg, bacon, sausage, & cheese") on the PDF. It's likely a typo, so confirm before either is photographed.
+
+### Needs Confirmation (supplied photos, not published)
+
+From `Lion Den menu items/`. Each could match a PDF item, but the photo doesn't prove it. Publish only after the shop confirms.
+
+- **`The Carnivore.png`** → The Carnivore. The photo clearly shows sausage, egg and cheese on an asiago bagel, but bacon and the second egg can't be seen. Confirm it's The Carnivore as served.
+- **`vegetarian avocado toast.png`** → possibly Veggie Toast. The photo shows avocado, tomato, red onion and crumbled white cheese. The PDF's Veggie Toast is "pico mix … tomatoes, red onions, & goat cheese" with no mention of avocado. Confirm it's the Veggie Toast and that the cheese is goat cheese.
+- **`Chicken Parm Panini..png`** → possibly Vodka Parmigiana. The photo shows a breaded chicken cutlet, red sauce, basil and white cheese. The PDF item has house-made vodka sauce and fresh ricotta, and "Chicken Parm" isn't a PDF name. Confirm it's the same sandwich.
+
+### Supplied photos not used
+
+From `Lion Den menu items/`:
+
+- **Not on the PDF menu** (no approved name, price or category): `Cake pop.jpg`, `Chocolate Hazelnut Croissants.png`, `Fresh Fruit Tarts.png`, `Italian cream puffs.png`, `Prosciutto and Fig Panini.png`, `Pumpkin Cheese Muffin.png`, `Pumpkin Spice Chai Latte (seasonal).png`, `Pumpkin cheescake (seasonal).png`, `bruschetta crostini.png`, `charcuterie:antipasto board.png`, `classic ricotta crostini.png`, `prosciutto wrapped cantaloupe.png`. The pumpkin items are seasonal.
+- **Alcohol:** `Espresso Martini with Tiramisu.png` is on hold with the after-dark menu until the permit is confirmed.
+- **Doesn't match its PDF item:** `Caprese salad.png` is a salad, not the Caprese Panini.
+- **No distinct menu item:** `Hot Latte.png`. Classic Latte already has a photo.
+- **Alternates of published items:** `Bacon, Egg & Cheese breakfast sandwich on hard roll.png`, `Sausage, Egg & Cheese Croissant.png`, `Deluxe Yogurt Parfait 2.png`.
+- **Byte-for-byte duplicates of photos already on the site:** `cannolis.png` (= `cannolis.png`), `cream pastrys.png` (= `cream pastrys.png`) and `Cream-Filled Croissants.png` (= `pastry.png`), all in the gallery.

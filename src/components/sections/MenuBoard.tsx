@@ -48,6 +48,10 @@ const pad = (n: number) => String(n).padStart(2, "0");
 const SWIPE_DISTANCE = 60;
 const SWIPE_VELOCITY = 400;
 
+function priceLabel(item: MenuItem) {
+  return item.priceText ?? `$${item.price.toFixed(2)}`;
+}
+
 function sizesLine(item: MenuItem) {
   if (!item.sizes) return null;
   return Object.entries(item.sizes)
@@ -159,8 +163,8 @@ function MenuCarousel({ group }: { group: MenuGroup }) {
                 <h4>{it.name}</h4>
                 <span className="item-leader" aria-hidden />
                 <span className="item-price">
-                  {sizes && <span className="from">from </span>}$
-                  {it.price.toFixed(2)}
+                  {sizes && <span className="from">from </span>}
+                  {priceLabel(it)}
                 </span>
               </div>
               <p className="item-desc">{it.description}</p>
@@ -295,8 +299,8 @@ function MenuList({ group }: { group: MenuGroup }) {
                   <h4>{item.name}</h4>
                   <span className="item-leader" aria-hidden />
                   <span className="item-price">
-                    {sizes && <span className="from">from </span>}$
-                    {item.price.toFixed(2)}
+                    {sizes && <span className="from">from </span>}
+                    {priceLabel(item)}
                   </span>
                   {sizes && (
                     <Tooltip>

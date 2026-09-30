@@ -1128,6 +1128,10 @@ h2 em {
   gap: 65px 85px;
   min-height: 370px;
 }
+/* Let a long thumbnail row scroll instead of widening its grid column. */
+.menu-block {
+  min-width: 0;
+}
 /* Menu-board heading: Anton caps led by a tilted gold number sticker. */
 .menu-block h3 {
   display: flex;
