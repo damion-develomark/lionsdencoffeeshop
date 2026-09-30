@@ -140,7 +140,12 @@ export function SiteFooter() {
         </nav>
 
         <small>Lions Den Coffee Shop® · © 2026 Lions Den Coffee LLC</small>
-        <p className="footer-credit">
+        <a
+          className="footer-credit"
+          href="https://develomark.com"
+          target="_blank"
+          rel="noreferrer"
+        >
           <span>Website by</span>
           <Image
             src={develomarkLogo}
@@ -148,7 +153,7 @@ export function SiteFooter() {
             sizes="120px"
             className="footer-credit-logo"
           />
-        </p>
+        </a>
       </div>
     </footer>
   );
