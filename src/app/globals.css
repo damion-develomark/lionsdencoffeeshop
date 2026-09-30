@@ -321,6 +321,7 @@ button:focus-visible {
   font: 400 17px/1 var(--font-headline);
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--color-espresso);
 }
 .nav-pill {
@@ -424,7 +425,8 @@ button:focus-visible {
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
-.sheet-link:hover {
+.sheet-link:hover,
+.sheet-link[aria-current] {
   color: var(--color-bronze);
 }
 .sheet-num {
@@ -2009,13 +2011,18 @@ h2 em {
     height: 600px;
   }
 }
-@media (max-width: 1100px) {
-  .shell {
-    width: calc(100% - 64px);
+/* Six nav links: tighten them on smaller laptops, then hand over to the
+   hamburger before they would crowd the wordmark and buttons. */
+@media (max-width: 1400px) {
+  .desktop-nav {
+    gap: 0;
   }
-  .header-inner {
-    gap: 12px;
+  .desktop-nav a {
+    padding: 10px 12px 8px;
+    font-size: 15px;
   }
+}
+@media (max-width: 1170px) {
   .desktop-nav {
     display: none;
   }
@@ -2024,6 +2031,14 @@ h2 em {
   }
   .mobile-menu {
     display: block;
+  }
+}
+@media (max-width: 1100px) {
+  .shell {
+    width: calc(100% - 64px);
+  }
+  .header-inner {
+    gap: 12px;
   }
   /* Tablet + phone: the reel fills the card behind the tint and the copy. */
   .culture-card {

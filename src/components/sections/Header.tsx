@@ -20,16 +20,24 @@ import { scrollToAnchor, useLenis } from "@/components/providers/smooth-scroll";
 import { CoffeeSpill, SPILL_SHEET_ALT } from "@/components/brand/CoffeeSpill";
 import { gsap, useGSAP } from "@/lib/gsap";
 
+// Every page section, in page order, for both the desktop and mobile nav.
 const NAV = [
   { label: "Menu", href: "#menu" },
   { label: "Our Story", href: "#about" },
-  { label: "Visit", href: "#visit" },
-];
-const MOBILE_NAV = [
-  ...NAV.slice(0, 2),
   { label: "Gallery", href: "#gallery" },
-  NAV[2],
+  { label: "Reviews", href: "#reviews" },
+  { label: "Visit", href: "#visit" },
   { label: "Contact", href: "#contact" },
+];
+// Page sections in document order, used to work out which one is in view.
+const SECTIONS = [
+  "top",
+  "menu",
+  "about",
+  "gallery",
+  "reviews",
+  "visit",
+  "contact",
 ];
 export const ORDER_ONLINE_URL = "https://toasttab.com/lions-den-coffee-shop";
 export const ADDRESS = "57 West Main Street, Plantsville, CT 06479";
@@ -44,12 +52,14 @@ export function Anchor({
   className,
   onNavigate,
   "aria-label": ariaLabel,
+  "aria-current": ariaCurrent,
 }: {
   href: string;
   children: React.ReactNode;
   className?: string;
   onNavigate?: () => void;
   "aria-label"?: string;
+  "aria-current"?: "location";
 }) {
   const lenis = useLenis();
   return (
@@ -57,6 +67,7 @@ export function Anchor({
       href={href}
       className={className}
       aria-label={ariaLabel}
+      aria-current={ariaCurrent}
       onClick={(event) => {
         if (!event.metaKey && !event.ctrlKey && !event.shiftKey) {
           const smooth = lenis?.current ?? null;
@@ -81,9 +92,11 @@ export function Anchor({
 function MobileSheetBody({
   onNavigate,
   poured,
+  active,
 }: {
   onNavigate: () => void;
   poured: React.RefObject<boolean>;
+  active: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   useGSAP(
@@ -157,11 +170,12 @@ function MobileSheetBody({
         <SheetDescription>Coffee, food, and good company.</SheetDescription>
       </div>
       <nav aria-label="Mobile navigation">
-        {MOBILE_NAV.map(({ label, href }, i) => (
+        {NAV.map(({ label, href }, i) => (
           <Anchor
             key={label}
             href={href}
             onNavigate={onNavigate}
+            aria-current={href === active ? "location" : undefined}
             className="sheet-link sheet-reveal"
           >
             <span className="sheet-num" aria-hidden>
@@ -201,11 +215,22 @@ export function Header() {
   const poured = useRef(false);
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
+  // Href of the section under the line a third of the way down the screen.
+  const [active, setActive] = useState("#top");
   const reduced = useReducedMotion();
   const { scrollY } = useScroll();
   useMotionValueEvent(scrollY, "change", (y) => {
     setScrolled(y > 80);
+    const line = window.innerHeight / 3;
+    let current = SECTIONS[0];
+    for (const id of SECTIONS) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= line) current = id;
+    }
+    setActive(`#${current}`);
   });
+  // The pill sits on the current section's link and follows hover/focus.
+  const pillHref = hovered ?? active;
   return (
     <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
       {/* Address and hours ride above the pill, then fold away on scroll. */}
@@ -232,7 +257,8 @@ export function Header() {
             LIONS DEN<small>Coffee Shop</small>
           </span>
         </Anchor>
-        {/* A gold sticker pill slides to whichever link is hovered or focused. */}
+        {/* A gold sticker pill marks the section in view and slides to
+            whichever link is hovered or focused. */}
         <nav
           className="desktop-nav"
           aria-label="Main navigation"
@@ -243,11 +269,16 @@ export function Header() {
             <span
               key={label}
               className="nav-item"
-              onMouseEnter={() => setHovered(label)}
-              onFocus={() => setHovered(label)}
+              onMouseEnter={() => setHovered(href)}
+              onFocus={() => setHovered(href)}
             >
-              <Anchor href={href}>{label}</Anchor>
-              {hovered === label && (
+              <Anchor
+                href={href}
+                aria-current={href === active ? "location" : undefined}
+              >
+                {label}
+              </Anchor>
+              {pillHref === href && (
                 <motion.span
                   className="nav-pill"
                   layoutId="nav-pill"
@@ -285,6 +316,7 @@ export function Header() {
             <MobileSheetBody
               onNavigate={() => setOpen(false)}
               poured={poured}
+              active={active}
             />
           </SheetContent>
         </Sheet>
