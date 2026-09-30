@@ -14,6 +14,8 @@ import "maplibre-gl/dist/maplibre-gl.css";
 const SHOP = { latitude: 41.587592, longitude: -72.891211 };
 // Free vector tiles, no API key: https://openfreemap.org
 const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
+/** Wide town view the map starts from before gliding in to the shop. */
+const START_VIEW = { zoom: 12.5, pitch: 0, bearing: 0 };
 
 /** Served from public/maplibre/ (copied there by scripts/copy-maplibre-worker.mjs). */
 const WORKER_URL = "/maplibre/maplibre-gl-worker.mjs";
@@ -118,23 +120,40 @@ export default function VisitMap() {
     }
   }, []);
 
-  // Glide in from the wider town view the first time the map scrolls into view.
+  const [arrived, setArrived] = useState(false);
+  const arrivedRef = useRef(false);
+
+  // Glide in from the wider town view every time the map scrolls into view,
+  // and snap back out (unanimated) when it leaves so the next visit replays.
   useEffect(() => {
     if (!styled || !wrapRef.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
-        mapRef.current?.flyTo({
-          center: [SHOP.longitude, SHOP.latitude],
-          zoom: 15.6,
-          pitch: 35,
-          bearing: -12,
-          duration: reduced ? 0 : 2600,
-          essential: true,
-        });
-        observer.disconnect();
+        const map = mapRef.current;
+        if (!map) return;
+        if (entry.intersectionRatio >= 0.4 && !arrivedRef.current) {
+          arrivedRef.current = true;
+          map.flyTo({
+            center: [SHOP.longitude, SHOP.latitude],
+            zoom: 15.6,
+            pitch: 35,
+            bearing: -12,
+            duration: reduced ? 0 : 2600,
+            essential: true,
+          });
+          setArrived(true);
+        } else if (!entry.isIntersecting && arrivedRef.current) {
+          // Fully off-screen, so the reset is never visible.
+          arrivedRef.current = false;
+          map.stop();
+          map.jumpTo({
+            ...START_VIEW,
+            center: [SHOP.longitude, SHOP.latitude],
+          });
+          setArrived(false);
+        }
       },
-      { threshold: 0.4 },
+      { threshold: [0, 0.4] },
     );
     observer.observe(wrapRef.current);
     return () => observer.disconnect();
@@ -151,7 +170,7 @@ export default function VisitMap() {
         ref={mapRef}
         mapLib={mapLib}
         mapStyle={STYLE_URL}
-        initialViewState={{ ...SHOP, zoom: 12.5, pitch: 0, bearing: 0 }}
+        initialViewState={{ ...SHOP, ...START_VIEW }}
         onLoad={onLoad}
         scrollZoom={false}
         cooperativeGestures
@@ -170,8 +189,15 @@ export default function VisitMap() {
             <motion.span
               className="map-pin-card"
               initial={reduced ? false : { opacity: 0, y: 8 }}
-              animate={styled ? { opacity: 1, y: 0 } : undefined}
-              transition={{ delay: reduced ? 0 : 2.4, duration: 0.4 }}
+              animate={
+                arrived
+                  ? {
+                      opacity: 1,
+                      y: 0,
+                      transition: { delay: reduced ? 0 : 2.4, duration: 0.4 },
+                    }
+                  : { opacity: 0, y: 8, transition: { duration: 0 } }
+              }
             >
               <strong>Lions Den</strong>
               <span>57 W Main St</span>

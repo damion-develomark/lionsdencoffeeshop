@@ -16,7 +16,7 @@ import {
   SheetTrigger,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { useLenis } from "@/components/providers/smooth-scroll";
+import { scrollToAnchor, useLenis } from "@/components/providers/smooth-scroll";
 import { CoffeeSpill, SPILL_SHEET_ALT } from "@/components/brand/CoffeeSpill";
 import { gsap, useGSAP } from "@/lib/gsap";
 
@@ -51,15 +51,13 @@ export function Anchor({
       className={className}
       aria-label={ariaLabel}
       onClick={(event) => {
-        if (
-          lenis?.current &&
-          !event.metaKey &&
-          !event.ctrlKey &&
-          !event.shiftKey
-        ) {
-          event.preventDefault();
-          lenis.current.scrollTo(href, { offset: -90, duration: 1.2 });
-          window.history.replaceState(null, "", href);
+        if (!event.metaKey && !event.ctrlKey && !event.shiftKey) {
+          const smooth = lenis?.current ?? null;
+          if (smooth) {
+            event.preventDefault();
+            window.history.replaceState(null, "", href);
+          }
+          scrollToAnchor(smooth, href);
         }
         onNavigate?.();
       }}
