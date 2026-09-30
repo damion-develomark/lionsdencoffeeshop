@@ -867,21 +867,53 @@ h2 em {
   padding-top: calc(40px + 140 / 1440 * 100vw);
 }
 .culture-card {
+  /* Fixed height on desktop so the reel's width (9:16 of it) is known and the
+     copy can make room for it. */
+  --culture-h: clamp(640px, 88vh, 760px);
+  --culture-inset: 32px;
   position: relative;
   overflow: hidden;
   display: flex;
-  min-height: min(760px, 88vh);
+  height: var(--culture-h);
   border: 3px solid var(--color-espresso);
   border-radius: 1.75rem;
   box-shadow: 8px 8px 0 var(--color-espresso);
   background: var(--color-espresso);
   color: var(--color-warm-white);
 }
-.culture-photo {
+/* Blurred, zoomed copy of the reel filling the card behind everything. */
+.culture-video-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: 50% 40%;
+  filter: blur(28px) saturate(1.1);
+  transform: scale(1.15);
 }
-/* Espresso wash, heaviest bottom-left where the headline sits. */
+/* The reel itself, whole at 9:16, full height on the right. */
+.culture-video-frame {
+  position: absolute;
+  z-index: 2;
+  top: var(--culture-inset);
+  bottom: var(--culture-inset);
+  right: 56px;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border: 3px solid var(--color-warm-white);
+  border-radius: 1.25rem;
+  box-shadow: 6px 6px 0 var(--color-espresso);
+  background: #000;
+}
+.culture-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+/* Warm amber tint over the blurred reel, like the footer's latte tint over
+   its slideshow: bronze up top, deepening to espresso where the copy sits so
+   the white headline still reads. */
 .culture-card::after {
   content: "";
   position: absolute;
@@ -890,10 +922,14 @@ h2 em {
     linear-gradient(
       0deg,
       rgb(35 31 32 / 92%),
-      rgb(35 31 32 / 55%) 45%,
-      rgb(35 31 32 / 15%) 75%
+      rgb(58 36 21 / 72%) 50%,
+      rgb(125 92 24 / 45%)
     ),
-    linear-gradient(90deg, rgb(58 36 21 / 55%), transparent 60%);
+    linear-gradient(90deg, rgb(58 36 21 / 50%), transparent 65%);
+}
+/* Pause + sound buttons: only used where the reel is the card's background. */
+.culture-video-buttons {
+  display: none;
 }
 .culture-content {
   position: relative;
@@ -904,6 +940,10 @@ h2 em {
   justify-content: flex-end;
   width: 100%;
   padding: 56px;
+  /* Clear the reel: its width plus its right offset and a gap. */
+  padding-right: calc(
+    (var(--culture-h) - 2 * var(--culture-inset)) * 9 / 16 + 56px + 56px
+  );
 }
 .culture-content .eyebrow {
   color: var(--color-gold);
@@ -911,7 +951,7 @@ h2 em {
 }
 .culture-content h2 {
   color: var(--color-warm-white);
-  font-size: clamp(40px, 5.4vw, 72px);
+  font-size: clamp(40px, 4.6vw, 64px);
   line-height: 1.02;
   margin-bottom: 28px;
 }
@@ -1691,10 +1731,11 @@ h2 em {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-/* Reviews: a dark stage for the Elfsight carousel, whose own background is
-   black. A gold rule marks the hand-off from the cream gallery. */
+/* Reviews: an espresso stage for the Elfsight carousel, matching the story
+   band. The widget's own background must be transparent (or #231f20) in the
+   Elfsight dashboard. A gold rule marks the hand-off from the cream gallery. */
 .reviews-section {
-  background: #000;
+  background: var(--color-espresso);
   color: var(--color-warm-white);
   border-top: 4px solid var(--color-gold);
   padding-block: 88px 72px;
@@ -1978,6 +2019,36 @@ h2 em {
   .mobile-menu {
     display: block;
   }
+  /* Tablet + phone: the reel fills the card behind the tint and the copy. */
+  .culture-card {
+    height: auto;
+    min-height: 680px;
+  }
+  .culture-video-backdrop {
+    display: none;
+  }
+  .culture-video-frame {
+    z-index: auto;
+    inset: 0;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .culture-video {
+    object-fit: cover;
+  }
+  .culture-content {
+    padding-right: 56px;
+  }
+  .culture-video-buttons {
+    position: absolute;
+    z-index: 2;
+    top: 24px;
+    right: 24px;
+    display: flex;
+    gap: 12px;
+  }
   .hero-stage {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas:
@@ -2159,20 +2230,27 @@ h2 em {
     padding-top: calc(20px + 140 / 1440 * 100vw);
   }
   .culture-card {
-    min-height: 600px;
     border-radius: 1.25rem;
     box-shadow: 5px 5px 0 var(--color-espresso);
   }
+  /* Top padding clears the pause + sound buttons. */
   .culture-content {
-    padding: 28px 22px;
+    padding: 88px 22px 28px;
   }
-  /* Text fills most of the card on phones: darken the whole photo more. */
+  .culture-card {
+    min-height: 600px;
+  }
+  .culture-video-buttons {
+    top: 18px;
+    right: 18px;
+  }
+  /* Text fills most of the card on phones: a heavier amber tint all over. */
   .culture-card::after {
     background: linear-gradient(
       0deg,
-      rgb(35 31 32 / 92%),
-      rgb(35 31 32 / 70%) 55%,
-      rgb(35 31 32 / 45%)
+      rgb(35 31 32 / 94%),
+      rgb(58 36 21 / 78%) 55%,
+      rgb(125 92 24 / 45%)
     );
   }
   .culture-foot {

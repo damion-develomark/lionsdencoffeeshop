@@ -1,6 +1,6 @@
 import Script from "next/script";
 
-// Elfsight "All-in-One Reviews" carousel. The widget's own look (black
+// Elfsight "All-in-One Reviews" carousel. The widget's own look (transparent
 // background, cards, stars) is configured in the Elfsight dashboard; the
 // section just gives it a matching dark stage. next/script loads platform.js
 // once per page, however often this section re-renders.

@@ -303,7 +303,7 @@ All photos are local and were converted from the supplied originals with `sharp`
 | `images/hero/strawberry-smoothie-cutout.webp`           | Hero                             | `Lions Den Transparent Cutout/4.png`                 |
 | `images/hero/latte-red-cup-cutout.webp`                 | Hero                             | `Lions Den Transparent Cutout/6.png`                 |
 | `images/menu/*.webp` (6)                                | Menu thumbnails & feature photos | See `PHOTO_SHOT_LIST.md` → Live With Supplied Photos |
-| `images/shop/iced-coffee-by-the-patio.webp`             | Culture section                  | `coffee front.jpg`                                   |
+| `images/shop/iced-coffee-by-the-patio.webp`             | Unused (Culture is a video)      | `coffee front.jpg`                                   |
 | `images/shop/storefront-patio-cannoli-espresso.webp`    | Our Story section                | `outside.jpeg`                                       |
 | `images/og-lions-den-storefront.jpg`                    | Open Graph / JSON-LD image       | `outside.jpeg`, cropped to 1200×630                  |
 | `images/gallery/iced-coffees-on-the-counter.webp`       | Gallery                          | `coffees.png`                                        |

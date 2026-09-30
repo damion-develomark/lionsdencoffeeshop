@@ -1,23 +1,15 @@
-import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { Anchor } from "./Header";
-import patioCoffee from "../../../public/images/shop/iced-coffee-by-the-patio.webp";
+import { CultureVideo } from "./CultureVideo";
 
-// Full-bleed photo card: headline + button bottom-left, a rule across, and a
-// short note bottom-right, over an iced coffee in front of the shop's patio.
+// Video card: the shop's vertical Instagram reel on the right, over a blurred
+// copy of itself. Headline + button, a rule, and a short note on the left.
 export function Culture() {
   return (
     <section className="culture-section" aria-labelledby="culture-title">
       <div className="shell">
         <div className="culture-card">
-          <Image
-            src={patioCoffee}
-            alt=""
-            fill
-            sizes="(max-width: 767px) 100vw, 1200px"
-            placeholder="blur"
-            className="culture-photo"
-          />
+          <CultureVideo />
           <div className="culture-content">
             <p className="eyebrow">The Lions Den way</p>
             <h2 id="culture-title">
