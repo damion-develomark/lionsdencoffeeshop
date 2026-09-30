@@ -183,6 +183,7 @@ The whole site is one page (`src/app/page.tsx`). Sections, top to bottom:
 │   │                          # develomark-logo-black.png (footer credit)
 │   ├── images/
 │   │   ├── hero/              # 4 supplied product cut-outs (.webp, transparent)
+│   │   ├── features/          # 2 cut-outs with a baked-in cream die-cut border (StickerFeature)
 │   │   ├── menu/              # one supplied photo per website menu item
 │   │   ├── gallery/           # supplied photos for the gallery strip
 │   │   ├── shop/              # culture-section and story-section photos
@@ -304,6 +305,8 @@ All photos are local and were converted from the supplied originals with `sharp`
 | `images/hero/breakfast-sandwich-cutout.webp`            | Hero                             | `Lions Den Transparent Cutout/3.png`                 |
 | `images/hero/strawberry-smoothie-cutout.webp`           | Hero                             | `Lions Den Transparent Cutout/4.png`                 |
 | `images/hero/latte-red-cup-cutout.webp`                 | Hero                             | `Lions Den Transparent Cutout/6.png`                 |
+| `images/features/to-go-cup-sticker.webp`                | Our Story sticker                | `Lions Den Transparent Cutout/2.png` + cream border  |
+| `images/features/sfogliatella-sticker.webp`             | Reviews sticker                  | `Lions Den Transparent Cutout/5.png` + cream border  |
 | `images/menu/*.webp` (12)                               | Menu thumbnails & feature photos | See `PHOTO_SHOT_LIST.md` → Live With Supplied Photos |
 | `images/shop/iced-coffee-by-the-patio.webp`             | Unused (Culture is a video)      | `coffee front.jpg`                                   |
 | `images/shop/storefront-patio-cannoli-espresso.webp`    | Our Story section                | `outside.jpeg`                                       |

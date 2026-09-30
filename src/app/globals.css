@@ -183,7 +183,8 @@ button:focus-visible {
    shadow, Anton caps. */
 .feature-pill,
 .slow-badge,
-.story-photo > span {
+.story-photo > span,
+.sticker-title {
   background: var(--color-gold);
   color: var(--color-espresso);
   font-family: var(--font-headline);
@@ -547,10 +548,11 @@ button:focus-visible {
     "copy art stats";
   column-gap: 32px;
 }
+/* Above .hero-art so the drinks tuck behind the SIP & STAY headline. */
 .hero-title {
   grid-area: title;
   position: relative;
-  z-index: 1;
+  z-index: 3;
 }
 .hero-heading {
   margin: 0 0 16px;
@@ -664,7 +666,7 @@ button:focus-visible {
   text-transform: uppercase;
 }
 
-/* Drinks: big and centred, overlapping the bottom of the headline. */
+/* Drinks: big and centred, tucked behind the bottom of the headline. */
 .hero-art {
   grid-area: art;
   position: relative;
@@ -702,17 +704,17 @@ button:focus-visible {
    the back; the sandwich and latte sit in front, lower down. */
 .hero-drink--iced {
   z-index: 2;
-  width: 33%;
-  left: 5%;
-  top: -3%;
+  width: 39%;
+  left: 7%;
+  top: -6%;
   aspect-ratio: 473 / 720;
   rotate: -5deg;
 }
 .hero-drink--smoothie {
   z-index: 2;
-  width: 37%;
-  left: 55%;
-  top: -1%;
+  width: 43%;
+  left: 45%;
+  top: -4%;
   aspect-ratio: 587 / 720;
   rotate: 5deg;
 }
@@ -1624,9 +1626,10 @@ h2 em {
 .values [data-slot="badge"]:hover {
   transform: rotate(-4deg);
 }
+/* Extra top room for the cup sticker hanging over from Our Story. */
 .gallery-section {
   background: var(--color-cream);
-  padding-block: 78px;
+  padding-block: 220px 78px;
   overflow: hidden;
 }
 .gallery-window {
@@ -1664,11 +1667,12 @@ h2 em {
 .photo-track figcaption span:last-child {
   color: var(--color-bronze);
 }
+/* Extra top room for the pastry sticker hanging over from Reviews. */
 .visit-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 85px;
-  padding-block: 100px;
+  padding-block: 170px 100px;
   align-items: center;
 }
 .visit-section h2 {
@@ -1762,6 +1766,83 @@ h2 em {
   width: min(100% - 48px, 1280px);
   min-height: 320px;
   margin: 40px auto 0;
+}
+
+/* Cutout stickers (StickerFeature): the cream die-cut border is baked into
+   the image; the gold offset shadow matches the site's sticker labels. Each
+   pins to its section's bottom-right and the art hangs three-quarters over
+   the seam into the next section, with the caption just above the seam on the dark
+   side. Only the caption link takes clicks, so the art never blocks what it
+   overlaps. */
+.story-section,
+.reviews-section {
+  position: relative;
+  z-index: 3;
+  padding-bottom: 230px;
+}
+.sticker-feature {
+  position: absolute;
+  z-index: 2;
+  right: 4%;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 22px;
+  margin: 0;
+  pointer-events: none;
+}
+.sticker-float {
+  flex: none;
+  translate: 0 75%;
+}
+.sticker-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(6px 6px 0 var(--color-gold));
+}
+.sticker-caption {
+  width: 250px;
+  padding-bottom: 32px;
+  color: var(--color-warm-white);
+}
+.sticker-title {
+  display: inline-block;
+  padding: 7px 14px 5px;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 1.2;
+  color: var(--color-espresso);
+}
+.sticker-caption p {
+  margin-top: 12px;
+  font: italic 17px/1.45 var(--font-serif);
+  color: color-mix(in srgb, var(--color-warm-white) 85%, transparent);
+}
+.sticker-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding-bottom: 4px;
+  font: 400 14px/1 var(--font-headline);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  border-bottom: 2px solid var(--color-gold);
+  pointer-events: auto;
+}
+.sticker-link:hover {
+  color: var(--color-warm-white);
+  border-color: var(--color-warm-white);
+}
+.story-sticker .sticker-float {
+  width: 180px;
+  rotate: 8deg;
+}
+.reviews-sticker .sticker-float {
+  width: 240px;
+  rotate: -6deg;
 }
 /* Contact: copy + alternate contacts + Join card beside the Typeform. */
 .contact-section {
@@ -2036,6 +2117,19 @@ h2 em {
 @media (max-width: 1100px) {
   .shell {
     width: calc(100% - 64px);
+  }
+  .story-section,
+  .reviews-section {
+    padding-bottom: 250px;
+  }
+  .story-sticker .sticker-float {
+    width: 150px;
+  }
+  .sticker-caption {
+    width: 220px;
+  }
+  .reviews-sticker .sticker-float {
+    width: 190px;
   }
   .header-inner {
     gap: 12px;
@@ -2341,7 +2435,7 @@ h2 em {
     margin-top: 30px;
   }
   .story-section {
-    padding-block: 48px;
+    padding-block: 48px 240px;
   }
   .story-grid {
     grid-template-columns: 1fr;
@@ -2349,6 +2443,25 @@ h2 em {
   }
   .story-photo {
     aspect-ratio: 1.15;
+  }
+  /* Phones: the caption spans the width left of a smaller sticker. */
+  .sticker-feature {
+    left: 20px;
+    right: 24px;
+    gap: 14px;
+  }
+  .sticker-caption {
+    flex: 1;
+    width: auto;
+  }
+  .sticker-caption p {
+    font-size: 16px;
+  }
+  .story-sticker .sticker-float {
+    width: 110px;
+  }
+  .reviews-sticker .sticker-float {
+    width: 120px;
   }
   .story-copy h2 {
     font-size: 34px;
@@ -2360,7 +2473,7 @@ h2 em {
     font-size: 25px;
   }
   .gallery-section {
-    padding-block: 50px;
+    padding-block: 130px 50px;
   }
   .gallery-window {
     overflow-x: auto;
@@ -2393,7 +2506,7 @@ h2 em {
     height: 350px;
   }
   .reviews-section {
-    padding-block: 56px 48px;
+    padding-block: 56px 240px;
   }
   .reviews-section h2,
   .contact-copy h2 {

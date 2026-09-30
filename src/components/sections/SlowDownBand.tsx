@@ -3,7 +3,9 @@ import Image from "next/image";
 import { useRef } from "react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { Badge } from "@/components/ui/badge";
+import { StickerFeature } from "@/components/brand/StickerFeature";
 import storefront from "../../../public/images/shop/storefront-patio-cannoli-espresso.webp";
+import toGoCup from "../../../public/images/features/to-go-cup-sticker.webp";
 
 export function SlowDownBand() {
   const ref = useRef<HTMLElement>(null);
@@ -80,6 +82,16 @@ export function SlowDownBand() {
           </div>
         </div>
       </div>
+      {/* Straddles the seam into the gallery below. */}
+      <StickerFeature
+        className="story-sticker"
+        src={toGoCup}
+        alt="Black Lions Den Coffee Shop to-go cup with the gold lion shield logo"
+        sizes="(max-width: 767px) 110px, 180px"
+        title="The Lions Den cup"
+        text="Espresso, lattes and cold brew, poured to go. Take a little Italian soul with you."
+        link={{ href: "#menu", label: "See the coffee menu" }}
+      />
     </section>
   );
 }

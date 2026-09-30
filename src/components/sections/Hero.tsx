@@ -18,14 +18,14 @@ import { Anchor } from "./Header";
 const HERO_DRINKS = [
   {
     id: "iced",
-    sizes: "(max-width: 767px) 33vw, (max-width: 1100px) 198px, 15vw",
+    sizes: "(max-width: 767px) 39vw, (max-width: 1100px) 234px, 18vw",
     src: "/images/hero/iced-coffee-cold-foam-cutout.webp",
     alt: "Iced coffee topped with cold foam in a Lions Den Coffee Shop cup",
     cutout: true,
   },
   {
     id: "smoothie",
-    sizes: "(max-width: 767px) 37vw, (max-width: 1100px) 222px, 17vw",
+    sizes: "(max-width: 767px) 43vw, (max-width: 1100px) 258px, 20vw",
     src: "/images/hero/strawberry-smoothie-cutout.webp",
     alt: "Pink blended smoothie with a strawberry on the rim in a Lions Den Coffee Shop cup",
     cutout: true,
