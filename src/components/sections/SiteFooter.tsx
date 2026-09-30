@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ArrowUpRight, Phone } from "lucide-react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { LionMark } from "@/components/brand/LionMark";
+import { FooterSlideshow } from "./FooterSlideshow";
 import { addLionReveal } from "@/components/brand/lionReveal";
 import { Anchor, HOURS, ORDER_ONLINE_URL } from "./Header";
 import {
@@ -37,7 +38,8 @@ const NAV = [
 ];
 
 // "Latte": a flat, soft latte panel with everything in one centred column,
-// and a curl of steam rising off the lion. The lion replays the hero's
+// and a curl of steam rising off the lion. The holiday photos crossfade
+// underneath the latte tint. The lion replays the hero's
 // entrance each time the footer scrolls into view.
 export function SiteFooter() {
   const ref = useRef<HTMLElement>(null);
@@ -63,6 +65,7 @@ export function SiteFooter() {
 
   return (
     <footer ref={ref} className="site-footer">
+      <FooterSlideshow />
       <div className="footer-inner">
         <a
           href="#top"

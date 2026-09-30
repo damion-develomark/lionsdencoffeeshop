@@ -1784,10 +1784,38 @@ h2 em {
 /* Footer: "latte". Flat soft latte panel, one centred column, steam rising
    off the lion. */
 .site-footer {
-  /* Latte panel in the hero spill's top colour, warming slightly downward. */
-  background: linear-gradient(180deg, #f8e8c4, #f1dcae);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   border-top: 2px solid var(--color-gold-rule);
   padding-block: 64px 32px;
+}
+/* Latte tint in the hero spill's top colour, warming slightly downward. It
+   sits over the holiday slideshow so the photos show through faintly. */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgb(248 232 196 / 0.86),
+    rgb(241 220 174 / 0.9)
+  );
+}
+.footer-slideshow {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: #f1dcae;
+}
+.footer-slideshow img {
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+}
+.footer-slideshow img.is-active {
+  opacity: 1;
 }
 .footer-inner {
   width: min(100% - 40px, 560px);
