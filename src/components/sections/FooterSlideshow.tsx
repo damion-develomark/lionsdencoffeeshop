@@ -52,6 +52,7 @@ export function FooterSlideshow() {
     <div ref={ref} className="footer-slideshow" aria-hidden>
       {SLIDES.map((src, i) => (
         <Image
+          quality={60}
           key={src.src}
           src={src}
           alt=""

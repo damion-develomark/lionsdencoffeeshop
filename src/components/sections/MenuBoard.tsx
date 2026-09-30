@@ -132,6 +132,7 @@ function MenuCarousel({ group }: { group: MenuGroup }) {
               >
                 <div className="menu-photo">
                   <Image
+                    quality={60}
                     src={item.image.src}
                     alt={item.image.alt}
                     fill
@@ -215,6 +216,7 @@ function MenuCarousel({ group }: { group: MenuGroup }) {
                   <span className="menu-thumb-clip reveal-clip">
                     <span className="menu-photo">
                       <Image
+                        quality={60}
                         src={it.image.src}
                         alt=""
                         fill
@@ -247,6 +249,7 @@ function MenuList({ group }: { group: MenuGroup }) {
           <div className="menu-feature-parallax">
             <div className="menu-photo reveal-zoom">
               <Image
+                quality={60}
                 src={feature.image.src}
                 alt={feature.image.alt}
                 fill
@@ -283,6 +286,7 @@ function MenuList({ group }: { group: MenuGroup }) {
                 <div className="menu-thumb-clip reveal-clip">
                   <div className="menu-photo">
                     <Image
+                      quality={60}
                       src={item.image.src}
                       alt={item.image.alt}
                       fill
@@ -326,12 +330,21 @@ function MenuList({ group }: { group: MenuGroup }) {
   );
 }
 
-function MenuBlock({ group, index }: { group: MenuGroup; index: number }) {
+function MenuBlock({
+  group,
+  index,
+  active,
+}: {
+  group: MenuGroup;
+  index: number;
+  active: boolean;
+}) {
   const ref = useRef<HTMLDivElement>(null);
 
-  // Scroll reveals live in each block, so they re-run whenever a tab mounts new blocks.
+  // Only measure and animate visible panels; all categories stay in the HTML.
   useGSAP(
     () => {
+      if (!active) return;
       const media = gsap.matchMedia();
       media.add("(prefers-reduced-motion: no-preference)", () => {
         const trigger = { trigger: ref.current, start: "top 80%" };
@@ -373,7 +386,7 @@ function MenuBlock({ group, index }: { group: MenuGroup; index: number }) {
       });
       return () => media.revert();
     },
-    { scope: ref },
+    { scope: ref, dependencies: [active], revertOnUpdate: true },
   );
 
   return (
@@ -440,8 +453,8 @@ export function MenuBoard() {
         <div>
           <p className="eyebrow">The Lions Den menu</p>
           <h2 id="menu-title" className="menu-title">
-            <span>Your daily</span>{" "}
-            <span className="menu-title-pop">ritual.</span>
+            <span>Coffee, breakfast</span>{" "}
+            <span className="menu-title-pop">&amp; lunch menu.</span>
           </h2>
         </div>
         <div className="menu-intro-side">
@@ -491,30 +504,31 @@ export function MenuBoard() {
               </TabsTrigger>
             ))}
           </TabsList>
-          <AnimatePresence
-            mode="wait"
-            initial={false}
-            onExitComplete={() => ScrollTrigger.refresh()}
-          >
-            <TabsContent key={tab} value={tab} forceMount asChild>
+          {Object.entries(menu).map(([name, groups]) => (
+            <TabsContent key={name} value={name} forceMount asChild>
               <motion.div
+                hidden={tab !== name}
                 className={`menu-grid ${
-                  tab === "Coffee"
+                  name === "Coffee"
                     ? "coffee-grid"
-                    : menu[tab].length === 1
+                    : groups.length === 1
                       ? "menu-grid--single"
                       : ""
                 }`}
-                initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : -12 }}
+                initial={false}
+                animate={{ opacity: tab === name ? 1 : 0 }}
                 transition={{ duration: reduced ? 0 : 0.2 }}
                 onAnimationComplete={() => ScrollTrigger.refresh()}
               >
-                {menu[tab].map((group, i) => (
-                  <MenuBlock key={group.title} group={group} index={i} />
+                {groups.map((group, i) => (
+                  <MenuBlock
+                    key={group.title}
+                    group={group}
+                    index={i}
+                    active={tab === name}
+                  />
                 ))}
-                {tab === "Coffee" && (
+                {name === "Coffee" && (
                   <div className="menu-vignette">
                     <motion.div
                       className="slow-badge"
@@ -531,7 +545,7 @@ export function MenuBoard() {
                 )}
               </motion.div>
             </TabsContent>
-          </AnimatePresence>
+          ))}
         </Tabs>
       </TooltipProvider>
       <div className="menu-footnote">

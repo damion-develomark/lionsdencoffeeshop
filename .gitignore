@@ -43,3 +43,6 @@ next-env.d.ts
 # client source files (brief, permit photo) - keep out of the public repo
 /lionden coffee assests/
 
+
+# Generated Lighthouse reports
+/reports/lighthouse/

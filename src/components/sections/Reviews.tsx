@@ -1,9 +1,9 @@
-import Script from "next/script";
+import { DeferredEmbed } from "@/components/ui/deferred-embed";
 
 // Elfsight "All-in-One Reviews" carousel. The widget's own look (transparent
 // background, cards, stars) is configured in the Elfsight dashboard; the
-// section just gives it a matching dark stage. next/script loads platform.js
-// once per page, however often this section re-renders.
+// section gives it a matching dark stage. DeferredEmbed loads platform.js
+// once the widget approaches the viewport.
 export function Reviews() {
   return (
     <section
@@ -14,18 +14,20 @@ export function Reviews() {
       <div className="shell">
         <p className="eyebrow">Word around the Den</p>
         <h2 id="reviews-title">
-          Don&apos;t take our word for it.
+          Lions Den reviews.
           <br />
-          <em>Take theirs.</em>
+          <em>From our community.</em>
         </h2>
       </div>
-      <div className="reviews-widget">
+      <DeferredEmbed
+        className="reviews-widget"
+        src="https://elfsightcdn.com/platform.js"
+      >
         <div
           className="elfsight-app-1e152b4b-fda3-4bef-81b3-aeb32f9af3e4"
           data-elfsight-app-lazy
         />
-      </div>
-      <Script src="https://elfsightcdn.com/platform.js" strategy="lazyOnload" />
+      </DeferredEmbed>
     </section>
   );
 }

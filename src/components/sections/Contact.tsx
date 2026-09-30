@@ -1,8 +1,8 @@
-import Script from "next/script";
+import { DeferredEmbed } from "@/components/ui/deferred-embed";
 import { ArrowUpRight, Mail, Phone } from "lucide-react";
 
 // Typeform live embed: embed.js finds the data-tf-live element and mounts
-// the form in it. next/script makes sure the script is only added once.
+// the form in it. DeferredEmbed waits until the form approaches the viewport.
 export function Contact() {
   return (
     <section
@@ -14,9 +14,9 @@ export function Contact() {
         <div className="contact-copy">
           <p className="eyebrow">Contact us</p>
           <h2 id="contact-title">
-            Questions, catering,
+            Contact Lions Den,
             <br />
-            <em>or just saying hello?</em>
+            <em>say hello.</em>
           </h2>
           <p>
             Send us a note with the form and we&apos;ll get back to you. Prefer
@@ -50,11 +50,13 @@ export function Contact() {
             </a>
           </div>
         </div>
-        <div className="contact-form">
+        <DeferredEmbed
+          className="contact-form"
+          src="https://embed.typeform.com/next/embed.js"
+        >
           <div data-tf-live="01M3RTE66NJ0R5QBMKYMNRY241" />
-        </div>
+        </DeferredEmbed>
       </div>
-      <Script src="https://embed.typeform.com/next/embed.js" />
     </section>
   );
 }

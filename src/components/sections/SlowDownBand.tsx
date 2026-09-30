@@ -47,6 +47,7 @@ export function SlowDownBand() {
       <div className="shell story-grid">
         <div className="story-photo">
           <Image
+            quality={60}
             src={storefront}
             alt="A cannoli and a small coffee in a red cup on a patio table in front of the Lions Den Coffee Shop storefront"
             sizes="(max-width: 767px) 90vw, 45vw"
@@ -57,7 +58,7 @@ export function SlowDownBand() {
         <div className="story-copy">
           <p className="eyebrow">An Italian welcome</p>
           <h2 id="story-title">
-            More than coffee.
+            The Lions Den story.
             <br />
             <em>A sense of belonging.</em>
           </h2>

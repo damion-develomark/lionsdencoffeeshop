@@ -13,7 +13,7 @@ export function Culture() {
           <div className="culture-content">
             <p className="eyebrow">The Lions Den way</p>
             <h2 id="culture-title">
-              Come for the coffee.
+              Italian coffee.
               <br />
               <em>Stay for the people.</em>
             </h2>

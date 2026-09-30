@@ -13,7 +13,7 @@ export function Visit() {
       <div>
         <p className="eyebrow">See you at the Den</p>
         <h2 id="visit-title">
-          The coffee&apos;s on.
+          Visit us in Plantsville.
           <br />
           <em>Come on over.</em>
         </h2>

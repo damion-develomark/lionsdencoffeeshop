@@ -2,8 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Maximize, Pause, Play, Volume2, VolumeX } from "lucide-react";
 
-const SRC = "/videos/restaurant-week.mp4";
-const POSTER = "/videos/restaurant-week-poster.jpg";
+const SRC = "/videos/restaurant-week-540p.mp4";
+const POSTER = "/videos/restaurant-week-poster.webp";
 // Matches the tablet breakpoint in globals.css, where the reel becomes the
 // card's background and the native control bar would sit under the copy.
 const STACKED = "(max-width: 1100px)";
@@ -50,8 +50,10 @@ export function CultureVideo() {
     const onPlay = () => {
       userPaused = false;
       setPaused(false);
-      backdrop.currentTime = video.currentTime;
-      backdrop.play().catch(() => {});
+      if (!window.matchMedia(STACKED).matches) {
+        backdrop.currentTime = video.currentTime;
+        backdrop.play().catch(() => {});
+      }
     };
     const onPause = () => {
       if (!autoPausing) userPaused = true;
@@ -122,7 +124,7 @@ export function CultureVideo() {
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         aria-hidden="true"
         tabIndex={-1}
       />
@@ -136,7 +138,7 @@ export function CultureVideo() {
           loop
           playsInline
           controls={!stacked || fullscreen}
-          preload="metadata"
+          preload="none"
           aria-label="Lions Den Coffee Shop Instagram reel: drinks, food and the patio in Plantsville"
         />
       </div>

@@ -101,7 +101,7 @@ export function Atmosphere() {
         <div className="section-top">
           <div>
             <p className="eyebrow">Life at the Den</p>
-            <h2 id="gallery-title">Pull up a chair.</h2>
+            <h2 id="gallery-title">Coffee, food & patio.</h2>
           </div>
           <a
             href="https://www.instagram.com/lionsden_coffee/"
@@ -118,6 +118,7 @@ export function Atmosphere() {
               <figure key={photo.number}>
                 <div className="gallery-image">
                   <Image
+                    quality={60}
                     src={photo.src}
                     alt={photo.alt}
                     sizes="(max-width: 767px) 82vw, 560px"

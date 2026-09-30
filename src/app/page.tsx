@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/sections/Header";
 import { Hero } from "@/components/sections/Hero";
 import { Culture } from "@/components/sections/Culture";
@@ -8,6 +9,10 @@ import { Reviews } from "@/components/sections/Reviews";
 import { Visit } from "@/components/sections/Visit";
 import { Contact } from "@/components/sections/Contact";
 import { SiteFooter } from "@/components/sections/SiteFooter";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "https://www.lionsdencoffeeshop.com/" },
+};
 
 export default function Home() {
   return (
