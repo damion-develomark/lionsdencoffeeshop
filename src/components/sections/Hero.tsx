@@ -72,6 +72,53 @@ function HeroWord({ word }: { word: string }) {
   );
 }
 
+// The coffee pours down to flood the section, then the drips run and
+// droplets splash off the edge.
+function addSpillPour(tl: gsap.core.Timeline) {
+  tl.from(
+    ".coffee-spill",
+    { yPercent: -100, duration: 1.2, ease: "power2.inOut" },
+    0,
+  )
+    .from(
+      ".spill-drop",
+      {
+        scale: 0,
+        transformOrigin: "50% 50%",
+        duration: 0.4,
+        stagger: 0.06,
+        ease: "back.out(3)",
+      },
+      1.05,
+    )
+    .from(
+      ".spill-drip",
+      {
+        scaleY: 0,
+        transformOrigin: "50% 0%",
+        duration: 0.9,
+        stagger: 0.12,
+        ease: "power1.in",
+      },
+      0.95,
+    );
+}
+
+// Idle: the spill keeps shifting and the drips keep stretching. Returns the
+// matchMedia cleanup.
+function addSpillIdle(context: gsap.Context) {
+  const stopIdle = morphSpillIdle(context, 1.4);
+  gsap.to(".spill-drip", {
+    scaleY: 1.12,
+    transformOrigin: "50% 0%",
+    duration: 3.5,
+    delay: 2,
+    stagger: { each: 0.6, repeat: -1, yoyo: true },
+    ease: "sine.inOut",
+  });
+  return stopIdle;
+}
+
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   useGSAP(
@@ -85,35 +132,9 @@ export function Hero() {
           const masks = gsap.utils.toArray<HTMLElement>(".char-mask");
           gsap.set(masks, { overflow: "clip" });
           const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-          // 1. Spill: coffee pours down to flood the section, then the drips
-          // run and droplets splash off the edge.
-          tl.from(
-            ".coffee-spill",
-            { yPercent: -100, duration: 1.2, ease: "power2.inOut" },
-            0,
-          )
-            .from(
-              ".spill-drop",
-              {
-                scale: 0,
-                transformOrigin: "50% 50%",
-                duration: 0.4,
-                stagger: 0.06,
-                ease: "back.out(3)",
-              },
-              1.05,
-            )
-            .from(
-              ".spill-drip",
-              {
-                scaleY: 0,
-                transformOrigin: "50% 0%",
-                duration: 0.9,
-                stagger: 0.12,
-                ease: "power1.in",
-              },
-              0.95,
-            )
+          // 1. Spill: coffee pours down to flood the section.
+          addSpillPour(tl);
+          tl
             // 2. Drinks and beans land on the spill.
             .from(
               ".hero-drink",
@@ -166,16 +187,7 @@ export function Hero() {
             )
             .from(".hero-intro", { y: 15, stagger: 0.1, duration: 0.7 }, 0.6);
 
-          // Idle: the spill keeps shifting and the drips keep stretching.
-          const stopIdle = morphSpillIdle(context, 1.4);
-          gsap.to(".spill-drip", {
-            scaleY: 1.12,
-            transformOrigin: "50% 0%",
-            duration: 3.5,
-            delay: 2,
-            stagger: { each: 0.6, repeat: -1, yoyo: true },
-            ease: "sine.inOut",
-          });
+          const stopIdle = addSpillIdle(context);
 
           // Scroll: layers drift at different speeds for depth.
           const scrub = {
@@ -196,6 +208,16 @@ export function Hero() {
             scrollTrigger: scrub,
           });
           return stopIdle;
+        },
+      );
+      // Phones get only the spill (pour, drips, idle ripple). It is decorative
+      // and transform-only, so the drinks and headline, including the
+      // smoothie that is the mobile LCP image, are visible from first paint.
+      media.add(
+        "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
+        (context) => {
+          addSpillPour(gsap.timeline());
+          return addSpillIdle(context);
         },
       );
       return () => media.revert();
