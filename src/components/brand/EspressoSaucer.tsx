@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, pauseLoopsOffscreen, useGSAP } from "@/lib/gsap";
 
 export function EspressoSaucer() {
   const ref = useRef<SVGSVGElement>(null);
@@ -8,7 +8,7 @@ export function EspressoSaucer() {
     () => {
       const media = gsap.matchMedia();
       media.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.fromTo(
+        const steam = gsap.fromTo(
           ".steam-curl",
           { drawSVG: "0% 0%", y: 5, opacity: 0 },
           {
@@ -22,6 +22,8 @@ export function EspressoSaucer() {
             ease: "sine.inOut",
           },
         );
+        // The loop only runs while the saucer is on screen.
+        return pauseLoopsOffscreen(ref.current, () => [steam]);
       });
       return () => media.revert();
     },

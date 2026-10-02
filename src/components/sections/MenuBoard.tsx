@@ -465,7 +465,7 @@ export function MenuBoard() {
       className="menu-section shell"
       aria-labelledby="menu-title"
     >
-      <div className="section-top menu-intro">
+      <div className="section-top menu-intro" data-pause-offscreen>
         {BEANS.map((b) => (
           <CoffeeBean key={b} className={`menu-bean menu-bean--${b}`} />
         ))}

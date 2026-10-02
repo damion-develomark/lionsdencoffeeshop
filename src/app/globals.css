@@ -832,6 +832,18 @@ button:focus-visible {
   width: 46%;
   height: auto;
 }
+/* Endless loops hold still while their section is off screen (set by
+   SmoothScroll) and carry on from the same frame when it returns. */
+[data-offscreen]
+  :is(
+    .hero-badge,
+    .menu-badge,
+    .badge-ring,
+    .hero-band-track,
+    .footer-steam path
+  ) {
+  animation-play-state: paused;
+}
 @keyframes badge-spin {
   to {
     transform: rotate(360deg);
@@ -2988,181 +3000,10 @@ h2 em {
   }
 }
 
-/* --------------------------------------------------------------------------
-   /menu (page currently disabled, see src/app/_menu) — the full printed menu as text. Reuses the homepage's leader line
-   and gold price tags; category titles echo the PDF's espresso pills.
-   -------------------------------------------------------------------------- */
-.full-menu-hero {
-  padding: 180px 0 64px;
-  background: linear-gradient(
-    180deg,
-    var(--color-warm-white),
-    color-mix(in srgb, var(--color-gold) 10%, var(--color-warm-white))
-  );
-}
-.full-menu-title {
-  font: 400 clamp(52px, 8vw, 112px) / 0.95 var(--font-headline);
-  text-transform: uppercase;
-}
-.full-menu-title span {
-  display: block;
-}
-.full-menu-kicker {
-  margin-bottom: 14px;
-  font: 700 clamp(22px, 2.6vw, 32px) / 1.2 var(--font-display);
-  text-transform: none;
-}
-.full-menu-lede {
-  max-width: 640px;
-  margin-top: 28px;
-  font-size: 20px;
-  line-height: 1.55;
-  color: var(--muted-foreground);
-}
-.full-menu-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px 28px;
-  margin-top: 32px;
-}
-.full-menu-jump {
-  margin: 48px 0 0;
-}
-.full-menu-jump .menu-tab:hover {
-  background: var(--color-gold) !important;
-}
-.full-menu-category {
-  padding-block: 76px;
-}
-.full-menu-category:nth-of-type(odd) {
-  background: var(--color-cream);
-}
-.full-menu-cat-title {
-  display: inline-block;
-  padding: 13px 30px 9px;
-  background: var(--color-espresso);
-  color: var(--color-warm-white);
-  border-radius: 999px;
-  box-shadow: 4px 4px 0 var(--color-gold);
-  font: 400 clamp(30px, 4vw, 44px) / 1 var(--font-headline);
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-.full-menu-cat-note {
-  margin-top: 20px;
-  font: italic 400 19px/1.5 var(--font-serif);
-  color: var(--muted-foreground);
-}
-.full-menu-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: start;
-  gap: 60px 85px;
-  margin-top: 44px;
-}
-.full-menu-block h3 {
-  font: 400 34px/1 var(--font-headline);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-.full-menu-block ul {
-  display: grid;
-  gap: 22px;
-}
-.full-item-name {
-  min-width: 0;
-  font: 400 19px/1.2 var(--font-headline);
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-.full-item-name small {
-  font: italic 400 16px var(--font-serif);
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--muted-foreground);
-}
-.full-item-desc {
-  margin-top: 6px;
-  font-size: 17px;
-  line-height: 1.45;
-  color: var(--muted-foreground);
-}
-.full-item-sizes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 18px;
-  margin-top: 8px;
-  font: 500 13px/1.5 var(--font-sans);
-}
-.full-item-sizes div {
-  display: flex;
-  gap: 6px;
-}
-.full-item-sizes dt {
-  color: var(--color-bronze);
-  text-transform: uppercase;
-}
-.full-item-sizes dd {
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-.full-menu-notes {
-  margin-top: 26px;
-  padding: 14px 18px;
-  background: color-mix(
-    in srgb,
-    var(--color-gold) 32%,
-    var(--color-warm-white)
-  );
-  border: 2px solid var(--color-espresso);
-  border-radius: 1rem;
-  box-shadow: 3px 3px 0 var(--color-espresso);
-  font-size: 16px;
-  line-height: 1.5;
-}
-.full-menu-notes p + p {
-  margin-top: 6px;
-}
-.full-menu-foot {
-  padding-block: 64px 100px;
-}
-.full-menu-foot p {
-  max-width: 640px;
-  margin-bottom: 22px;
-  font-size: 19px;
-  line-height: 1.55;
-}
 /* Homepage link from the photographed selection to the full menu. */
 .menu-full-link {
   margin-top: 26px;
   color: var(--color-espresso);
-}
-@media (max-width: 1100px) {
-  .full-menu-grid {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-}
-@media (max-width: 767px) {
-  .full-menu-hero {
-    padding: 150px 0 48px;
-  }
-  .full-menu-jump {
-    margin-top: 36px;
-  }
-  .full-menu-category {
-    padding-block: 52px;
-  }
-  .full-menu-block h3 {
-    font-size: 28px;
-  }
-  .full-item-name {
-    font-size: 17px;
-  }
-  .full-menu-actions .button {
-    width: 100%;
-  }
 }
 
 /* --------------------------------------------------------------------------

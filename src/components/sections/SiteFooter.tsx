@@ -67,7 +67,7 @@ export function SiteFooter({ base = "" }: { base?: string }) {
   );
 
   return (
-    <footer ref={ref} className="site-footer">
+    <footer ref={ref} className="site-footer" data-pause-offscreen>
       <FooterSlideshow />
       <div className="footer-inner">
         <a

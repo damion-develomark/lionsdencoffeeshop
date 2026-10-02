@@ -19,3 +19,21 @@ export function loadMorphSVG() {
 }
 
 export { gsap, ScrollTrigger, DrawSVGPlugin, useGSAP };
+
+/**
+ * Pause endless loops while `root` is off screen and resume them where they
+ * left off when it returns, so they look the same whenever they're visible.
+ * `loops` is re-read on every toggle, so tweens created later are included.
+ * Returns the cleanup.
+ */
+export function pauseLoopsOffscreen(
+  root: Element | null,
+  loops: () => gsap.core.Animation[],
+) {
+  if (!root) return () => {};
+  const observer = new IntersectionObserver(([entry]) => {
+    for (const loop of loops()) loop.paused(!entry.isIntersecting);
+  });
+  observer.observe(root);
+  return () => observer.disconnect();
+}

@@ -107,6 +107,19 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  // Endless CSS loops (badge spin and bob, word band, footer steam) pause
+  // while their section is off screen; see [data-offscreen] in globals.css.
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries)
+        entry.target.toggleAttribute("data-offscreen", !entry.isIntersecting);
+    });
+    document
+      .querySelectorAll("[data-pause-offscreen]")
+      .forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   // Keep anchor jumps on target while pins, images, and fonts shift layout.
   useEffect(() => {
     const settle = () => settleAnchor(instance.current);

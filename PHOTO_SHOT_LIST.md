@@ -88,7 +88,7 @@ These items are on the PDF menu but not on the website, because no supplied phot
 ### Flagged for human review (not published)
 
 - **`coffees.png`**: shows an iced coffee with cream and a black iced coffee. They could be Iced Lions Blend, Iced Black Velvet or Lions Blend Cold Brew, but the roast and brew method can't be told from the photo. Used in the gallery only.
-- **`coffee front.jpg`** and hero cut-out **`1.png`**: an iced coffee with cold foam; the specific drink can't be identified. Used in the culture section and hero only.
+- **`coffee front.jpg`** and hero cut-out **`1.png`**: an iced coffee with cold foam. `coffee front.jpg` is now published as the menu's **Iced Coffee** (Coffee tab, at the owner's request, Oct 2, 2026), priced as Iced Lions Blend / Iced Black Velvet; the hero cut-out is still hero only.
 - **`bagels.png`**: four bagel sandwiches with egg, cheese, greens and red peppers or tomatoes. They don't clearly match any single named item (greens aren't listed on any breakfast sandwich). Used in the gallery only.
 - **`outside.jpeg`**: the small drink in a red cup looks like an espresso, which the shop could confirm for **Espresso**. Used for the Our Story section and share image.
 - **`Holiday/xmas peppermint.jpg`**: a hot drink with whipped cream and peppermint. It could be Hot Chocolate or a seasonal special; confirm before using.

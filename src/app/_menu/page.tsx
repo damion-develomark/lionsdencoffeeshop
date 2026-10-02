@@ -4,6 +4,7 @@
 // restore the /menu links (header/footer NAV `page`, MenuBoard, FAQ,
 // sitemap, schema `hasMenu`, retail redirect).
 import type { Metadata } from "next";
+import "./full-menu.css";
 import { ArrowUpRight, Download, Phone } from "lucide-react";
 import { Anchor, Header, ORDER_ONLINE_URL } from "@/components/sections/Header";
 import { SiteFooter } from "@/components/sections/SiteFooter";

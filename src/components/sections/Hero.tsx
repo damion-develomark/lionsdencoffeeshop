@@ -2,7 +2,7 @@
 import { Fragment, useRef } from "react";
 import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap, pauseLoopsOffscreen, useGSAP } from "@/lib/gsap";
 import { RingBadge } from "@/components/brand/RingBadge";
 import { addLionReveal } from "@/components/brand/lionReveal";
 import {
@@ -104,9 +104,9 @@ function addSpillPour(tl: gsap.core.Timeline) {
     );
 }
 
-// Idle: the spill keeps shifting and the drips keep stretching. Returns the
-// matchMedia cleanup.
-function addSpillIdle(context: gsap.Context) {
+// Idle: the spill keeps shifting and the drips keep stretching, paused while
+// the hero is off screen. Returns the matchMedia cleanup.
+function addSpillIdle(context: gsap.Context, hero: HTMLElement | null) {
   const stopIdle = morphSpillIdle(context, 1.4);
   gsap.to(".spill-drip", {
     scaleY: 1.12,
@@ -116,7 +116,16 @@ function addSpillIdle(context: gsap.Context) {
     stagger: { each: 0.6, repeat: -1, yoyo: true },
     ease: "sine.inOut",
   });
-  return stopIdle;
+  // Only the top-level loops; the pour lives in its own timeline.
+  const stopPausing = pauseLoopsOffscreen(hero, () =>
+    gsap
+      .getTweensOf(hero?.querySelectorAll(".spill-sheet, .spill-drip") ?? [])
+      .filter((tween) => tween.parent === gsap.globalTimeline),
+  );
+  return () => {
+    stopIdle();
+    stopPausing();
+  };
 }
 
 export function Hero() {
@@ -187,7 +196,7 @@ export function Hero() {
             )
             .from(".hero-intro", { y: 15, stagger: 0.1, duration: 0.7 }, 0.6);
 
-          const stopIdle = addSpillIdle(context);
+          const stopIdle = addSpillIdle(context, ref.current);
 
           // Scroll: layers drift at different speeds for depth.
           const scrub = {
@@ -217,7 +226,7 @@ export function Hero() {
         "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
         (context) => {
           addSpillPour(gsap.timeline());
-          return addSpillIdle(context);
+          return addSpillIdle(context, ref.current);
         },
       );
       return () => media.revert();
@@ -225,7 +234,13 @@ export function Hero() {
     { scope: ref },
   );
   return (
-    <section ref={ref} id="top" className="hero" aria-labelledby="hero-title">
+    <section
+      ref={ref}
+      id="top"
+      className="hero"
+      aria-labelledby="hero-title"
+      data-pause-offscreen
+    >
       <CoffeeSpill className="hero-spill" />
       <div className="shell hero-stage">
         <div className="hero-title">
@@ -281,7 +296,10 @@ export function Hero() {
                 fill
                 sizes={drink.sizes}
                 quality={60}
-                loading="eager"
+                // Only the smoothie (the largest drink on phones) is preloaded;
+                // the rest load eagerly from the markup without a head preload.
+                preload={drink.id === "smoothie"}
+                loading={drink.id === "smoothie" ? undefined : "eager"}
                 fetchPriority={drink.id === "smoothie" ? "high" : "auto"}
               />
             </figure>

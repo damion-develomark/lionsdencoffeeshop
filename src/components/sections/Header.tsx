@@ -248,14 +248,6 @@ export function Header({
     const update = () => {
       frame = 0;
       setScrolled(window.scrollY > 80);
-      if (current) return;
-      const line = window.innerHeight / 3;
-      let section = SECTIONS[0];
-      for (const id of SECTIONS) {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= line) section = id;
-      }
-      setSpied(`#${section}`);
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -266,6 +258,31 @@ export function Header({
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(frame);
     };
+  }, []);
+  // Scroll spy without per-frame layout reads. The observer's root runs from
+  // far above the page down to the line a third of the way down the screen,
+  // so a section overlaps it exactly when its top is above that line, and
+  // every crossing (even a long jump) fires an entry.
+  useEffect(() => {
+    if (current) return;
+    const above = new Map<string, boolean>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const line = entry.rootBounds?.bottom ?? window.innerHeight / 3;
+          above.set(entry.target.id, entry.boundingClientRect.top <= line);
+        }
+        let section = SECTIONS[0];
+        for (const id of SECTIONS) if (above.get(id)) section = id;
+        setSpied(`#${section}`);
+      },
+      { rootMargin: "100000px 0px -66.6667% 0px" },
+    );
+    for (const id of SECTIONS) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+    return () => observer.disconnect();
   }, [current]);
   // The pill sits on the current section's link and follows hover/focus.
   const pillHref = hovered ?? active;
@@ -292,7 +309,7 @@ export function Header({
             width={43}
             height={50}
             alt=""
-            priority
+            loading="eager"
           />
           <span>
             LIONS DEN<small>Coffee Shop</small>

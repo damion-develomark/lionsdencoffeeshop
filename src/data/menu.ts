@@ -35,7 +35,7 @@ const sizes = (a: number, b: number, c: number) => ({
 export const menu: Record<string, MenuGroup[]> = {
   Coffee: [
     {
-      title: "Lattes",
+      title: "Lattes & Iced Coffee",
       items: [
         {
           slug: "classic-latte",
@@ -46,6 +46,21 @@ export const menu: Record<string, MenuGroup[]> = {
           image: {
             src: "/images/menu/classic-latte-red-cups.webp",
             alt: "Three hot espresso drinks with rosetta latte art in red cups and saucers",
+          },
+        },
+        {
+          // PDF: Iced Lions Blend Coffee and Iced Black Velvet Coffee share
+          // these prices.
+          slug: "iced-coffee",
+          name: "Iced Coffee",
+          price: 3.2,
+          description:
+            "Lions Blend medium roast or Black Velvet dark roast, over ice. Also available in 24 oz.",
+          sizes: sizes(3.2, 3.99, 4.65),
+          image: {
+            src: "/images/menu/iced-coffee-cold-foam-patio.webp",
+            alt: "Iced coffee with cold foam in a Lions Den Coffee Shop cup, held up in front of the shop's patio",
+            focus: "50% 60%",
           },
         },
       ],
