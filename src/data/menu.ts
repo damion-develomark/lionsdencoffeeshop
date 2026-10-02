@@ -80,6 +80,26 @@ export const menu: Record<string, MenuGroup[]> = {
         },
       ],
     },
+    // Not on the printed menu and no price confirmed yet, so the copy stays
+    // general and there is no drink schema. Add prices here once confirmed.
+    {
+      title: "Cocktails",
+      items: [
+        {
+          slug: "espresso-martini",
+          name: "Espresso Martini",
+          price: 0,
+          priceText: "Ask us",
+          description:
+            "Espresso martinis are part of the Lions Den experience. Ask what’s available when you visit.",
+          image: {
+            src: "/images/menu/espresso-martini-tiramisu.webp",
+            focus: "60% 50%",
+            alt: "Espresso martini served with tiramisu at Lions Den Coffee Shop.",
+          },
+        },
+      ],
+    },
   ],
   Breakfast: [
     {
@@ -194,17 +214,17 @@ export const menu: Record<string, MenuGroup[]> = {
           },
         },
         {
-          // Supplied as "Chicken Parm Panini"; published under the printed
-          // menu's name and description at the owner's direction.
-          slug: "vodka-parmigiana",
-          name: "Vodka Parmigiana",
+          // The printed menu lists this as "Vodka Parmigiana" ($16.50); shown
+          // under the name the client asked for.
+          slug: "chicken-parm-panini",
+          name: "Chicken Parm Panini",
           price: 16.5,
           description:
-            "Lightly breaded chicken cutlet, house-made vodka sauce, fresh ricotta, and fresh basil.",
+            "Lightly breaded chicken cutlet with house-made vodka sauce, fresh ricotta, and fresh basil.",
           image: {
-            src: "/images/menu/vodka-parmigiana-panini.webp",
+            src: "/images/menu/chicken-parm-panini.webp",
             focus: "40% 55%",
-            alt: "Chicken parm panini cut in half, showing a breaded chicken cutlet, red sauce, ricotta and basil, on a plate on a Lions Den Coffee Shop table",
+            alt: "Chicken parm panini cut in half, showing breaded chicken, red sauce, ricotta, and basil on a Lions Den Coffee Shop table.",
           },
         },
       ],
@@ -228,5 +248,3 @@ export const menu: Record<string, MenuGroup[]> = {
     },
   ],
 };
-
-// AFTER DARK: TODO: confirm renewed permit with client before adding a cocktail block.

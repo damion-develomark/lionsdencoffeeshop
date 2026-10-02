@@ -18,7 +18,7 @@ The website menu (`src/data/menu.ts`) shows only items from the approved menu (`
 | Breakfast  | Deluxe Yogurt Parfait           | `Lion Den menu items/Deluxe Yogurt Parfait.jpeg`                  | Supplied by name; granola, strawberries, blueberries and banana (seasonal fruit) |
 | Lunch      | Steak & Cheese                  | `Lion Den menu items/Steak & Cheese Panini.png`                   | Supplied by name; roast beef, peppers and melted cheese on a panini              |
 | Lunch      | Classic (toast)                 | `Lion Den menu items/classic avocado toast.png`                   | Supplied by name; mashed avocado, dark seeds and lemon zest                      |
-| Lunch      | Vodka Parmigiana                | `Lion Den menu items/Chicken Parm Panini..png`                    | Owner-directed (Oct 2): the "Chicken Parm Panini" photo, under the PDF name      |
+| Lunch      | Chicken Parm Panini             | `Lion Den menu items/Chicken Parm Panini..png`                    | Client-requested name (Oct 2); the PDF calls it "Vodka Parmigiana"               |
 
 The Inferno and The California were matched from visible ingredients. Please have the shop confirm both before launch.
 
@@ -102,7 +102,7 @@ From `Lion Den menu items/`. Each could match a PDF item, but the photo doesn't 
 - **`The Carnivore.png`** → The Carnivore. The photo clearly shows sausage, egg and cheese on an asiago bagel, but bacon and the second egg can't be seen. Confirm it's The Carnivore as served.
 - **`vegetarian avocado toast.png`** → possibly Veggie Toast. The photo shows avocado, tomato, red onion and crumbled white cheese. The PDF's Veggie Toast is "pico mix … tomatoes, red onions, & goat cheese" with no mention of avocado. Confirm it's the Veggie Toast and that the cheese is goat cheese.
 - The Carnivore and Veggie photos are not in the repo yet. Compress them from the originals (see the README) once the shop confirms.
-- **Published Oct 2:** `Chicken Parm Panini..png` as **Vodka Parmigiana** (`public/images/menu/vodka-parmigiana-panini.webp`). Still confirm the sandwich uses the PDF's vodka sauce and ricotta, or give the website the shop's preferred name.
+- **Published Oct 2:** `Chicken Parm Panini..png` as **Chicken Parm Panini** (`public/images/menu/chicken-parm-panini.webp`), with the PDF's Vodka Parmigiana description and $16.50 price.
 
 ### Supplied photos not used
 
@@ -110,7 +110,7 @@ From `Lion Den menu items/`:
 
 - **Not on the PDF menu** (no approved name, price or category): `Cake pop.jpg`, `Chocolate Hazelnut Croissants.png`, `Fresh Fruit Tarts.png`, `Prosciutto and Fig Panini.png`, `Pumpkin Cheese Muffin.png`, `Pumpkin Spice Chai Latte (seasonal).png`, `Pumpkin cheescake (seasonal).png`, `bruschetta crostini.png`, `charcuterie:antipasto board.png`, `classic ricotta crostini.png`, `prosciutto wrapped cantaloupe.png`. The pumpkin items are seasonal.
 - **Gallery (Oct 2):** `Italian cream puffs.png` is now the gallery's only pastry photo (`public/images/gallery/italian-cream-puffs.webp`), replacing the cannoli, sfogliatelle and berry tart shots.
-- **Alcohol:** `Espresso Martini with Tiramisu.png` is on hold with the after-dark menu until the permit is confirmed.
+- **Alcohol:** `Espresso Martini with Tiramisu.png` is published under Menu → Not Coffee → Cocktails (`public/images/menu/espresso-martini-tiramisu.webp`) with general copy and "Ask us" in place of a price. Add prices and any other drinks once the owner confirms them.
 - **Doesn't match its PDF item:** `Caprese salad.png` is a salad, not the Caprese Panini.
 - **No distinct menu item:** `Hot Latte.png`. Classic Latte already has a photo.
 - **Alternates of published items:** `Bacon, Egg & Cheese breakfast sandwich on hard roll.png`, `Sausage, Egg & Cheese Croissant.png`, `Deluxe Yogurt Parfait 2.png`.

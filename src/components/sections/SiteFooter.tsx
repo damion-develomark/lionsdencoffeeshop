@@ -40,7 +40,7 @@ const NAV = [
 ];
 
 // "Latte": a flat, soft latte panel with everything in one centred column,
-// and a curl of steam rising off the lion. The holiday photos crossfade
+// and a curl of steam rising off the lion. Menu photos crossfade
 // underneath the latte tint. The lion replays the hero's
 // entrance each time the footer scrolls into view.
 /** `base="/"` on pages other than the homepage, so the links lead home. */

@@ -1,24 +1,24 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import christmasLatte from "../../../public/images/holiday/christmas-latte.webp";
-import peppermintMocha from "../../../public/images/holiday/peppermint-mocha.webp";
-import christmasMuffin from "../../../public/images/holiday/christmas-muffin.webp";
-import coffeeInSnow from "../../../public/images/holiday/coffee-in-snow.webp";
-import stPatricksDay from "../../../public/images/holiday/st-patricks-day.webp";
-import moscowMule from "../../../public/images/holiday/moscow-mule.webp";
+import hotLatte from "../../../public/images/footer/hot-latte.webp";
+import cannolis from "../../../public/images/footer/cannolis.webp";
+import fruitTarts from "../../../public/images/footer/fresh-fruit-tarts.webp";
+import croissants from "../../../public/images/footer/chocolate-hazelnut-croissants.webp";
+import antipastoBoard from "../../../public/images/footer/antipasto-board.webp";
+import prosciuttoFigPanini from "../../../public/images/footer/prosciutto-fig-panini.webp";
 
 const SLIDES = [
-  christmasLatte,
-  peppermintMocha,
-  christmasMuffin,
-  coffeeInSnow,
-  stPatricksDay,
-  moscowMule,
+  hotLatte,
+  cannolis,
+  fruitTarts,
+  croissants,
+  antipastoBoard,
+  prosciuttoFigPanini,
 ];
 const INTERVAL_MS = 3000;
 
-// Decorative crossfading backdrop of the holiday photos, sitting under the
+// Decorative crossfading backdrop of menu photos (year-round, not seasonal), sitting under the
 // footer's latte tint. It only advances while the footer is on screen, and
 // holds on the first photo for reduced-motion users.
 export function FooterSlideshow() {

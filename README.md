@@ -299,26 +299,27 @@ Brand glyphs inlined as SVG paths from Simple Icons, since lucide-react v1 dropp
 
 All photos are local and were converted from the supplied originals with `sharp` (WebP, max ~1200px; the culture photo 1800px). The originals are kept outside the repo.
 
-| Asset                                                   | Where it's used                  | Supplied original                                    |
-| ------------------------------------------------------- | -------------------------------- | ---------------------------------------------------- |
-| `images/hero/iced-coffee-cold-foam-cutout.webp`         | Hero                             | `Lions Den Transparent Cutout/1.png`                 |
-| `images/hero/breakfast-sandwich-cutout.webp`            | Hero                             | `Lions Den Transparent Cutout/3.png`                 |
-| `images/hero/strawberry-smoothie-cutout.webp`           | Hero                             | `Lions Den Transparent Cutout/4.png`                 |
-| `images/hero/latte-red-cup-cutout.webp`                 | Hero                             | `Lions Den Transparent Cutout/6.png`                 |
-| `images/features/to-go-cup-sticker.webp`                | Our Story sticker                | `Lions Den Transparent Cutout/2.png` + cream border  |
-| `images/features/sfogliatella-sticker.webp`             | Reviews sticker                  | `Lions Den Transparent Cutout/5.png` + cream border  |
-| `images/menu/*.webp` (13)                               | Menu thumbnails & feature photos | See `PHOTO_SHOT_LIST.md` → Live With Supplied Photos |
-| `images/shop/iced-coffee-by-the-patio.webp`             | Unused (Culture is a video)      | `coffee front.jpg`                                   |
-| `images/shop/storefront-patio-cannoli-espresso.webp`    | Our Story section                | `outside.jpeg`                                       |
-| `images/og-lions-den-storefront.jpg`                    | Open Graph / JSON-LD image       | `outside.jpeg`, cropped to 1200×630                  |
-| `images/gallery/iced-coffees-on-the-counter.webp`       | Gallery                          | `coffees.png`                                        |
-| `images/gallery/bagel-sandwiches-tray.webp`             | Gallery                          | `bagels.png`                                         |
-| `images/gallery/italian-cream-puffs.webp`               | Gallery (the one pastry photo)   | `Lion Den menu items/Italian cream puffs.png`        |
-| `images/gallery/matcha-strawberry-foam-storefront.webp` | Gallery                          | `strawberry matcha.png`                              |
-| `images/gallery/fall-iced-coffee.webp`                  | Gallery (seasonal)               | `fall coffee.jpeg`                                   |
-| `images/gallery/winter-coffee-in-snow.webp`             | Gallery (seasonal)               | `Holiday/coffee in snow.png`                         |
+| Asset                                                   | Where it's used                  | Supplied original                                                                                           |
+| ------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `images/hero/iced-coffee-cold-foam-cutout.webp`         | Hero                             | `Lions Den Transparent Cutout/1.png`                                                                        |
+| `images/hero/breakfast-sandwich-cutout.webp`            | Hero                             | `Lions Den Transparent Cutout/3.png`                                                                        |
+| `images/hero/strawberry-smoothie-cutout.webp`           | Hero                             | `Lions Den Transparent Cutout/4.png`                                                                        |
+| `images/hero/latte-red-cup-cutout.webp`                 | Hero                             | `Lions Den Transparent Cutout/6.png`                                                                        |
+| `images/features/to-go-cup-sticker.webp`                | Our Story sticker                | `Lions Den Transparent Cutout/2.png` + cream border                                                         |
+| `images/features/sfogliatella-sticker.webp`             | Reviews sticker                  | `Lions Den Transparent Cutout/5.png` + cream border                                                         |
+| `images/menu/*.webp` (14)                               | Menu thumbnails & feature photos | See `PHOTO_SHOT_LIST.md` → Live With Supplied Photos                                                        |
+| `images/footer/*.webp` (6)                              | Footer background slideshow      | `Lion Den menu items/` (latte, cannolis, fruit tarts, croissants, antipasto board, prosciutto & fig panini) |
+| `videos/story-720p.webm` + `.mp4`, `story-poster.webp`  | Our Story video                  | `Lions Den Media Shoot Video [VERTICAL].mp4`                                                                |
+| `images/shop/iced-coffee-by-the-patio.webp`             | Unused (Culture is a video)      | `coffee front.jpg`                                                                                          |
+| `images/og-lions-den-storefront.jpg`                    | Open Graph / JSON-LD image       | `outside.jpeg`, cropped to 1200×630                                                                         |
+| `images/gallery/iced-coffees-on-the-counter.webp`       | Gallery                          | `coffees.png`                                                                                               |
+| `images/gallery/bagel-sandwiches-tray.webp`             | Gallery                          | `bagels.png`                                                                                                |
+| `images/gallery/italian-cream-puffs.webp`               | Gallery (the one pastry photo)   | `Lion Den menu items/Italian cream puffs.png`                                                               |
+| `images/gallery/matcha-strawberry-foam-storefront.webp` | Gallery                          | `strawberry matcha.png`                                                                                     |
+| `images/gallery/fall-iced-coffee.webp`                  | Gallery (seasonal)               | `fall coffee.jpeg`                                                                                          |
+| `images/gallery/winter-coffee-in-snow.webp`             | Gallery (seasonal)               | `Holiday/coffee in snow.png`                                                                                |
 
-Supplied cut-outs `2.png` and `5.png` are intentionally not in the hero. Photos from the later `Lion Den menu items` folder that aren't on the website (held for confirmation, not on the PDF, or duplicates) are listed in `PHOTO_SHOT_LIST.md`. Alcohol photos (`alcoholic drinks.jpg`, `Food & wine.png`, `Holiday/Mule.jpg`, `Holiday/xmas.jpg`) are not used while the after-dark permit is unconfirmed.
+Supplied cut-outs `2.png` and `5.png` are intentionally not in the hero. Photos from the later `Lion Den menu items` folder that aren't on the website (held for confirmation, not on the PDF, or duplicates) are listed in `PHOTO_SHOT_LIST.md`. Other alcohol photos (`alcoholic drinks.jpg`, `Food & wine.png`, `Holiday/Mule.jpg`, `Holiday/xmas.jpg`) are not used; only the espresso martini is on the site (Menu → Not Coffee).
 
 ### Illustrations (made in code)
 

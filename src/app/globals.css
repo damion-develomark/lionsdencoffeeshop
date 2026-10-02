@@ -723,7 +723,7 @@ button:focus-visible {
   z-index: 2;
   width: 39%;
   left: 7%;
-  top: -6%;
+  top: 14%;
   aspect-ratio: 473 / 720;
   rotate: -5deg;
 }
@@ -731,7 +731,7 @@ button:focus-visible {
   z-index: 2;
   width: 43%;
   left: 45%;
-  top: -4%;
+  top: 16%;
   aspect-ratio: 587 / 720;
   rotate: 5deg;
 }
@@ -1650,17 +1650,38 @@ h2 em {
 .story-photo {
   overflow: hidden;
   position: relative;
-  aspect-ratio: 16 / 9;
+  justify-self: center;
+  /* The shoot video is vertical: a 9:16 frame, capped so it doesn't tower
+     over the copy beside it. */
+  width: min(100%, 380px);
+  aspect-ratio: 9 / 16;
+  /* Sticker frame like the culture card, with a gold offset shadow so it
+     reads on the espresso band. */
+  border: 3px solid var(--color-warm-white);
+  border-radius: 1.75rem;
+  box-shadow: 8px 8px 0 var(--color-gold);
   background: #000;
 }
-.story-photo iframe {
+/* The culture reel's round buttons, top right over the playing video. */
+.story-video-buttons {
+  position: absolute;
+  z-index: 1;
+  top: 18px;
+  right: 18px;
+  display: flex;
+  gap: 12px;
+}
+.story-video {
   display: block;
   width: 100%;
   height: 100%;
-  border: 0;
+  object-fit: cover;
 }
-/* Video facade: the storefront photo under a warm espresso wash, with a gold
-   sticker play button. Same 16:9 box as the player, so nothing shifts. */
+.story-video:fullscreen {
+  object-fit: contain;
+}
+/* Click-to-play: the poster under a warm espresso wash, with a gold sticker
+   play button. It sits over the video, so nothing shifts on play. */
 .story-play {
   position: absolute;
   inset: 0;
@@ -1670,14 +1691,7 @@ h2 em {
   padding: 0;
   border: 0;
   cursor: pointer;
-  background: #000;
-}
-.story-play img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 60%;
-  transition: transform 0.6s ease;
+  background: transparent;
 }
 .story-play::after {
   content: "";
@@ -1688,6 +1702,7 @@ h2 em {
     rgb(35 31 32 / 70%),
     rgb(35 31 32 / 10%) 60%
   );
+  transition: opacity 0.3s ease;
 }
 .story-play-icon {
   position: absolute;
@@ -1718,8 +1733,8 @@ h2 em {
   font-size: 14px;
   line-height: 1.2;
 }
-.story-play:hover img {
-  transform: scale(1.04);
+.story-play:hover::after {
+  opacity: 0.75;
 }
 .story-play:hover .story-play-icon {
   transform: translate(2px, 2px);
@@ -2278,7 +2293,7 @@ h2 em {
   padding-block: 64px 32px;
 }
 /* Latte tint in the hero spill's top colour, warming slightly downward. It
-   sits over the holiday slideshow so the photos show through faintly. */
+   sits over the menu-photo slideshow so the photos show through faintly. */
 .site-footer::before {
   content: "";
   position: absolute;
@@ -2650,6 +2665,13 @@ h2 em {
     height: auto;
     aspect-ratio: 1 / 0.95;
     margin-top: 0;
+  }
+  /* Phones keep the tall drinks higher, tucked under the headline. */
+  .hero-drink--iced {
+    top: -6%;
+  }
+  .hero-drink--smoothie {
+    top: -4%;
   }
   /* Front row shifts left so the badge has the bottom-right corner. */
   .hero-drink--sandwich {
