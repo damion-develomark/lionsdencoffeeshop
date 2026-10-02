@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Maximize, Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { useNearViewport } from "@/lib/use-near-viewport";
 
 const SRC = "/videos/restaurant-week-540p.mp4";
 const POSTER = "/videos/restaurant-week-poster.webp";
@@ -22,6 +23,8 @@ export function CultureVideo() {
   const [muted, setMuted] = useState(true);
   const [stacked, setStacked] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  // The card's espresso background stands in until the poster is close.
+  const showPoster = useNearViewport(videoRef);
 
   useEffect(() => {
     const media = window.matchMedia(STACKED);
@@ -120,7 +123,7 @@ export function CultureVideo() {
         ref={backdropRef}
         className="culture-video-backdrop"
         src={SRC}
-        poster={POSTER}
+        poster={showPoster ? POSTER : undefined}
         muted
         loop
         playsInline
@@ -133,7 +136,7 @@ export function CultureVideo() {
           ref={videoRef}
           className="culture-video"
           src={SRC}
-          poster={POSTER}
+          poster={showPoster ? POSTER : undefined}
           muted
           loop
           playsInline

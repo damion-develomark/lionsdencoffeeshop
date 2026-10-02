@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Maximize, Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { useNearViewport } from "@/lib/use-near-viewport";
 
 const POSTER = "/videos/story-poster.webp";
 const TITLE = "Lions Den Coffee Shop story video";
@@ -17,6 +18,8 @@ export function StoryVideo() {
   const [paused, setPaused] = useState(true);
   const [muted, setMuted] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  // The frame's black background stands in until the poster is close.
+  const showPoster = useNearViewport(video);
 
   useEffect(() => {
     const el = video.current;
@@ -77,7 +80,7 @@ export function StoryVideo() {
       <video
         ref={video}
         className="story-video"
-        poster={POSTER}
+        poster={showPoster ? POSTER : undefined}
         preload="none"
         playsInline
         controls={fullscreen}
