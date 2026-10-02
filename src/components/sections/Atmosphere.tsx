@@ -5,15 +5,14 @@ import { ArrowUpRight } from "lucide-react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import icedCoffees from "../../../public/images/gallery/iced-coffees-on-the-counter.webp";
 import bagels from "../../../public/images/gallery/bagel-sandwiches-tray.webp";
-import cannoli from "../../../public/images/gallery/cannoli-chocolate-pistachio.webp";
-import sfogliatelle from "../../../public/images/gallery/sfogliatelle-cream-tray.webp";
-import tarts from "../../../public/images/gallery/berry-cream-tarts.webp";
+import creamPuffs from "../../../public/images/gallery/italian-cream-puffs.webp";
 import matchaFoam from "../../../public/images/gallery/matcha-strawberry-foam-storefront.webp";
 import fallCoffee from "../../../public/images/gallery/fall-iced-coffee.webp";
 import snowCoffee from "../../../public/images/gallery/winter-coffee-in-snow.webp";
 
 // The shop's own photos. Pastries and seasonal drinks live here rather than
 // in the menu; captions describe the moment, not a specific menu item.
+// One pastry photo only, so the gallery doesn't read as a bakery.
 const photos = [
   {
     src: icedCoffees,
@@ -26,19 +25,9 @@ const photos = [
     caption: "Breakfast, on its way out",
   },
   {
-    src: cannoli,
-    alt: "Cannoli dipped in chocolate chips and crushed pistachios",
-    caption: "Something sweet on the side",
-  },
-  {
-    src: sfogliatelle,
-    alt: "A tray of flaky shell-shaped pastries topped with piped cream and powdered sugar",
+    src: creamPuffs,
+    alt: "Three Italian cream puffs filled with vanilla and chocolate cream, topped with cherries and powdered sugar, held up outside the Lions Den storefront",
     caption: "Fresh from the pastry case",
-  },
-  {
-    src: tarts,
-    alt: "Cream tarts topped with raspberries and chocolate-dipped strawberries",
-    caption: "Check the pastry display",
   },
   {
     src: matchaFoam,

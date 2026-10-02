@@ -307,15 +307,13 @@ All photos are local and were converted from the supplied originals with `sharp`
 | `images/hero/latte-red-cup-cutout.webp`                 | Hero                             | `Lions Den Transparent Cutout/6.png`                 |
 | `images/features/to-go-cup-sticker.webp`                | Our Story sticker                | `Lions Den Transparent Cutout/2.png` + cream border  |
 | `images/features/sfogliatella-sticker.webp`             | Reviews sticker                  | `Lions Den Transparent Cutout/5.png` + cream border  |
-| `images/menu/*.webp` (12)                               | Menu thumbnails & feature photos | See `PHOTO_SHOT_LIST.md` → Live With Supplied Photos |
+| `images/menu/*.webp` (13)                               | Menu thumbnails & feature photos | See `PHOTO_SHOT_LIST.md` → Live With Supplied Photos |
 | `images/shop/iced-coffee-by-the-patio.webp`             | Unused (Culture is a video)      | `coffee front.jpg`                                   |
 | `images/shop/storefront-patio-cannoli-espresso.webp`    | Our Story section                | `outside.jpeg`                                       |
 | `images/og-lions-den-storefront.jpg`                    | Open Graph / JSON-LD image       | `outside.jpeg`, cropped to 1200×630                  |
 | `images/gallery/iced-coffees-on-the-counter.webp`       | Gallery                          | `coffees.png`                                        |
 | `images/gallery/bagel-sandwiches-tray.webp`             | Gallery                          | `bagels.png`                                         |
-| `images/gallery/cannoli-chocolate-pistachio.webp`       | Gallery                          | `cannolis.png`                                       |
-| `images/gallery/sfogliatelle-cream-tray.webp`           | Gallery                          | `pastry.png`                                         |
-| `images/gallery/berry-cream-tarts.webp`                 | Gallery                          | `cream pastrys.png`                                  |
+| `images/gallery/italian-cream-puffs.webp`               | Gallery (the one pastry photo)   | `Lion Den menu items/Italian cream puffs.png`        |
 | `images/gallery/matcha-strawberry-foam-storefront.webp` | Gallery                          | `strawberry matcha.png`                              |
 | `images/gallery/fall-iced-coffee.webp`                  | Gallery (seasonal)               | `fall coffee.jpeg`                                   |
 | `images/gallery/winter-coffee-in-snow.webp`             | Gallery (seasonal)               | `Holiday/coffee in snow.png`                         |
@@ -402,4 +400,3 @@ Deployed on **Vercel** as a standard Next.js project (`vercel.json`: `npm instal
 - **Menu PDF:** confirm `public/lionsden-menu.pdf` is the current menu once the client's media package is in hand.
 - **Copyright year** in the footer is hard-coded (2026).
 - **Duplicate helper:** `ui/tabs.tsx` and `ui/tooltip.tsx` import `cn` from the `cn` npm package instead of `@/lib/utils`. Point them at the local helper and drop the package.
-- **Default Next.js files** in `public/` (`file.svg`, `globe.svg`, `next.svg`, `vercel.svg`, `window.svg`) are unused starter assets and can be deleted.

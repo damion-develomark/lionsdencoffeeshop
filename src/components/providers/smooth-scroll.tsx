@@ -1,12 +1,14 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef } from "react";
-import Lenis from "lenis";
+import type Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 /**
  * Lenis smooth scrolling, driven by GSAP's ticker so ScrollTrigger
- * animations stay in sync with the smoothed scroll position.
+ * animations stay in sync with the smoothed scroll position. Lenis is only
+ * downloaded for mouse/trackpad users without reduced motion: touch screens
+ * already scroll smoothly, so phones skip the library entirely.
  */
 const LenisContext = createContext<React.RefObject<Lenis | null> | null>(null);
 export function useLenis() {
@@ -68,29 +70,40 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const instance = useRef<Lenis | null>(null);
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const touch = window.matchMedia("(hover: none) and (pointer: coarse)");
     let cleanup = () => {};
+    // Bumped on every setup, so a late import can't start a stale Lenis.
+    let version = 0;
     const setup = () => {
       cleanup();
-      if (media.matches) return;
-      const lenis = new Lenis({ autoRaf: false });
-      instance.current = lenis;
+      cleanup = () => {};
+      const current = ++version;
+      if (media.matches || touch.matches) return;
+      import("lenis").then(({ default: LenisClass }) => {
+        if (current !== version) return;
+        const lenis = new LenisClass({ autoRaf: false });
+        instance.current = lenis;
 
-      lenis.on("scroll", ScrollTrigger.update);
-      const tick = (time: number) => lenis.raf(time * 1000);
-      gsap.ticker.add(tick);
-      gsap.ticker.lagSmoothing(0);
+        lenis.on("scroll", ScrollTrigger.update);
+        const tick = (time: number) => lenis.raf(time * 1000);
+        gsap.ticker.add(tick);
+        gsap.ticker.lagSmoothing(0);
 
-      cleanup = () => {
-        gsap.ticker.remove(tick);
-        lenis.destroy();
-        instance.current = null;
-      };
+        cleanup = () => {
+          gsap.ticker.remove(tick);
+          lenis.destroy();
+          instance.current = null;
+        };
+      });
     };
     setup();
     media.addEventListener("change", setup);
+    touch.addEventListener("change", setup);
     return () => {
+      version++;
       cleanup();
       media.removeEventListener("change", setup);
+      touch.removeEventListener("change", setup);
     };
   }, []);
 

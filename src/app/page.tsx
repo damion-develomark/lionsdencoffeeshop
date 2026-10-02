@@ -5,7 +5,9 @@ import { Culture } from "@/components/sections/Culture";
 import { MenuBoard } from "@/components/sections/MenuBoard";
 import { SlowDownBand } from "@/components/sections/SlowDownBand";
 import { Atmosphere } from "@/components/sections/Atmosphere";
+import { ComingSoon } from "@/components/sections/ComingSoon";
 import { Reviews } from "@/components/sections/Reviews";
+import { FAQSection } from "@/components/sections/FAQSection";
 import { Visit } from "@/components/sections/Visit";
 import { Contact } from "@/components/sections/Contact";
 import { SiteFooter } from "@/components/sections/SiteFooter";
@@ -27,7 +29,9 @@ export default function Home() {
         <MenuBoard />
         <SlowDownBand />
         <Atmosphere />
+        <ComingSoon />
         <Reviews />
+        <FAQSection />
         <Visit />
         <Contact />
       </main>

@@ -6,11 +6,12 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { LionMark } from "@/components/brand/LionMark";
 import { FooterSlideshow } from "./FooterSlideshow";
 import { addLionReveal } from "@/components/brand/lionReveal";
-import { Anchor, HOURS, ORDER_ONLINE_URL } from "./Header";
+import { Anchor, HOURS, navLinks, ORDER_ONLINE_URL } from "./Header";
 import {
   SocialIcon,
   type SocialIconName,
 } from "@/components/brand/SocialIcons";
+import { PaymentIcon, PAYMENT_METHODS } from "@/components/brand/PaymentIcons";
 import develomarkLogo from "../../../public/brand/develomark-logo-black.png";
 
 const SOCIALS: [SocialIconName, string, string][] = [
@@ -29,19 +30,21 @@ const SOCIALS: [SocialIconName, string, string][] = [
   ],
 ];
 
+// FAQ stays out of the nav; it is homepage content only.
 const NAV = [
-  ["Menu", "#menu"],
-  ["Our Story", "#about"],
-  ["Gallery", "#gallery"],
-  ["Visit", "#visit"],
-  ["Contact", "#contact"],
+  { label: "Menu", href: "#menu" },
+  { label: "Our Story", href: "#about" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Visit", href: "#visit" },
+  { label: "Contact", href: "#contact" },
 ];
 
 // "Latte": a flat, soft latte panel with everything in one centred column,
 // and a curl of steam rising off the lion. The holiday photos crossfade
 // underneath the latte tint. The lion replays the hero's
 // entrance each time the footer scrolls into view.
-export function SiteFooter() {
+/** `base="/"` on pages other than the homepage, so the links lead home. */
+export function SiteFooter({ base = "" }: { base?: string }) {
   const ref = useRef<HTMLElement>(null);
   useGSAP(
     () => {
@@ -95,7 +98,7 @@ export function SiteFooter() {
         </p>
 
         <nav aria-label="Footer navigation" className="footer-nav">
-          {NAV.map(([label, href]) => (
+          {navLinks(NAV, base).map(({ label, href }) => (
             <Anchor key={href} href={href}>
               {label}
             </Anchor>
@@ -138,6 +141,18 @@ export function SiteFooter() {
             </a>
           ))}
         </nav>
+
+        <div className="footer-payments">
+          <p>We accept</p>
+          <ul>
+            {PAYMENT_METHODS.map(({ label, path }) => (
+              <li key={label} title={label}>
+                <PaymentIcon path={path} />
+                <span className="sr-only">{label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
 
         <small>Lions Den Coffee Shop® · © 2026 Lions Den Coffee LLC</small>
         <a

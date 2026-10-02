@@ -89,6 +89,7 @@ export default function RootLayout({
                 addressCountry: "US",
               },
               openingHours: ["Mo-Fr 06:00-19:00", "Sa-Su 07:00-19:00"],
+              hasMenu: "https://www.lionsdencoffeeshop.com/lionsden-menu.pdf",
               sameAs: [
                 "https://www.instagram.com/lionsden_coffee/",
                 "https://www.facebook.com/lionsdencoffeeshopCT",

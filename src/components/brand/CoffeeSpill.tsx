@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { gsap, loadMorphSVG } from "@/lib/gsap";
 
 // Coffee spill that floods the whole hero background, in two layers:
 // - .spill-flood: a CSS gradient filling the section (any height, so phones
@@ -68,6 +69,31 @@ function drip(x: number, length: number, width: number) {
 
 const SHEET = sheet();
 export const SPILL_SHEET_ALT = sheet(0.7);
+
+/**
+ * Idle loop: the spill's edge keeps gently shifting like settling liquid.
+ * Call it inside a gsap.matchMedia() callback and return its result; the
+ * tween joins that callback's context once MorphSVG has loaded.
+ */
+export function morphSpillIdle(context: gsap.Context, delay: number) {
+  let live = true;
+  loadMorphSVG().then(() => {
+    if (!live) return;
+    context.add(() => {
+      gsap.to(".spill-sheet", {
+        morphSVG: SPILL_SHEET_ALT,
+        duration: 6,
+        delay,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    });
+  });
+  return () => {
+    live = false;
+  };
+}
 
 // Spread across the width, but clear of the buttons at bottom-left.
 const DRIPS = [

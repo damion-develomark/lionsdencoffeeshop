@@ -1,61 +1,17 @@
-"use client";
-import Image from "next/image";
-import { useRef } from "react";
-import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { Badge } from "@/components/ui/badge";
 import { StickerFeature } from "@/components/brand/StickerFeature";
-import storefront from "../../../public/images/shop/storefront-patio-cannoli-espresso.webp";
+import { StoryQuote } from "./StoryQuote";
+import { StoryVideo } from "./StoryVideo";
 import toGoCup from "../../../public/images/features/to-go-cup-sticker.webp";
 
+// Server-rendered copy; only the video facade and the quote's scroll fade
+// are client islands.
 export function SlowDownBand() {
-  const ref = useRef<HTMLElement>(null);
-  useGSAP(
-    () => {
-      const media = gsap.matchMedia();
-      media.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.from(".story-photo img", {
-          scale: 1.12,
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-        const split = SplitText.create("blockquote", { type: "words" });
-        gsap.from(split.words, {
-          opacity: 0.25,
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: "blockquote",
-            start: "top 90%",
-            end: "bottom 60%",
-            scrub: true,
-          },
-        });
-        return () => split.revert();
-      });
-      return () => media.revert();
-    },
-    { scope: ref },
-  );
   return (
-    <section
-      id="about"
-      ref={ref}
-      className="story-section"
-      aria-labelledby="story-title"
-    >
+    <section id="about" className="story-section" aria-labelledby="story-title">
       <div className="shell story-grid">
         <div className="story-photo">
-          <Image
-            quality={60}
-            src={storefront}
-            alt="A cannoli and a small coffee in a red cup on a patio table in front of the Lions Den Coffee Shop storefront"
-            sizes="(max-width: 767px) 90vw, 45vw"
-            placeholder="blur"
-          />
-          <span>OUR LITTLE CORNER OF PLANTSVILLE</span>
+          <StoryVideo />
         </div>
         <div className="story-copy">
           <p className="eyebrow">An Italian welcome</p>
@@ -69,10 +25,7 @@ export function SlowDownBand() {
             people together over coffee in a warm, Italian environment.
           </p>
           <p>Come in, slow down, and stay a while. Our patio is waiting.</p>
-          <blockquote>
-            “To enrich the American culture where people enjoy life, family, and
-            friends.”
-          </blockquote>
+          <StoryQuote text="“To enrich the American culture where people enjoy life, family, and friends.”" />
           <div className="values">
             {["Service", "Quality", "Community"].map((value) => (
               <Badge key={value} variant="outline">

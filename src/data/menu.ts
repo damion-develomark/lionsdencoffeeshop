@@ -193,6 +193,20 @@ export const menu: Record<string, MenuGroup[]> = {
             alt: "Grilled panini cut in half, showing sliced roast beef, red peppers and melted cheese, beside a red iced drink in a Lions Den Coffee Shop cup",
           },
         },
+        {
+          // Supplied as "Chicken Parm Panini"; published under the printed
+          // menu's name and description at the owner's direction.
+          slug: "vodka-parmigiana",
+          name: "Vodka Parmigiana",
+          price: 16.5,
+          description:
+            "Lightly breaded chicken cutlet, house-made vodka sauce, fresh ricotta, and fresh basil.",
+          image: {
+            src: "/images/menu/vodka-parmigiana-panini.webp",
+            focus: "40% 55%",
+            alt: "Chicken parm panini cut in half, showing a breaded chicken cutlet, red sauce, ricotta and basil, on a plate on a Lions Den Coffee Shop table",
+          },
+        },
       ],
     },
     {

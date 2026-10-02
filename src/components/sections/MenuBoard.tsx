@@ -1,13 +1,13 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-  type Variants,
-} from "motion/react";
-import { ChevronLeft, ChevronRight, Download, Info } from "lucide-react";
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  Info,
+} from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Tooltip,
@@ -16,37 +16,20 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { useSlidingPill } from "@/lib/use-sliding-pill";
 import { menu, type MenuGroup, type MenuItem } from "@/data/menu";
 import { EspressoSaucer } from "@/components/brand/EspressoSaucer";
 import { RingBadge } from "@/components/brand/RingBadge";
 import { CoffeeBean } from "@/components/brand/CoffeeSpill";
 
 const BEANS = ["a", "b", "c"];
-
-const listVariants: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.04 } },
-};
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-};
-// "show" is the resting state (inherited from the list); "hover" comes from the row.
-const thumbVariants: Variants = {
-  show: { rotate: 0, "--thumb-shadow": "4px" },
-  hover: { rotate: -3, "--thumb-shadow": "6px" },
-};
-const hoverSpring = { type: "spring", stiffness: 300, damping: 22 } as const;
-
-// Big photo slides in from the side it's travelling toward.
-const slideVariants: Variants = {
-  enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%" }),
-  center: { x: 0 },
-  exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%" }),
-};
+const prefersReducedMotion = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const pad = (n: number) => String(n).padStart(2, "0");
 const SWIPE_DISTANCE = 60;
 const SWIPE_VELOCITY = 400;
+// The photo follows the finger at half speed, like a rubber band.
+const DRAG_ELASTIC = 0.5;
 
 function priceLabel(item: MenuItem) {
   return item.priceText ?? `$${item.price.toFixed(2)}`;
@@ -60,18 +43,25 @@ function sizesLine(item: MenuItem) {
 }
 
 // Tablet + phone: one big swipeable card, with every item in a thumbnail row.
+// The big photo slides in from the side it's travelling toward (GSAP); only
+// the current photo and, mid-slide, the outgoing one are in the DOM.
 function MenuCarousel({ group }: { group: MenuGroup }) {
   const thumbsRef = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
-  const [[active, dir], setSlide] = useState([0, 0]);
+  const slidesRef = useRef<HTMLDivElement>(null);
+  const drag = useRef<{ x: number; t: number } | null>(null);
+  const [{ active, prev, dir }, setSlide] = useState({
+    active: 0,
+    prev: -1,
+    dir: 0,
+  });
   const items = group.items;
-  const item = items[active];
   const count = items.length;
 
   const goTo = (next: number, direction: number) => {
     const i = (next + count) % count;
     if (i === active) return;
-    setSlide([i, direction]);
+    const reduced = prefersReducedMotion();
+    setSlide({ active: i, prev: reduced ? -1 : active, dir: direction });
     // Keep the active thumbnail in view without moving the page.
     const row = thumbsRef.current;
     const thumb = row?.children[i] as HTMLElement | undefined;
@@ -83,6 +73,67 @@ function MenuCarousel({ group }: { group: MenuGroup }) {
     }
   };
   const step = (d: number) => goTo(active + d, d);
+
+  useLayoutEffect(() => {
+    if (prev < 0) return;
+    const slides = slidesRef.current;
+    const incoming = slides?.querySelector('[data-slide="active"]') ?? [];
+    const outgoing = slides?.querySelector('[data-slide="prev"]') ?? [];
+    const tl = gsap.timeline({
+      defaults: { duration: 0.6, ease: "power3.out" },
+      onComplete: () => setSlide((s) => ({ ...s, prev: -1 })),
+    });
+    tl.fromTo(incoming, { xPercent: dir * 100, x: 0 }, { xPercent: 0 }, 0);
+    tl.to(outgoing, { xPercent: -dir * 100, x: 0 }, 0);
+    return () => {
+      tl.kill();
+    };
+  }, [active, prev, dir]);
+
+  const activeSlide = () =>
+    slidesRef.current?.querySelector('[data-slide="active"]');
+  const endDrag = (event: React.PointerEvent) => {
+    const start = drag.current;
+    drag.current = null;
+    if (!start) return;
+    const dx = event.clientX - start.x;
+    const velocity = (dx / Math.max(1, event.timeStamp - start.t)) * 1000;
+    if (dx < -SWIPE_DISTANCE || velocity < -SWIPE_VELOCITY) step(1);
+    else if (dx > SWIPE_DISTANCE || velocity > SWIPE_VELOCITY) step(-1);
+    else
+      gsap.to(activeSlide() ?? [], {
+        x: 0,
+        duration: 0.4,
+        ease: "back.out(2)",
+      });
+  };
+
+  const slide = (index: number, role: "active" | "prev") => {
+    const it = items[index];
+    return (
+      <div
+        key={it.slug}
+        className="menu-slide"
+        data-slide={role}
+        aria-roledescription={role === "active" ? "slide" : undefined}
+        aria-label={role === "active" ? `${index + 1} of ${count}` : undefined}
+        aria-hidden={role === "prev" || undefined}
+      >
+        <div className="menu-photo">
+          <Image
+            quality={60}
+            src={it.image.src}
+            alt={it.image.alt}
+            fill
+            draggable={false}
+            sizes="(min-width: 1101px) 560px, calc(100vw - 40px)"
+            className="menu-photo-img"
+            style={{ objectPosition: it.image.focus }}
+          />
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div
@@ -97,53 +148,24 @@ function MenuCarousel({ group }: { group: MenuGroup }) {
     >
       <figure className="menu-feature">
         <div className="menu-feature-frame reveal-clip">
-          <div className="menu-slides reveal-zoom">
-            <AnimatePresence initial={false} custom={dir}>
-              <motion.div
-                key={item.slug}
-                className="menu-slide"
-                custom={dir}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={
-                  reduced
-                    ? { duration: 0 }
-                    : { type: "spring", stiffness: 260, damping: 32 }
-                }
-                drag={count > 1 ? "x" : false}
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.5}
-                onDragEnd={(_, { offset, velocity }) => {
-                  if (
-                    offset.x < -SWIPE_DISTANCE ||
-                    velocity.x < -SWIPE_VELOCITY
-                  )
-                    step(1);
-                  else if (
-                    offset.x > SWIPE_DISTANCE ||
-                    velocity.x > SWIPE_VELOCITY
-                  )
-                    step(-1);
-                }}
-                aria-roledescription="slide"
-                aria-label={`${active + 1} of ${count}`}
-              >
-                <div className="menu-photo">
-                  <Image
-                    quality={60}
-                    src={item.image.src}
-                    alt={item.image.alt}
-                    fill
-                    draggable={false}
-                    sizes="(min-width: 1101px) 560px, calc(100vw - 40px)"
-                    className="menu-photo-img"
-                    style={{ objectPosition: item.image.focus }}
-                  />
-                </div>
-              </motion.div>
-            </AnimatePresence>
+          <div
+            ref={slidesRef}
+            className="menu-slides reveal-zoom"
+            onPointerDown={(e) => {
+              if (count < 2) return;
+              drag.current = { x: e.clientX, t: e.timeStamp };
+              e.currentTarget.setPointerCapture(e.pointerId);
+            }}
+            onPointerMove={(e) => {
+              if (!drag.current) return;
+              const dx = e.clientX - drag.current.x;
+              gsap.set(activeSlide() ?? [], { x: dx * DRAG_ELASTIC });
+            }}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+          >
+            {prev >= 0 && slide(prev, "prev")}
+            {slide(active, "active")}
           </div>
         </div>
       </figure>
@@ -239,7 +261,6 @@ function MenuCarousel({ group }: { group: MenuGroup }) {
 
 // Desktop: feature photo, then every item as a row with its price.
 function MenuList({ group }: { group: MenuGroup }) {
-  const reduced = useReducedMotion();
   const feature = group.items[0];
 
   return (
@@ -263,26 +284,17 @@ function MenuList({ group }: { group: MenuGroup }) {
         <figcaption className="feature-pill">{feature.name}</figcaption>
       </figure>
 
-      <motion.ul
-        variants={listVariants}
-        initial={reduced ? false : "hidden"}
-        animate="show"
-      >
-        {group.items.map((item) => {
+      {/* Rows stagger in (CSS, via --i) each time their tab is shown. */}
+      <ul>
+        {group.items.map((item, i) => {
           const sizes = sizesLine(item);
           return (
-            <motion.li
+            <li
               key={item.slug}
               className="menu-item"
-              variants={reduced ? undefined : itemVariants}
-              initial={reduced ? false : undefined}
-              whileHover="hover"
+              style={{ "--i": i } as React.CSSProperties}
             >
-              <motion.div
-                className="menu-thumb"
-                variants={thumbVariants}
-                transition={hoverSpring}
-              >
+              <div className="menu-thumb">
                 <div className="menu-thumb-clip reveal-clip">
                   <div className="menu-photo">
                     <Image
@@ -296,7 +308,7 @@ function MenuList({ group }: { group: MenuGroup }) {
                     />
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               <div className="menu-item-body">
                 <div className="item-line">
@@ -322,10 +334,10 @@ function MenuList({ group }: { group: MenuGroup }) {
                 </div>
                 <p>{item.description}</p>
               </div>
-            </motion.li>
+            </li>
           );
         })}
-      </motion.ul>
+      </ul>
     </div>
   );
 }
@@ -407,7 +419,14 @@ function MenuBlock({
 export function MenuBoard() {
   const [tab, setTab] = useState("Coffee");
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
+  const [tabsRef, tabPillRef] = useSlidingPill<HTMLDivElement>(
+    `[data-tab="${tab}"]`,
+  );
+  // A newly shown tab changes the section's height; re-measure the triggers.
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => cancelAnimationFrame(frame);
+  }, [tab]);
 
   useGSAP(
     () => {
@@ -451,21 +470,16 @@ export function MenuBoard() {
           <CoffeeBean key={b} className={`menu-bean menu-bean--${b}`} />
         ))}
         <div>
-          <p className="eyebrow">The Lions Den menu</p>
+          <p className="eyebrow">Menu favorites</p>
           <h2 id="menu-title" className="menu-title">
             <span>Coffee, breakfast</span>{" "}
             <span className="menu-title-pop">&amp; lunch menu.</span>
           </h2>
         </div>
         <div className="menu-intro-side">
-          <motion.div
-            className="menu-badge"
-            animate={reduced ? {} : { y: [0, -5, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            whileHover={reduced ? {} : { rotate: 6 }}
-          >
+          <div className="menu-badge">
             <RingBadge text="Made with care · Served with heart ·" />
-          </motion.div>
+          </div>
           <a
             href="/lionsden-menu.pdf"
             className="text-link"
@@ -476,37 +490,41 @@ export function MenuBoard() {
           </a>
         </div>
       </div>
+      {/* Photographed picks here; the PDF is the full menu with prices. */}
       <p className="menu-selection-note">
         A photographed selection of our menu. There&apos;s plenty more at the
         counter:{" "}
         <a href="/lionsden-menu.pdf" target="_blank" rel="noreferrer">
-          see the full menu (PDF)
+          see the full menu with prices (PDF)
         </a>
         .
       </p>
       <TooltipProvider>
         <Tabs value={tab} onValueChange={setTab}>
-          <TabsList className="menu-tabs" aria-label="Menu categories">
+          <TabsList
+            ref={tabsRef}
+            className="menu-tabs"
+            aria-label="Menu categories"
+          >
+            <span
+              ref={tabPillRef}
+              className="tab-pill sliding-pill"
+              aria-hidden
+            />
             {Object.keys(menu).map((name) => (
-              <TabsTrigger key={name} value={name} className="menu-tab">
+              <TabsTrigger
+                key={name}
+                value={name}
+                className="menu-tab"
+                data-tab={name}
+              >
                 <span className="tab-label">{name}</span>
-                {tab === name && (
-                  <motion.span
-                    className="tab-pill"
-                    layoutId="menu-tab-pill"
-                    transition={
-                      reduced
-                        ? { duration: 0 }
-                        : { type: "spring", stiffness: 420, damping: 32 }
-                    }
-                  />
-                )}
               </TabsTrigger>
             ))}
           </TabsList>
           {Object.entries(menu).map(([name, groups]) => (
             <TabsContent key={name} value={name} forceMount asChild>
-              <motion.div
+              <div
                 hidden={tab !== name}
                 className={`menu-grid ${
                   name === "Coffee"
@@ -515,10 +533,6 @@ export function MenuBoard() {
                       ? "menu-grid--single"
                       : ""
                 }`}
-                initial={false}
-                animate={{ opacity: tab === name ? 1 : 0 }}
-                transition={{ duration: reduced ? 0 : 0.2 }}
-                onAnimationComplete={() => ScrollTrigger.refresh()}
               >
                 {groups.map((group, i) => (
                   <MenuBlock
@@ -530,20 +544,15 @@ export function MenuBoard() {
                 ))}
                 {name === "Coffee" && (
                   <div className="menu-vignette">
-                    <motion.div
-                      className="slow-badge"
-                      initial={false}
-                      animate={{ rotate: -10 }}
-                      whileHover={reduced ? {} : { rotate: -5 }}
-                    >
+                    <div className="slow-badge">
                       <span>Come in</span>
                       <span>Slow down</span>
-                    </motion.div>
+                    </div>
                     <EspressoSaucer />
                     <p>There&apos;s always time for one more cup.</p>
                   </div>
                 )}
-              </motion.div>
+              </div>
             </TabsContent>
           ))}
         </Tabs>
@@ -557,6 +566,14 @@ export function MenuBoard() {
           Please alert staff of any allergies. Prices and items subject to
           change.
         </p>
+        <a
+          href="/lionsden-menu.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className="text-link menu-full-link"
+        >
+          View the full menu &amp; prices (PDF) <ArrowUpRight size={17} />
+        </a>
       </div>
     </section>
   );

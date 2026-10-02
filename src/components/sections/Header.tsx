@@ -1,12 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useRef, useState } from "react";
-import {
-  motion,
-  useMotionValueEvent,
-  useReducedMotion,
-  useScroll,
-} from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, ArrowUpRight, Phone, X } from "lucide-react";
 import {
   Sheet,
@@ -17,10 +11,13 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { scrollToAnchor, useLenis } from "@/components/providers/smooth-scroll";
-import { CoffeeSpill, SPILL_SHEET_ALT } from "@/components/brand/CoffeeSpill";
+import { CoffeeSpill, morphSpillIdle } from "@/components/brand/CoffeeSpill";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { useSlidingPill } from "@/lib/use-sliding-pill";
 
 // Every page section, in page order, for both the desktop and mobile nav.
+// FAQ is deliberately left out: it is homepage content, not a nav stop.
+// `page` is where the link goes from other pages (default: "/" + href).
 const NAV = [
   { label: "Menu", href: "#menu" },
   { label: "Our Story", href: "#about" },
@@ -39,6 +36,17 @@ const SECTIONS = [
   "visit",
   "contact",
 ];
+type NavLink = { label: string; href: string; page?: string };
+
+/** Nav hrefs for the current page: in-page anchors on the homepage, links
+ *  back to the homepage (or to a page of their own) everywhere else. */
+export function navLinks(links: NavLink[], base: string) {
+  return links.map((link) => ({
+    label: link.label,
+    href: base ? (link.page ?? `${base}${link.href}`) : link.href,
+  }));
+}
+
 export const ORDER_ONLINE_URL = "https://toasttab.com/lions-den-coffee-shop";
 export const ADDRESS = "57 West Main Street, Plantsville, CT 06479";
 export const HOURS = [
@@ -59,7 +67,7 @@ export function Anchor({
   className?: string;
   onNavigate?: () => void;
   "aria-label"?: string;
-  "aria-current"?: "location";
+  "aria-current"?: "location" | "page";
 }) {
   const lenis = useLenis();
   return (
@@ -69,7 +77,13 @@ export function Anchor({
       aria-label={ariaLabel}
       aria-current={ariaCurrent}
       onClick={(event) => {
-        if (!event.metaKey && !event.ctrlKey && !event.shiftKey) {
+        // Links to other pages navigate normally.
+        if (
+          href.startsWith("#") &&
+          !event.metaKey &&
+          !event.ctrlKey &&
+          !event.shiftKey
+        ) {
           const smooth = lenis?.current ?? null;
           if (smooth) {
             event.preventDefault();
@@ -90,28 +104,25 @@ export function Anchor({
 // the links follow. `poured` lives in Header, so reopening the sheet skips
 // the pour; a new page load resets it. The edge always keeps gently shifting.
 function MobileSheetBody({
+  links,
   onNavigate,
   poured,
   active,
+  currentKind,
 }: {
+  links: { label: string; href: string }[];
   onNavigate: () => void;
   poured: React.RefObject<boolean>;
   active: string;
+  currentKind: "location" | "page";
 }) {
   const ref = useRef<HTMLDivElement>(null);
   useGSAP(
     () => {
       const media = gsap.matchMedia();
-      media.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.to(".spill-sheet", {
-          morphSVG: SPILL_SHEET_ALT,
-          duration: 6,
-          delay: 1.2,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-        if (poured.current) return;
+      media.add("(prefers-reduced-motion: no-preference)", (context) => {
+        const stopIdle = morphSpillIdle(context, 1.2);
+        if (poured.current) return stopIdle;
         gsap
           .timeline({
             defaults: { ease: "power3.out" },
@@ -153,6 +164,7 @@ function MobileSheetBody({
             { y: 24, opacity: 0, duration: 0.6, stagger: 0.07 },
             0.35,
           );
+        return stopIdle;
       });
       return () => media.revert();
     },
@@ -170,12 +182,12 @@ function MobileSheetBody({
         <SheetDescription>Coffee, food, and good company.</SheetDescription>
       </div>
       <nav aria-label="Mobile navigation">
-        {NAV.map(({ label, href }, i) => (
+        {links.map(({ label, href }, i) => (
           <Anchor
             key={label}
             href={href}
             onNavigate={onNavigate}
-            aria-current={href === active ? "location" : undefined}
+            aria-current={href === active ? currentKind : undefined}
             className="sheet-link sheet-reveal"
           >
             <span className="sheet-num" aria-hidden>
@@ -210,27 +222,56 @@ function MobileSheetBody({
   );
 }
 
-export function Header() {
+/**
+ * On the homepage (`base` empty) links are in-page anchors and a scroll spy
+ * marks the section in view. Other pages pass `base="/"` plus their own path
+ * as `current`, so the links lead home and the page's own link is marked.
+ */
+export function Header({
+  base = "",
+  current,
+}: {
+  base?: string;
+  current?: string;
+}) {
   const [open, setOpen] = useState(false);
   const poured = useRef(false);
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   // Href of the section under the line a third of the way down the screen.
-  const [active, setActive] = useState("#top");
-  const reduced = useReducedMotion();
-  const { scrollY } = useScroll();
-  useMotionValueEvent(scrollY, "change", (y) => {
-    setScrolled(y > 80);
-    const line = window.innerHeight / 3;
-    let current = SECTIONS[0];
-    for (const id of SECTIONS) {
-      const el = document.getElementById(id);
-      if (el && el.getBoundingClientRect().top <= line) current = id;
-    }
-    setActive(`#${current}`);
-  });
+  const [spied, setSpied] = useState("#top");
+  const active = current ?? spied;
+  const links = navLinks(NAV, base);
+  const currentKind = current ? "page" : "location";
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      setScrolled(window.scrollY > 80);
+      if (current) return;
+      const line = window.innerHeight / 3;
+      let section = SECTIONS[0];
+      for (const id of SECTIONS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) section = id;
+      }
+      setSpied(`#${section}`);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, [current]);
   // The pill sits on the current section's link and follows hover/focus.
   const pillHref = hovered ?? active;
+  const [navRef, pillRef] = useSlidingPill<HTMLElement>(
+    `[data-href="${pillHref}"]`,
+  );
   return (
     <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
       {/* Address and hours ride above the pill, then fold away on scroll. */}
@@ -245,7 +286,7 @@ export function Header() {
         </p>
       </div>
       <div className="shell header-inner">
-        <Anchor href="#top" className="wordmark">
+        <Anchor href={base || "#top"} className="wordmark">
           <Image
             src="/brand/lions-den-logo.jpg"
             width={43}
@@ -260,35 +301,27 @@ export function Header() {
         {/* A gold sticker pill marks the section in view and slides to
             whichever link is hovered or focused. */}
         <nav
+          ref={navRef}
           className="desktop-nav"
           aria-label="Main navigation"
           onMouseLeave={() => setHovered(null)}
           onBlur={() => setHovered(null)}
         >
-          {NAV.map(({ label, href }) => (
+          <span ref={pillRef} className="nav-pill sliding-pill" aria-hidden />
+          {links.map(({ label, href }) => (
             <span
               key={label}
               className="nav-item"
+              data-href={href}
               onMouseEnter={() => setHovered(href)}
               onFocus={() => setHovered(href)}
             >
               <Anchor
                 href={href}
-                aria-current={href === active ? "location" : undefined}
+                aria-current={href === active ? currentKind : undefined}
               >
                 {label}
               </Anchor>
-              {pillHref === href && (
-                <motion.span
-                  className="nav-pill"
-                  layoutId="nav-pill"
-                  transition={
-                    reduced
-                      ? { duration: 0 }
-                      : { type: "spring", stiffness: 420, damping: 32 }
-                  }
-                />
-              )}
             </span>
           ))}
         </nav>
@@ -314,6 +347,8 @@ export function Header() {
           </SheetTrigger>
           <SheetContent className="mobile-sheet" showCloseButton={false}>
             <MobileSheetBody
+              links={links}
+              currentKind={currentKind}
               onNavigate={() => setOpen(false)}
               poured={poured}
               active={active}

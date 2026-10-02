@@ -1,15 +1,14 @@
 "use client";
 import { Fragment, useRef } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { gsap, SplitText, useGSAP } from "@/lib/gsap";
+import { gsap, useGSAP } from "@/lib/gsap";
 import { RingBadge } from "@/components/brand/RingBadge";
 import { addLionReveal } from "@/components/brand/lionReveal";
 import {
   CoffeeBean,
   CoffeeSpill,
-  SPILL_SHEET_ALT,
+  morphSpillIdle,
 } from "@/components/brand/CoffeeSpill";
 import { Anchor } from "./Header";
 
@@ -59,19 +58,32 @@ const BAND_WORDS = [
   "Sip & stay",
 ];
 
+// Each letter sits in its own clipping mask so it can rise into place. The
+// split is in the markup (no SplitText); screen readers get the sr-only text.
+function HeroWord({ word }: { word: string }) {
+  return (
+    <span className="hero-word" aria-hidden>
+      {[...word].map((char, i) => (
+        <span key={i} className="char-mask">
+          <span className="hero-char">{char}</span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
   useGSAP(
     () => {
       const media = gsap.matchMedia();
       media.add(
         "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          const split = SplitText.create(".hero-word", {
-            type: "chars",
-            mask: "chars",
-          });
+        (context) => {
+          // Clip only while the letters rise, so the resting text keeps its
+          // offset shadow.
+          const masks = gsap.utils.toArray<HTMLElement>(".char-mask");
+          gsap.set(masks, { overflow: "clip" });
           const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
           // 1. Spill: coffee pours down to flood the section, then the drips
           // run and droplets splash off the edge.
@@ -136,8 +148,15 @@ export function Hero() {
           tl
             // Copy runs alongside.
             .from(
-              split.chars,
-              { yPercent: 110, duration: 1, stagger: 0.045 },
+              ".hero-char",
+              {
+                yPercent: 110,
+                duration: 1,
+                stagger: 0.045,
+                onComplete: () => {
+                  gsap.set(masks, { clearProps: "overflow" });
+                },
+              },
               0.2,
             )
             .from(
@@ -147,15 +166,8 @@ export function Hero() {
             )
             .from(".hero-intro", { y: 15, stagger: 0.1, duration: 0.7 }, 0.6);
 
-          // Idle: the spill keeps gently shifting like settling liquid.
-          gsap.to(".spill-sheet", {
-            morphSVG: SPILL_SHEET_ALT,
-            duration: 6,
-            delay: 1.4,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-          });
+          // Idle: the spill keeps shifting and the drips keep stretching.
+          const stopIdle = morphSpillIdle(context, 1.4);
           gsap.to(".spill-drip", {
             scaleY: 1.12,
             transformOrigin: "50% 0%",
@@ -183,7 +195,7 @@ export function Hero() {
             stagger: 0.05,
             scrollTrigger: scrub,
           });
-          return () => split.revert();
+          return stopIdle;
         },
       );
       return () => media.revert();
@@ -198,22 +210,21 @@ export function Hero() {
           <h1 id="hero-title" className="hero-heading hero-intro">
             Lions Den Coffee Shop <span>in Plantsville, CT</span>
           </h1>
-          <p className="hero-type" aria-label="Sip and stay">
-            <span className="hero-word">SIP</span>
-            <span className="ampersand">&amp;</span>
-            <span className="hero-word">STAY.</span>
+          <p className="hero-type">
+            <span className="sr-only">Sip and stay.</span>
+            <HeroWord word="SIP" />
+            <span className="ampersand" aria-hidden>
+              &amp;
+            </span>
+            <HeroWord word="STAY." />
           </p>
         </div>
 
         <div className="hero-badge-wrap">
-          <motion.div
-            className="hero-badge"
-            animate={reduced ? {} : { y: [0, -6, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            whileHover={reduced ? {} : { rotate: 4 }}
-          >
+          {/* Bobs gently via CSS (.hero-badge). */}
+          <div className="hero-badge">
             <RingBadge animated text="Lions Den · Coffee Shop · Est. 2020 ·" />
-          </motion.div>
+          </div>
           <p className="art-note hero-intro">Good coffee. Better company.</p>
         </div>
 

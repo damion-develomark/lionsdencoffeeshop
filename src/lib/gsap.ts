@@ -3,24 +3,19 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { SplitText } from "gsap/SplitText";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
-import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 
 // Register GSAP plugins once, client-side only.
-gsap.registerPlugin(
-  useGSAP,
-  ScrollTrigger,
-  SplitText,
-  DrawSVGPlugin,
-  MorphSVGPlugin,
-);
+gsap.registerPlugin(useGSAP, ScrollTrigger, DrawSVGPlugin);
 
-export {
-  gsap,
-  ScrollTrigger,
-  SplitText,
-  DrawSVGPlugin,
-  MorphSVGPlugin,
-  useGSAP,
-};
+// MorphSVG only drives the coffee spill's decorative idle loop (desktop hero,
+// mobile nav sheet), so it is fetched on first use instead of up front.
+let morphSVG: Promise<void> | undefined;
+export function loadMorphSVG() {
+  morphSVG ??= import("gsap/MorphSVGPlugin").then(({ MorphSVGPlugin }) => {
+    gsap.registerPlugin(MorphSVGPlugin);
+  });
+  return morphSVG;
+}
+
+export { gsap, ScrollTrigger, DrawSVGPlugin, useGSAP };

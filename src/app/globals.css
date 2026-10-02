@@ -183,7 +183,7 @@ button:focus-visible {
    shadow, Anton caps. */
 .feature-pill,
 .slow-badge,
-.story-photo > span,
+.story-play-label,
 .sticker-title {
   background: var(--color-gold);
   color: var(--color-espresso);
@@ -305,6 +305,7 @@ button:focus-visible {
 /* Fills the space between the wordmark and the buttons and centers the
    links in it, so the gaps on either side match. */
 .desktop-nav {
+  position: relative;
   flex: 1;
   display: flex;
   justify-content: center;
@@ -325,9 +326,20 @@ button:focus-visible {
   white-space: nowrap;
   color: var(--color-espresso);
 }
-.nav-pill {
+/* One pill per bar, placed and slid by useSlidingPill. */
+.sliding-pill {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.sliding-pill[data-ready] {
+  transition:
+    transform 0.4s cubic-bezier(0.34, 1.3, 0.64, 1),
+    width 0.4s cubic-bezier(0.34, 1.3, 0.64, 1),
+    opacity 0.2s ease;
+}
+.nav-pill {
   background: var(--color-gold);
   border: 2px solid var(--color-espresso);
   border-radius: 999px;
@@ -587,6 +599,10 @@ button:focus-visible {
   paint-order: stroke fill;
   text-shadow: 0.03em 0.03em 0 var(--color-espresso);
 }
+.char-mask,
+.hero-char {
+  display: inline-block;
+}
 .ampersand {
   position: relative;
   z-index: 1;
@@ -666,13 +682,14 @@ button:focus-visible {
   text-transform: uppercase;
 }
 
-/* Drinks: big and centred, tucked behind the bottom of the headline. */
+/* Drinks: big and centred. The cup tops only just tuck behind the bottom
+   of SIP & STAY, so the headline stays readable. */
 .hero-art {
   grid-area: art;
   position: relative;
   z-index: 2;
   height: 540px;
-  margin-top: -64px;
+  margin-top: 0;
 }
 .hero-drink {
   position: absolute;
@@ -770,6 +787,23 @@ button:focus-visible {
 }
 .hero-badge {
   width: 100%;
+}
+/* Sticker badges bob gently and tip on hover (off under reduced motion). */
+.hero-badge,
+.menu-badge {
+  animation: badge-bob 4s ease-in-out infinite;
+  transition: rotate 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.hero-badge:hover {
+  rotate: 4deg;
+}
+.menu-badge:hover {
+  rotate: 6deg;
+}
+@keyframes badge-bob {
+  50% {
+    translate: 0 -6px;
+  }
 }
 .badge-inner {
   position: relative;
@@ -1080,6 +1114,7 @@ h2 em {
 /* Sticker rail: butter-gold track with the espresso border + offset shadow;
    the gold pill slides under the active tab. */
 .menu-tabs {
+  position: relative;
   width: fit-content;
   height: auto;
   display: flex;
@@ -1120,13 +1155,37 @@ h2 em {
   z-index: 1;
 }
 .tab-pill {
-  position: absolute;
-  inset: 0;
   z-index: 0;
   background: var(--color-gold);
   border: 2px solid var(--color-espresso);
   border-radius: 999px;
   box-shadow: 2px 2px 0 var(--color-espresso);
+}
+/* Keyboard focus lands on the panel after the tabs (Radix makes it
+   focusable); give it the site's gold ring. */
+.menu-grid:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 12px;
+  border-radius: 1rem;
+}
+/* A newly shown tab fades in and its rows stagger up (--i set per row). */
+.menu-grid:not([hidden]) {
+  animation: menu-panel-in 0.2s ease-out;
+}
+.menu-grid:not([hidden]) .menu-item {
+  animation: menu-item-in 0.3s ease-out both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+@keyframes menu-panel-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes menu-item-in {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
 }
 .menu-grid {
   display: grid;
@@ -1231,6 +1290,11 @@ h2 em {
 .price-info {
   flex: none;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* WCAG 2.5.8 minimum target size. */
+  min-width: 24px;
+  min-height: 24px;
   margin-left: -4px;
   padding: 4px;
   color: var(--color-bronze);
@@ -1252,14 +1316,27 @@ h2 em {
 .menu-item-body {
   min-width: 0;
 }
+/* Registered so the shadow depth can transition with the tilt. */
+@property --thumb-shadow {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 4px;
+}
 .menu-thumb {
   --thumb-shadow: 4px;
+  transition:
+    rotate 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    --thumb-shadow 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   aspect-ratio: 1;
   border-radius: 1rem;
   border: 2px solid var(--color-espresso);
   background: var(--color-cream);
   box-shadow: var(--thumb-shadow) var(--thumb-shadow) 0 0 var(--color-espresso);
+}
+.menu-item:hover .menu-thumb {
+  rotate: -3deg;
+  --thumb-shadow: 6px;
 }
 .menu-item:hover .menu-photo-img {
   transform: scale(1.08);
@@ -1309,12 +1386,13 @@ h2 em {
   position: absolute;
   inset: 0;
 }
-.menu-slide {
+.menu-slides {
   cursor: grab;
+  user-select: none;
   /* Let the page still scroll vertically over the swipeable photo. */
   touch-action: pan-y;
 }
-.menu-slide:active {
+.menu-slides:active {
   cursor: grabbing;
 }
 .menu-photo {
@@ -1506,6 +1584,8 @@ h2 em {
   padding-top: 12px;
 }
 .slow-badge {
+  rotate: -10deg;
+  transition: rotate 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   padding: 16px 38px;
   font-size: 20px;
   line-height: 1.15;
@@ -1513,6 +1593,9 @@ h2 em {
   z-index: 1;
   align-self: start;
   margin-left: 34px;
+}
+.slow-badge:hover {
+  rotate: -5deg;
 }
 .slow-badge span {
   display: block;
@@ -1567,21 +1650,83 @@ h2 em {
 .story-photo {
   overflow: hidden;
   position: relative;
-  aspect-ratio: 1 / 1.05;
+  aspect-ratio: 16 / 9;
+  background: #000;
 }
-.story-photo img {
+.story-photo iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+/* Video facade: the storefront photo under a warm espresso wash, with a gold
+   sticker play button. Same 16:9 box as the player, so nothing shifts. */
+.story-play {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: #000;
+}
+.story-play img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: 60%;
+  transition: transform 0.6s ease;
 }
-.story-photo > span {
+.story-play::after {
+  content: "";
   position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgb(35 31 32 / 70%),
+    rgb(35 31 32 / 10%) 60%
+  );
+}
+.story-play-icon {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  padding-left: 5px;
+  translate: -50% -50%;
+  border: 2px solid var(--color-espresso);
+  border-radius: 999px;
+  background: var(--color-gold);
+  color: var(--color-espresso);
+  box-shadow: 4px 4px 0 var(--color-espresso);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.story-play-label {
+  position: absolute;
+  z-index: 1;
   bottom: 18px;
   left: 18px;
   padding: 10px 18px;
   font-size: 14px;
   line-height: 1.2;
+}
+.story-play:hover img {
+  transform: scale(1.04);
+}
+.story-play:hover .story-play-icon {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--color-espresso);
+}
+.story-play:focus-visible {
+  outline-offset: 4px;
 }
 .story-copy .eyebrow {
   color: var(--color-gold);
@@ -1672,7 +1817,7 @@ h2 em {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 85px;
-  padding-block: 170px 100px;
+  padding-block: 100px;
   align-items: center;
 }
 .visit-section h2 {
@@ -1766,6 +1911,218 @@ h2 em {
   width: min(100% - 48px, 1280px);
   min-height: 320px;
   margin: 40px auto 0;
+}
+/* Elfsight's review cards are focusable but ship without a visible focus
+   style; !important beats the widget's own injected outline reset. */
+.reviews-widget :is(a, button, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-gold) !important;
+  outline-offset: 3px;
+}
+
+/* FAQ: cream band between the dark reviews stage and Visit. The extra top
+   padding leaves room for the sfogliatella sticker hanging over the seam. */
+.faq-section {
+  background: var(--color-cream);
+  padding-block: 215px 100px;
+}
+.faq-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 85px;
+  align-items: start;
+}
+/* z-index 4 lifts the heading and copy above the reviews section (z 3),
+   so the sfogliatella sticker hanging over the seam never covers them. The
+   FAQ section itself stays unstacked, so its cream background still sits
+   under the sticker. */
+.faq-intro {
+  position: sticky;
+  z-index: 4;
+  top: 120px;
+}
+.faq-intro h2 {
+  font-size: 42px;
+}
+.faq-rule {
+  display: block;
+  width: 64px;
+  height: 3px;
+  margin: 22px 0;
+  border-radius: 999px;
+  background: var(--color-gold-rule);
+}
+.faq-intro p:not(.eyebrow) {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+  max-width: 360px;
+}
+.faq-intro .faq-call {
+  margin-top: 18px;
+  font-size: 17px;
+}
+.faq-call a {
+  color: var(--color-espresso);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--color-gold);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.faq-list {
+  display: grid;
+  gap: 12px;
+}
+.faq-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow:
+    0 1px 2px rgb(35 31 32 / 0.04),
+    0 6px 18px -12px rgb(35 31 32 / 0.25);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.faq-item:hover {
+  border-color: var(--color-latte);
+}
+.faq-item[open] {
+  border-color: var(--color-latte);
+  box-shadow:
+    inset 4px 0 0 var(--color-gold),
+    0 8px 22px -14px rgb(35 31 32 / 0.35);
+}
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 22px;
+  cursor: pointer;
+  list-style: none;
+  border-radius: var(--radius);
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item summary:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 3px;
+}
+.faq-item h3 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-espresso);
+}
+/* Plus that turns into a minus: the vertical bar folds away when open. */
+.faq-icon {
+  position: relative;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-espresso);
+  transition: background-color 0.2s ease;
+}
+.faq-icon::before,
+.faq-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 12px;
+  height: 1.5px;
+  background: var(--color-espresso);
+  transition: rotate 0.25s ease;
+}
+.faq-icon::after {
+  rotate: 90deg;
+}
+.faq-item summary:hover .faq-icon,
+.faq-item[open] .faq-icon {
+  background: var(--color-gold);
+}
+.faq-item[open] .faq-icon::after {
+  rotate: 0deg;
+}
+.faq-item > p {
+  padding: 0 22px 22px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  max-width: 62ch;
+}
+.faq-item > p a {
+  color: var(--color-espresso);
+  text-decoration: underline;
+  text-decoration-color: var(--color-gold);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+.faq-item > p a:hover {
+  color: var(--color-bronze);
+}
+/* Open/close glides between 0 and the answer's natural height, and the text
+   fades in. Browsers without interpolate-size just snap open, and the global
+   reduced-motion rule switches the transitions off. */
+@supports (interpolate-size: allow-keywords) {
+  .faq-item {
+    interpolate-size: allow-keywords;
+  }
+  .faq-item::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      block-size 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      content-visibility 0.35s allow-discrete;
+  }
+  .faq-item[open]::details-content {
+    block-size: auto;
+  }
+  .faq-item > p {
+    opacity: 0;
+    translate: 0 -6px;
+    transition:
+      opacity 0.25s ease,
+      translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .faq-item[open] > p {
+    opacity: 1;
+    translate: 0 0;
+    transition-delay: 0.08s;
+  }
+}
+@media (max-width: 1100px) {
+  .faq-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .faq-intro {
+    position: relative;
+    top: auto;
+  }
+}
+@media (max-width: 767px) {
+  .faq-section {
+    padding-block: 120px 56px;
+  }
+  .faq-intro h2 {
+    font-size: 34px;
+  }
+  .faq-item summary {
+    padding: 16px 16px;
+    gap: 14px;
+  }
+  .faq-item h3 {
+    font-size: 19px;
+  }
+  .faq-item > p {
+    padding: 0 16px 18px;
+    font-size: 17px;
+  }
 }
 
 /* Cutout stickers (StickerFeature): the cream die-cut border is baked into
@@ -2053,6 +2410,40 @@ h2 em {
 }
 .footer-socials a:hover {
   background: var(--color-gold);
+}
+/* Accepted payments: small card-shaped chips, same espresso outline as the
+   social discs but static (they aren't links). */
+.footer-payments {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+}
+.footer-payments p {
+  font: 500 11px/1 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.footer-payments ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.footer-payments li {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 34px;
+  border: 1.5px solid var(--color-espresso);
+  border-radius: 6px;
+  color: var(--color-espresso);
+  background: color-mix(in srgb, var(--color-warm-white) 55%, transparent);
 }
 .footer-inner small {
   margin-top: 30px;
@@ -2441,9 +2832,6 @@ h2 em {
     grid-template-columns: 1fr;
     gap: 34px;
   }
-  .story-photo {
-    aspect-ratio: 1.15;
-  }
   /* Phones: the caption spans the width left of a smaller sticker. */
   .sticker-feature {
     left: 20px;
@@ -2460,8 +2848,10 @@ h2 em {
   .story-sticker .sticker-float {
     width: 110px;
   }
+  /* Hang less far into the FAQ, clear of its heading. */
   .reviews-sticker .sticker-float {
     width: 120px;
+    translate: 0 55%;
   }
   .story-copy h2 {
     font-size: 34px;
@@ -2573,5 +2963,320 @@ h2 em {
     position: sticky;
     top: 140px;
     padding-top: 40px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   /menu (page currently disabled, see src/app/_menu) — the full printed menu as text. Reuses the homepage's leader line
+   and gold price tags; category titles echo the PDF's espresso pills.
+   -------------------------------------------------------------------------- */
+.full-menu-hero {
+  padding: 180px 0 64px;
+  background: linear-gradient(
+    180deg,
+    var(--color-warm-white),
+    color-mix(in srgb, var(--color-gold) 10%, var(--color-warm-white))
+  );
+}
+.full-menu-title {
+  font: 400 clamp(52px, 8vw, 112px) / 0.95 var(--font-headline);
+  text-transform: uppercase;
+}
+.full-menu-title span {
+  display: block;
+}
+.full-menu-kicker {
+  margin-bottom: 14px;
+  font: 700 clamp(22px, 2.6vw, 32px) / 1.2 var(--font-display);
+  text-transform: none;
+}
+.full-menu-lede {
+  max-width: 640px;
+  margin-top: 28px;
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--muted-foreground);
+}
+.full-menu-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 28px;
+  margin-top: 32px;
+}
+.full-menu-jump {
+  margin: 48px 0 0;
+}
+.full-menu-jump .menu-tab:hover {
+  background: var(--color-gold) !important;
+}
+.full-menu-category {
+  padding-block: 76px;
+}
+.full-menu-category:nth-of-type(odd) {
+  background: var(--color-cream);
+}
+.full-menu-cat-title {
+  display: inline-block;
+  padding: 13px 30px 9px;
+  background: var(--color-espresso);
+  color: var(--color-warm-white);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--color-gold);
+  font: 400 clamp(30px, 4vw, 44px) / 1 var(--font-headline);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.full-menu-cat-note {
+  margin-top: 20px;
+  font: italic 400 19px/1.5 var(--font-serif);
+  color: var(--muted-foreground);
+}
+.full-menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 60px 85px;
+  margin-top: 44px;
+}
+.full-menu-block h3 {
+  font: 400 34px/1 var(--font-headline);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.full-menu-block ul {
+  display: grid;
+  gap: 22px;
+}
+.full-item-name {
+  min-width: 0;
+  font: 400 19px/1.2 var(--font-headline);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.full-item-name small {
+  font: italic 400 16px var(--font-serif);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted-foreground);
+}
+.full-item-desc {
+  margin-top: 6px;
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--muted-foreground);
+}
+.full-item-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin-top: 8px;
+  font: 500 13px/1.5 var(--font-sans);
+}
+.full-item-sizes div {
+  display: flex;
+  gap: 6px;
+}
+.full-item-sizes dt {
+  color: var(--color-bronze);
+  text-transform: uppercase;
+}
+.full-item-sizes dd {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.full-menu-notes {
+  margin-top: 26px;
+  padding: 14px 18px;
+  background: color-mix(
+    in srgb,
+    var(--color-gold) 32%,
+    var(--color-warm-white)
+  );
+  border: 2px solid var(--color-espresso);
+  border-radius: 1rem;
+  box-shadow: 3px 3px 0 var(--color-espresso);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.full-menu-notes p + p {
+  margin-top: 6px;
+}
+.full-menu-foot {
+  padding-block: 64px 100px;
+}
+.full-menu-foot p {
+  max-width: 640px;
+  margin-bottom: 22px;
+  font-size: 19px;
+  line-height: 1.55;
+}
+/* Homepage link from the photographed selection to the full menu. */
+.menu-full-link {
+  margin-top: 26px;
+  color: var(--color-espresso);
+}
+@media (max-width: 1100px) {
+  .full-menu-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+@media (max-width: 767px) {
+  .full-menu-hero {
+    padding: 150px 0 48px;
+  }
+  .full-menu-jump {
+    margin-top: 36px;
+  }
+  .full-menu-category {
+    padding-block: 52px;
+  }
+  .full-menu-block h3 {
+    font-size: 28px;
+  }
+  .full-item-name {
+    font-size: 17px;
+  }
+  .full-menu-actions .button {
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Coming soon: two sticker cards between the gallery and the reviews.
+   King's Reserve on espresso with a lion watermark; locations on gold.
+   -------------------------------------------------------------------------- */
+.soon-section {
+  background: var(--color-warm-white);
+  padding-block: 96px 104px;
+}
+.soon-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 32px;
+  margin-top: 44px;
+}
+.soon-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 40px;
+  border: 2px solid var(--color-espresso);
+  border-radius: 1.5rem;
+  box-shadow: 6px 6px 0 var(--color-espresso);
+}
+.soon-card h3 {
+  position: relative;
+  font: 400 clamp(32px, 3.4vw, 46px) / 1 var(--font-headline);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.soon-card p {
+  position: relative;
+  max-width: 460px;
+  font-size: 19px;
+  line-height: 1.55;
+}
+.soon-pill {
+  position: relative;
+  padding: 7px 14px 5px;
+  background: var(--color-gold);
+  color: var(--color-espresso);
+  border: 2px solid var(--color-espresso);
+  border-radius: 999px;
+  font: 400 14px/1.2 var(--font-headline);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.soon-card--reserve {
+  background: var(--color-espresso);
+  color: var(--color-warm-white);
+}
+.soon-card--reserve h3 {
+  color: var(--color-gold);
+}
+.soon-card--reserve p {
+  color: color-mix(in srgb, var(--color-warm-white) 85%, transparent);
+}
+/* Lion watermark bleeding off the card's corner. */
+.soon-lion {
+  position: absolute;
+  right: -40px;
+  bottom: -50px;
+  width: 260px;
+  height: auto;
+  opacity: 0.14;
+  pointer-events: none;
+}
+.soon-actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 26px;
+  margin-top: 8px;
+}
+.soon-card--reserve .button {
+  box-shadow: 4px 4px 0 var(--color-cream);
+}
+.soon-card--reserve .button:hover {
+  box-shadow: 2px 2px 0 var(--color-cream);
+}
+.soon-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-block: 8px;
+  font: 400 15px/1.4 var(--font-headline);
+  letter-spacing: 0.06em;
+  color: var(--color-gold);
+  border-bottom: 2px solid var(--color-gold);
+}
+.soon-link:hover {
+  color: var(--color-warm-white);
+  border-color: var(--color-warm-white);
+}
+.soon-card--places {
+  justify-content: center;
+  background: color-mix(
+    in srgb,
+    var(--color-gold) 32%,
+    var(--color-warm-white)
+  );
+}
+.soon-card--places .soon-pill {
+  background: var(--color-warm-white);
+}
+.soon-card--places .text-link {
+  margin-top: 8px;
+}
+@media (max-width: 1100px) {
+  .soon-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 767px) {
+  .soon-section {
+    padding-block: 64px 72px;
+  }
+  .soon-grid {
+    margin-top: 32px;
+    gap: 24px;
+  }
+  .soon-card {
+    padding: 28px 22px;
+  }
+  .soon-card p {
+    font-size: 17px;
+  }
+  .soon-lion {
+    width: 180px;
+  }
+  .soon-actions .button {
+    width: 100%;
   }
 }
