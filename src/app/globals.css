@@ -3011,8 +3011,33 @@ h2 em {
    King's Reserve on espresso with a lion watermark; locations on gold.
    -------------------------------------------------------------------------- */
 .soon-section {
-  background: var(--color-warm-white);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #f1dcae;
   padding-block: 96px 104px;
+}
+/* Drone loop under the same latte tint as the footer's slideshow. */
+.soon-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.soon-backdrop video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.soon-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgb(248 232 196 / 0.86),
+    rgb(241 220 174 / 0.9)
+  );
 }
 .soon-grid {
   display: grid;
@@ -3105,11 +3130,7 @@ h2 em {
 }
 .soon-card--places {
   justify-content: center;
-  background: color-mix(
-    in srgb,
-    var(--color-gold) 32%,
-    var(--color-warm-white)
-  );
+  background: var(--color-gold);
 }
 .soon-card--places .soon-pill {
   background: var(--color-warm-white);

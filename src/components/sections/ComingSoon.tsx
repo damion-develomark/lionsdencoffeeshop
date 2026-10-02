@@ -1,6 +1,7 @@
 import { ArrowUpRight, Phone } from "lucide-react";
 import { LionMark } from "@/components/brand/LionMark";
 import { Anchor } from "./Header";
+import { SoonBackdrop } from "./SoonBackdrop";
 
 // Where "Shop the King's Reserve" points. The pre-order / sign-up route
 // (likely the planned Shopify store) is not confirmed yet, so for now it
@@ -20,6 +21,7 @@ export function ComingSoon() {
       className="soon-section"
       aria-labelledby="soon-title"
     >
+      <SoonBackdrop />
       <div className="shell">
         <p className="eyebrow">What&apos;s brewing</p>
         <h2 id="soon-title">
